@@ -8,22 +8,56 @@ import Authenticated from "./layouts/authenticated/Authenticated";
 
 import {Provider, connect} from "react-redux";
 import store from "./store";
-
-import SiteRouter from "./SiteRouter";
-import mapDispatchToProps from "react-redux/lib/connect/mapDispatchToProps";
 import {LOG_IN} from "./actions";
 
+import Loader from "./components/loader/Loader";
+import {getUser} from "./backend/authentication";
 
 class HealthCare extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            isLoading: true
+        }
+    }
+
+    componentDidMount()
+    {
+       getUser().then(res => {
+           let user = res.user;
+           console.log(user);
+           this.props.login(user);
+           this.setState({
+               isLoading: false
+           });
+       }).catch(err => {
+           this.setState({
+               isLoading: false
+           });
+       })
     }
 
     render() {
+        console.log(this.state.isLoading);
         return (
             <React.Fragment>
                 <CssBaseline/>
-                <SiteRouter/>
+                {this.state.isLoading
+                ? <Loader/>
+                : <Router>
+                        <Switch>
+                            <Route path="/auth">
+                                <Authentication/>
+                            </Route>
+                            <Route path="/">
+                                <Authenticated/>
+                            </Route>
+                        </Switch>
+                        {!this.props.isLoggedIn
+                        ? <Redirect to="/auth"/>
+                        : null}
+                    </Router>}
             </React.Fragment>
         );
     }
@@ -37,13 +71,17 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        login: () =>  dispatch({ type: LOG_IN, payload: {
-                user: {UserID: 24221, UserName: 'Shanto'}
-            } })
+        login: (user) =>  {
+            return dispatch({ type: LOG_IN, payload: {
+                    user: user
+                }})
+        }
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HealthCare);
+HealthCare = connect(mapStateToProps, mapDispatchToProps)(HealthCare);
+
+export default HealthCare;
 
 ReactDOM.render(
     <Provider store={store}>

@@ -29,4 +29,24 @@ const signIn = function(userId, password) {
     });
 }
 
-export {createUser, signIn};
+const signOut = function() {
+    return new Promise(function (resolve, reject) {
+        axios.post('/logout').then(function(res) {
+            resolve();
+        }).catch(function(err) {
+            if(reject) reject();
+        })
+    })
+};
+
+const getUser = function () {
+    return new Promise(function(resolve, reject) {
+        axios.get('/user').then(function(res) {
+            resolve(res.data);
+        }).catch(function (err) {
+            reject(err);
+        })
+    });
+}
+
+export {createUser, signIn, getUser, signOut};

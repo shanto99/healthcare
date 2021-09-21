@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-
+use App\Http\Controllers\ProductController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,6 +16,12 @@ use App\Http\Controllers\UserController;
 
 Route::post('/create_user', [UserController::class, 'create_user']);
 Route::post('/sign_in', [UserController::class, 'sign_in']);
+Route::middleware('auth')->group(function() {
+    Route::get('/user', [UserController::class, 'get_user']);
+    Route::post('/create_product', [ProductController::class, 'save_product']);
+    Route::get('/products', [ProductController::class, 'get_products']);
+    Route::post('/logout', [UserController::class, 'sign_out']);
+});
 
 Route::fallback(function() {
     return view('app');

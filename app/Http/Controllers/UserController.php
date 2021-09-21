@@ -53,4 +53,20 @@ class UserController extends Controller
         ], 200);
 
     }
+
+    public function sign_out()
+    {
+        Auth::logout();
+        return response()->json([
+            'status' => 200
+        ], 200);
+    }
+
+    public function get_user()
+    {
+        return response()->json([
+           'user' => Auth::user(),
+           'status' => 200
+        ]);
+    }
 }
