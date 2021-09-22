@@ -1,4 +1,6 @@
 import React from "react";
+import DateFnsUtils from '@date-io/date-fns'; // choose your lib
+import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 import ReactDOM from "react-dom";
 import {BrowserRouter as Router, Route, Switch, Redirect} from "react-router-dom";
 import {CssBaseline} from "@material-ui/core";
@@ -84,8 +86,10 @@ HealthCare = connect(mapStateToProps, mapDispatchToProps)(HealthCare);
 export default HealthCare;
 
 ReactDOM.render(
-    <Provider store={store}>
-        <HealthCare/>
-    </Provider>
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <Provider store={store}>
+            <HealthCare/>
+        </Provider>
+    </MuiPickersUtilsProvider>
     , document.getElementById("app"));
 

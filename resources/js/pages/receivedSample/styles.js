@@ -2,7 +2,7 @@ const styles = theme => ({
     receivedSampleForm: {
         width: '100%',
         maxWidth: '400px',
-        margin: '0 auto'
+        margin: '20px auto'
     }
 });
 
