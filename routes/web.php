@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ManufacturerController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,6 +22,8 @@ Route::middleware('auth')->group(function() {
     Route::post('/create_product', [ProductController::class, 'save_product']);
     Route::get('/products', [ProductController::class, 'get_products']);
     Route::post('/logout', [UserController::class, 'sign_out']);
+    Route::post('/create_manufacturer', [ManufacturerController::class, 'create_manufacturer']);
+    Route::get('/manufacturers', [ManufacturerController::class, 'get_manufacturers']);
 });
 
 Route::fallback(function() {

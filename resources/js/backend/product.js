@@ -1,9 +1,10 @@
 import axios from "axios";
 
-const saveProduct = function(productName) {
+const saveProduct = function(productName, variants) {
     return new Promise(function(resolve, reject) {
         axios.post('/create_product', {
-            ProductName: productName
+            ProductName: productName,
+            Variants: variants
         }).then(function(res) {
             resolve(res.data);
         }).catch(function(err) {

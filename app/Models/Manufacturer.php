@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Manufacturer extends Model
 {
     use HasFactory;
+
+    protected $table = "Manufacturers";
+    protected $primaryKey = "ManufacturerID";
+
+    protected $guarded = [];
 }

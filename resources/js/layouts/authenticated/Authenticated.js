@@ -5,6 +5,8 @@ import {connect} from "react-redux";
 import Navbar from "../../components/navbar/Navbar";
 import Home from "../../pages/home/Home";
 import Product from "../../pages/product/Product";
+import ReceivedSample from "../../pages/receivedSample/ReceivedSample";
+import Manufacturer from "../../pages/manufacturer/Manufacturer";
 import Sidebar from "../../components/sideBar/Sidebar";
 import {Grid} from "@material-ui/core";
 import Loader from "react-loader-spinner";
@@ -21,8 +23,14 @@ class Authenticated extends React.Component {
                     </Grid>
                     <Grid item md={10}>
                         <Switch>
+                            <Route exact={true} path="/manufacturer">
+                                <Manufacturer/>
+                            </Route>
                             <Route exact={true} path="/product">
                                 <Product/>
+                            </Route>
+                            <Route exact={true} path="/received-sample">
+                                <ReceivedSample/>
                             </Route>
                             <Route exact={true} path="/">
                                 <Home/>
