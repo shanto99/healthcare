@@ -9,6 +9,7 @@ import ReceivedSample from "../../pages/receivedSample/ReceivedSample";
 import Manufacturer from "../../pages/manufacturer/Manufacturer";
 import Sidebar from "../../components/sideBar/Sidebar";
 import {Grid} from "@material-ui/core";
+import ProtocolForm from "../../pages/protocolForm/ProtocolForm";
 import Loader from "react-loader-spinner";
 
 class Authenticated extends React.Component {
@@ -31,6 +32,9 @@ class Authenticated extends React.Component {
                             </Route>
                             <Route exact={true} path="/received-sample">
                                 <ReceivedSample/>
+                            </Route>
+                            <Route exact={true} path="/product-protocol">
+                                <ProtocolForm/>
                             </Route>
                             <Route exact={true} path="/">
                                 <Home/>

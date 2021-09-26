@@ -35,6 +35,12 @@ class Sidebar extends React.Component {
                             <ListItemText primary="Received sample"/>
                         </ListItem>
                     </Link>
+                    <Link to="/product-protocol" className={classes.linkStyle} >
+                        <ListItem button>
+                            <ListItemIcon><AddBoxIcon/></ListItemIcon>
+                            <ListItemText primary="Product protocol"/>
+                        </ListItem>
+                    </Link>
                 </List>
             </div>
         );

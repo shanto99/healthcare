@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ManufacturerController;
+use App\Http\Controllers\ReceivedSampleController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,6 +25,8 @@ Route::middleware('auth')->group(function() {
     Route::post('/logout', [UserController::class, 'sign_out']);
     Route::post('/create_manufacturer', [ManufacturerController::class, 'create_manufacturer']);
     Route::get('/manufacturers', [ManufacturerController::class, 'get_manufacturers']);
+    Route::post('/save_received_sample', [ReceivedSampleController::class, 'save_received_sample']);
+    Route::get('/received_samples', [ReceivedSampleController::class, 'get_received_samples']);
 });
 
 Route::fallback(function() {
