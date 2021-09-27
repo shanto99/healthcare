@@ -7,10 +7,12 @@ import Home from "../../pages/home/Home";
 import Product from "../../pages/product/Product";
 import ReceivedSample from "../../pages/receivedSample/ReceivedSample";
 import Manufacturer from "../../pages/manufacturer/Manufacturer";
+import Market from "../../pages/market/Market";
 import Sidebar from "../../components/sideBar/Sidebar";
 import {Grid} from "@material-ui/core";
 import ProtocolForm from "../../pages/protocolForm/ProtocolForm";
 import Loader from "react-loader-spinner";
+import ApiDetail from "../../pages/api_detail/ApiDetail";
 
 class Authenticated extends React.Component {
     render() {
@@ -26,6 +28,12 @@ class Authenticated extends React.Component {
                         <Switch>
                             <Route exact={true} path="/manufacturer">
                                 <Manufacturer/>
+                            </Route>
+                            <Route exact={true} path="/market">
+                                <Market/>
+                            </Route>
+                            <Route exact={true} path="/api_detail">
+                                <ApiDetail/>
                             </Route>
                             <Route exact={true} path="/product">
                                 <Product/>

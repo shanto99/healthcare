@@ -23,6 +23,18 @@ class Sidebar extends React.Component {
                             <ListItemText primary="Manufacturer"/>
                         </ListItem>
                     </Link>
+                    <Link to="/market" className={classes.linkStyle} >
+                        <ListItem button>
+                            <ListItemIcon><AddBoxIcon/></ListItemIcon>
+                            <ListItemText primary="Market"/>
+                        </ListItem>
+                    </Link>
+                    <Link to="/api_detail" className={classes.linkStyle} >
+                        <ListItem button>
+                            <ListItemIcon><AddBoxIcon/></ListItemIcon>
+                            <ListItemText primary="ApiDetail"/>
+                        </ListItem>
+                    </Link>
                     <Link to="/product" className={classes.linkStyle} >
                         <ListItem button>
                             <ListItemIcon><AddBoxIcon/></ListItemIcon>
