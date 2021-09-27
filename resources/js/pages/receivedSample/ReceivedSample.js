@@ -174,11 +174,10 @@ class ReceivedSample extends React.Component {
                                     onChange={this.handleReceivingDateChange}
                                 />
                                 <Box mt={2}>
-                                    <FormControl fullWidth>
+                                    <FormControl variant="outlined" fullWidth>
                                         <InputLabel id="manufacturer-label">Manufacturer</InputLabel>
                                         <Select
                                             labelId="manufacturer-label"
-                                            variant="outlined"
                                             label="Manufacturer"
                                             value={this.state.selectedManufacturer}
                                             onChange={this.handleManufacturerChange}
@@ -193,11 +192,10 @@ class ReceivedSample extends React.Component {
                                     </FormControl>
                                 </Box>
                                 <Box mt={2}>
-                                    <FormControl fullWidth>
+                                    <FormControl variant="outlined" fullWidth>
                                         <InputLabel id="product-label">Product</InputLabel>
                                         <Select
                                             labelId="product-label"
-                                            variant="outlined"
                                             label="Product"
                                             value={this.state.selectedProduct}
                                             onChange={this.handleProductChange}
