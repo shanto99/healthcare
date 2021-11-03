@@ -22,9 +22,7 @@ class ApiDetail extends React.Component {
         this.state = {
             api_details: [],
             name: '',
-            source: '',
-            batch_no: '',
-            expire_retest_date: ''
+            source: ''
         };
 
         this.createApiDetail = this.createApiDetail.bind(this);
@@ -56,8 +54,9 @@ class ApiDetail extends React.Component {
     createApiDetail(e)
     {
         e.preventDefault();
-        const {name, source, batch_no, expire_retest_date} = this.state;
-        createApiDetail(name, source, batch_no, expire_retest_date).then(res => {
+        const {name, source} = this.state;
+
+        createApiDetail(name, source).then(res => {
             swal("Created!", "ApiDetail created successfully!", "success");
             this.getApiDetails();
         }).catch(err => {
@@ -73,19 +72,10 @@ class ApiDetail extends React.Component {
                     <Grid item lg={6} md={12}>
                         <List>
                             {api_details.map((api_detail, index) => {
-                                const secondaryItems = [];
-                                ['Source', 'BatchNo', 'ExpireRetestDate'].forEach(function(field) {
-                                    if(api_detail[field]) {
-                                        const icon = field === 'Source'
-                                            ? <PlaceIcon fontSize="small"/> : field === 'BatchNo'
-                                                ? <PhoneIcon fontSize="small"/> : <EmailIcon fontSize="small"/> ;
-
-                                        secondaryItems.push({
-                                            icon: icon,
-                                            text: api_detail[field]
-                                        })
-                                    }
-                                })
+                                const secondaryItems = [{
+                                        icon: <PhoneIcon fontSize="small"/>,
+                                        text: api_detail.Source
+                                    }];
                                 return (
                                     <ListItem key={index}>
                                         <ListItemIcon>
@@ -138,34 +128,6 @@ class ApiDetail extends React.Component {
                                 onChange={
                                     (e) =>
                                         this.updateFieldValue(e.target.value, 'source')
-                                }
-                            />
-                            <TextValidator
-                                variant="outlined"
-                                margin="normal"
-                                value={this.state.batch_no}
-                                required
-                                fullWidth
-                                label="Batch No"
-                                autoComplete="off"
-                                autoFocus
-                                onChange={
-                                    (e) =>
-                                        this.updateFieldValue(e.target.value, 'batch_no')
-                                }
-
-                            />
-                            <TextValidator
-                                variant="outlined"
-                                margin="normal"
-                                value={this.state.expire_retest_date}
-                                fullWidth
-                                label="Expire/Retest Date"
-                                autoComplete="off"
-                                autoFocus
-                                onChange={
-                                    (e) =>
-                                        this.updateFieldValue(e.target.value, 'expire_retest_date')
                                 }
                             />
                             <Button

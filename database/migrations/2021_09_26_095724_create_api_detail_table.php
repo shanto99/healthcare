@@ -14,14 +14,10 @@ class CreateApiDetailTable extends Migration
     public function up()
     {
         Schema::create('ApiDetails', function (Blueprint $table) {
-
-                $table->id('ApiDetailID');
-                $table->string('Name');
-                $table->string('Source')->default('');
-                $table->string('BatchNo')->default('');
-                $table->date('ExpireRetestDate')->nullable();
-                $table->timestamps();
-
+            $table->id('ApiDetailID');
+            $table->string('Name');
+            $table->string('Source')->default('');
+            $table->timestamps();
         });
     }
 

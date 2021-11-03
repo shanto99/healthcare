@@ -7,6 +7,10 @@ use App\Http\Controllers\ManufacturerController;
 use App\Http\Controllers\ApiDetailController;
 use App\Http\Controllers\MarketController;
 use App\Http\Controllers\ReceivedSampleController;
+use App\Http\Controllers\ContainerController;
+use App\Http\Controllers\StudyTypeController;
+use App\Http\Controllers\ConditionController;
+use App\Http\Controllers\ProtocolController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,6 +40,21 @@ Route::middleware('auth')->group(function() {
 
     Route::post('/save_received_sample', [ReceivedSampleController::class, 'save_received_sample']);
     Route::get('/received_samples', [ReceivedSampleController::class, 'get_received_samples']);
+
+    Route::post('/save_container', [ContainerController::class, 'save_container']);
+    Route::get('/containers', [ContainerController::class, 'get_containers']);
+
+    Route::post('/create_study_type', [StudyTypeController::class, 'create_study_type']);
+    Route::get('/get_study_types', [StudyTypeController::class, 'get_study_types']);
+
+    Route::post('/create_condition', [ConditionController::class, 'create_condition']);
+    Route::get('/all_conditions', [ConditionController::class, 'get_all_conditions']);
+
+    Route::post('/create_protocol', [ProtocolController::class, 'create_protocol']);
+    Route::get('/get_protocols', [ProtocolController::class, 'get_all_protocols']);
+
+    Route::get('/protocol_detail/{protocolId}', [ProtocolController::class, 'get_protocol_detail']);
+
 });
 
 Route::fallback(function() {

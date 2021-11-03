@@ -13,6 +13,11 @@ import {Grid} from "@material-ui/core";
 import ProtocolForm from "../../pages/protocolForm/ProtocolForm";
 import Loader from "react-loader-spinner";
 import ApiDetail from "../../pages/api_detail/ApiDetail";
+import Packaging from "../../pages/packaging/Packaging";
+import StabilityStudyType from "../../pages/stabilityStudyType/StabilityStudyType";
+import Condition from "../../pages/condition/Condition";
+import Protocol from "../../pages/protocol/Protocol";
+import ProtocolView from "../../pages/protocolView/ProtocolView";
 
 class Authenticated extends React.Component {
     render() {
@@ -32,6 +37,12 @@ class Authenticated extends React.Component {
                             <Route exact={true} path="/market">
                                 <Market/>
                             </Route>
+                            <Route exact={true} path="/study_types">
+                                <StabilityStudyType/>
+                            </Route>
+                            <Route exact={true} path="/conditions">
+                                <Condition/>
+                            </Route>
                             <Route exact={true} path="/api_detail">
                                 <ApiDetail/>
                             </Route>
@@ -44,6 +55,14 @@ class Authenticated extends React.Component {
                             <Route exact={true} path="/product-protocol">
                                 <ProtocolForm/>
                             </Route>
+                            <Route exact={true} path="/packaging">
+                                <Packaging/>
+                            </Route>
+                            <Route exact={true} path="/protocols">
+                                <Protocol/>
+                            </Route>
+                            <Route exact={true} path="/protocol_view/:id" render={(props) =>
+                            <ProtocolView {...props} /> } />
                             <Route exact={true} path="/">
                                 <Home/>
                             </Route>

@@ -1,13 +1,11 @@
 import axios from "axios";
 
-const createApiDetail = function(name, source, batch_no, expire_retest_date)
+const createApiDetail = function(name, source)
 {
     return new Promise(function(resolve, reject) {
         axios.post('/create_api_detail', {
             Name: name,
-            Source: source,
-            BatchNo: batch_no,
-            ExpireRetestDate: expire_retest_date
+            Source: source
         }).then(function (res) {
             resolve(res.data);
         }).catch(function(err) {

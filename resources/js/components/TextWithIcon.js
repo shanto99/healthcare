@@ -1,16 +1,17 @@
 const container = {
-    display: 'flex'
+    display: 'flex',
 }
 
 const TextWithIcon = function({items}) {
     return(
-        <div>
+        <span style={{display: 'block'}}>
             {items.map((item, index) => (
-                <div style={container} key={index}>
-                    <span>{item.icon}</span><span style={{marginLeft: '10px'}}>{item.text}</span>
-                </div>
+                <span style={container} key={index}>
+                    {item.icon ? <span>{item.icon}</span> : null}
+                    <span style={item.icon ? {marginLeft: '10px'} : null}>{item.text}</span>
+                </span>
             ))}
-        </div>
+        </span>
     )
 }
 

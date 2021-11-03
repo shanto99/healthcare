@@ -29,6 +29,18 @@ class Sidebar extends React.Component {
                             <ListItemText primary="Market"/>
                         </ListItem>
                     </Link>
+                    <Link to="/study_types" className={classes.linkStyle} >
+                        <ListItem button>
+                            <ListItemIcon><AddBoxIcon/></ListItemIcon>
+                            <ListItemText primary="Study type"/>
+                        </ListItem>
+                    </Link>
+                    <Link to="/conditions" className={classes.linkStyle} >
+                        <ListItem button>
+                            <ListItemIcon><AddBoxIcon/></ListItemIcon>
+                            <ListItemText primary="Condition"/>
+                        </ListItem>
+                    </Link>
                     <Link to="/api_detail" className={classes.linkStyle} >
                         <ListItem button>
                             <ListItemIcon><AddBoxIcon/></ListItemIcon>
@@ -41,6 +53,12 @@ class Sidebar extends React.Component {
                             <ListItemText primary="Product"/>
                         </ListItem>
                     </Link>
+                    <Link to="/packaging" className={classes.linkStyle} >
+                        <ListItem button>
+                            <ListItemIcon><AddBoxIcon/></ListItemIcon>
+                            <ListItemText primary="Packaging"/>
+                        </ListItem>
+                    </Link>
                     <Link to="/received-sample" className={classes.linkStyle} >
                         <ListItem button>
                             <ListItemIcon><AddBoxIcon/></ListItemIcon>
@@ -50,7 +68,13 @@ class Sidebar extends React.Component {
                     <Link to="/product-protocol" className={classes.linkStyle} >
                         <ListItem button>
                             <ListItemIcon><AddBoxIcon/></ListItemIcon>
-                            <ListItemText primary="Product protocol"/>
+                            <ListItemText primary="Create protocol"/>
+                        </ListItem>
+                    </Link>
+                    <Link to="/protocols" className={classes.linkStyle} >
+                        <ListItem button>
+                            <ListItemIcon><AddBoxIcon/></ListItemIcon>
+                            <ListItemText primary="Protocols"/>
                         </ListItem>
                     </Link>
                 </List>
