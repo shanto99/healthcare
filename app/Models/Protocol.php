@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Protocol extends Model
 {
@@ -34,6 +35,11 @@ class Protocol extends Model
     public function stpReferences(): HasMany
     {
         return $this->hasMany(ProtocolStp::class, 'ProtocolID', 'ProtocolID');
+    }
+
+    public function api(): HasOne
+    {
+        return $this->hasOne(ApiDetail::class, 'ApiDetailID', 'ApiDetailID');
     }
 
     public function packagings(): HasMany

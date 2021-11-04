@@ -2,6 +2,7 @@ import React from "react";
 
 import {withStyles, Box} from "@material-ui/core";
 import BasicView from "./basicView/BasicView";
+import PackagingView from "./packagingView/PackagingView";
 import styles from "./styles";
 
 import Loader from "../../components/loader/Loader";
@@ -80,6 +81,9 @@ class ProtocolView extends React.Component {
                             </div>
                         </div>
                         <BasicView
+                            protocol={protocol}
+                        />
+                        <PackagingView
                             protocol={protocol}
                         />
                     </Box>}

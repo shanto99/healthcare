@@ -1,9 +1,9 @@
 import React from "react";
 import {Table, TableBody, TableCell, TableHead, TableRow, withStyles} from "@material-ui/core";
-import mainsStyles from "../styles";
+import mainStyles from "../styles";
 import styles from "./styles";
 
-const combinedStyle = Object.assign(mainsStyles, styles);
+const combinedStyle = Object.assign(mainStyles, styles);
 
 class BasicView extends React.Component {
     generateSpecificationTableBody = () => {
@@ -124,25 +124,6 @@ class BasicView extends React.Component {
                         </TableHead>
                         <TableBody>
                             {this.generateSpecificationTableBody()}
-                            {/*<TableRow>*/}
-                            {/*    <TableCell className={classes.borderedCell}>*/}
-                            {/*        5 mg*/}
-                            {/*    </TableCell>*/}
-                            {/*    <TableCell className={classes.borderedCell}>*/}
-                            {/*        000003163*/}
-                            {/*    </TableCell>*/}
-                            {/*    <TableCell rowSpan={2} className={classes.borderedCell}>*/}
-                            {/*        000003122*/}
-                            {/*    </TableCell>*/}
-                            {/*</TableRow>*/}
-                            {/*<TableRow>*/}
-                            {/*    <TableCell className={classes.borderedCell}>*/}
-                            {/*        10 mg*/}
-                            {/*    </TableCell>*/}
-                            {/*    <TableCell className={classes.borderedCell}>*/}
-                            {/*        000003164*/}
-                            {/*    </TableCell>*/}
-                            {/*</TableRow>*/}
                         </TableBody>
                     </Table>
                 </section>
@@ -157,32 +138,15 @@ class BasicView extends React.Component {
                                 <TableCell className={classes.borderedCell}>
                                     Source of API
                                 </TableCell>
-                                <TableCell className={classes.borderedCell}>
-                                    Batch/Lot No.
-                                </TableCell>
-                                <TableCell className={classes.borderedCell}>
-                                    Exp. Date/Retest Date of API
-                                </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             <TableRow>
                                 <TableCell className={classes.borderedCell} rowSpan={2}>
-                                    Denopezil Hydrochloride USP
+                                    {protocol.api && protocol.api.Name}
                                 </TableCell>
                                 <TableCell className={classes.borderedCell} rowSpan={2}>
-                                    Newland Laboratories Ltd.
-                                </TableCell>
-                                <TableCell className={classes.borderedCell}>
-                                    DHI0320009
-                                </TableCell>
-                                <TableCell className={classes.borderedCell} rowSpan={2}>
-                                    Jun, 2023
-                                </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell className={classes.borderedCell}>
-                                    DHI0320009
+                                    {protocol.api && protocol.api.Source}
                                 </TableCell>
                             </TableRow>
                         </TableBody>

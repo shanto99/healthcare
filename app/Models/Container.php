@@ -11,5 +11,5 @@ class Container extends Model
     protected $table = "Containers";
     protected $primaryKey = "ContainerID";
 
-    protected $fillable = ['Name', 'Source', 'DMF', 'Resin', 'Colorant', 'Liner'];
+    protected $fillable = ['Name', 'Source', 'DMF', 'Resin', 'Colorant', 'Liner', 'Type'];
 }
