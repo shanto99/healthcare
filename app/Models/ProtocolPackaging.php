@@ -15,16 +15,16 @@ class ProtocolPackaging extends Model
 
     public function primaryPackaging(): HasOne
     {
-        return $this->hasOne(Container::class, 'ContainerID', 'Primary');
+        return $this->hasOne(Packaging::class, 'PackagingID', 'Primary');
     }
 
     public function secondaryPackaging(): HasOne
     {
-        return $this->hasOne(Container::class, 'ContainerID', 'Secondary');
+        return $this->hasOne(Packaging::class, 'PackagingID', 'Secondary');
     }
 
     public function tertiaryPackaging(): HasOne
     {
-        return $this->hasOne(Container::class, 'ContainerID', 'Tertiary');
+        return $this->hasOne(Packaging::class, 'PackagingID', 'Tertiary');
     }
 }

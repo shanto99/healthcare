@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTypeToPackagingsTable extends Migration
+class CreateContainersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class AddTypeToPackagingsTable extends Migration
      */
     public function up()
     {
-        Schema::table('Containers', function (Blueprint $table) {
-            $table->string('Type')->default('Bottle');
+        Schema::create('Containers', function (Blueprint $table) {
+            $table->id('ContainerID');
+            $table->string('Name');
+            $table->string('Type');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ class AddTypeToPackagingsTable extends Migration
      */
     public function down()
     {
-        Schema::table('packagings', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('containers');
     }
 }

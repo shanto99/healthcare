@@ -13,8 +13,8 @@ class CreatePackagingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('Containers', function (Blueprint $table) {
-            $table->id('ContainerID');
+        Schema::create('Packagings', function (Blueprint $table) {
+            $table->id('PackagingID');
             $table->string('Name');
             $table->string('Source');
             $table->string('DMF');

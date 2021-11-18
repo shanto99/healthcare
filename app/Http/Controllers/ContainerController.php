@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Container;
+use App\Models\Packaging;
 use Illuminate\Http\Request;
 
 class ContainerController extends Controller
@@ -14,7 +14,7 @@ class ContainerController extends Controller
            'Source' => 'required'
         ]);
 
-        $container = Container::create($request->only('Name', 'Source', 'DMF', 'Resin', 'Colorant', 'Liner'));
+        $container = Packaging::create($request->only('Name', 'Source', 'DMF', 'Resin', 'Colorant', 'Liner'));
 
         return response()->json([
             'container' => $container,
@@ -25,7 +25,7 @@ class ContainerController extends Controller
 
     public function get_containers()
     {
-        $containers = Container::all();
+        $containers = Packaging::all();
         return response()->json([
             'containers' => $containers,
         ], 200);
