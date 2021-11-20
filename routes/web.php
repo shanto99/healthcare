@@ -11,6 +11,7 @@ use App\Http\Controllers\ContainerController;
 use App\Http\Controllers\StudyTypeController;
 use App\Http\Controllers\ConditionController;
 use App\Http\Controllers\ProtocolController;
+use App\Http\Controllers\PackagingController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,7 +25,7 @@ use App\Http\Controllers\ProtocolController;
 
 Route::post('/create_user', [UserController::class, 'create_user']);
 Route::post('/sign_in', [UserController::class, 'sign_in']);
-Route::middleware('auth')->group(function() {
+Route::middleware('auth')->group(function () {
     Route::get('/user', [UserController::class, 'get_user']);
     Route::post('/create_product', [ProductController::class, 'save_product']);
     Route::get('/products', [ProductController::class, 'get_products']);
@@ -41,8 +42,11 @@ Route::middleware('auth')->group(function() {
     Route::post('/save_received_sample', [ReceivedSampleController::class, 'save_received_sample']);
     Route::get('/received_samples', [ReceivedSampleController::class, 'get_received_samples']);
 
-    Route::post('/save_container', [ContainerController::class, 'save_container']);
+    Route::get('/packagings', [PackagingController::class, 'get_packagings']);
+    Route::post('save_packaging', [PackagingController::class, 'save_packaging']);
+
     Route::get('/containers', [ContainerController::class, 'get_containers']);
+    Route::post('/save_container', [ContainerController::class, 'save_container']);
 
     Route::post('/create_study_type', [StudyTypeController::class, 'create_study_type']);
     Route::get('/get_study_types', [StudyTypeController::class, 'get_study_types']);
@@ -54,9 +58,8 @@ Route::middleware('auth')->group(function() {
     Route::get('/get_protocols', [ProtocolController::class, 'get_all_protocols']);
 
     Route::get('/protocol_detail/{protocolId}', [ProtocolController::class, 'get_protocol_detail']);
-
 });
 
-Route::fallback(function() {
+Route::fallback(function () {
     return view('app');
 });

@@ -59,6 +59,12 @@ class Sidebar extends React.Component {
                             <ListItemText primary="Packaging"/>
                         </ListItem>
                     </Link>
+                    <Link to="/container" className={classes.linkStyle} >
+                        <ListItem button>
+                            <ListItemIcon><AddBoxIcon/></ListItemIcon>
+                            <ListItemText primary="Container"/>
+                        </ListItem>
+                    </Link>
                     <Link to="/received-sample" className={classes.linkStyle} >
                         <ListItem button>
                             <ListItemIcon><AddBoxIcon/></ListItemIcon>

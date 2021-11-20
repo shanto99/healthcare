@@ -18,6 +18,7 @@ import StabilityStudyType from "../../pages/stabilityStudyType/StabilityStudyTyp
 import Condition from "../../pages/condition/Condition";
 import Protocol from "../../pages/protocol/Protocol";
 import ProtocolView from "../../pages/protocolView/ProtocolView";
+import Container from "../../pages/container/Container";
 
 class Authenticated extends React.Component {
     render() {
@@ -57,6 +58,9 @@ class Authenticated extends React.Component {
                             </Route>
                             <Route exact={true} path="/packaging">
                                 <Packaging/>
+                            </Route>
+                            <Route exact path="/container">
+                                <Container/>
                             </Route>
                             <Route exact={true} path="/protocols">
                                 <Protocol/>

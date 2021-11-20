@@ -11,7 +11,7 @@ import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 
 import TextWithIcon from "../../components/TextWithIcon";
 
-import {getContainers, saveContainer} from "../../backend/container";
+import {getPackagings, savePackaging} from "../../backend/packaging";
 
 import styles from "./styles";
 import swal from "sweetalert";
@@ -21,7 +21,7 @@ class Packaging extends React.Component {
         super(props);
 
         this.state = {
-            containers: [],
+            packagings: [],
             name: '',
             source: '',
             dmf: '',
@@ -31,26 +31,19 @@ class Packaging extends React.Component {
         }
 
         this.savePackaging = this.savePackaging.bind(this);
-        this.getContainers = this.getContainers.bind(this);
     }
 
     componentDidMount() {
-        this.getContainers();
+        this.getPackagings();
     }
 
-    createManufacturer(e)
-    {
-
-    }
-
-    getContainers()
-    {
-        getContainers().then(res => {
+    getPackagings = () => {
+        getPackagings().then(res => {
             this.setState({
-                containers: res.containers || []
+                packagings: res.packagings || []
             })
         }).catch(err => {
-            swal("Error!","Could not fetch containers", "error");
+            swal("Error!","Could not fetch packagings", "error");
         })
     }
 
@@ -58,32 +51,33 @@ class Packaging extends React.Component {
     {
         e.preventDefault();
         const {name, source, dmf, resin, colorant, liner} = this.state;
-        saveContainer(name, source, dmf, resin, colorant, liner).then(res => {
-            swal("Success", "Container added successfully", "success");
+        savePackaging(name, source, dmf, resin, colorant, liner).then(res => {
+            swal("Success", "Package info saved successfully", "success");
+            this.getPackagings();
         }).catch(err => {
             swal("Oops!", 'Something went wrong', 'error');
         })
     }
 
     render() {
-        const {containers} = this.state;
+        const {packagings} = this.state;
         return (
             <Box width="100" p={3}>
                 <Grid container spacing={2}>
                     <Grid item lg={6} md={12}>
                         <List>
-                            {containers.map((container, index) => {
+                            {packagings.map((packaging, index) => {
                                 const secondaryTexts = [];
 
                                 ['Source', 'DMP', 'Liner'].forEach(field => {
                                     secondaryTexts.push({
-                                        text: `${field}: ${container[field]}`
+                                        text: `${field}: ${packaging[field]}`
                                     });
                                 })
                                 return (
                                     <ListItem key={`con-${index}`}>
                                         <ListItemText
-                                            primary={container.Name}
+                                            primary={packaging.Name}
                                             secondary={<TextWithIcon items={secondaryTexts} />}
                                         />
                                     </ListItem>
