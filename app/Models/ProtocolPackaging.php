@@ -10,7 +10,7 @@ class ProtocolPackaging extends Model
 {
     use HasFactory;
 
-    protected $table = "ProtocolPackagings";
+    protected $table = "ProtocolContainers";
     protected $guarded = [];
 
     public function primaryPackaging(): HasOne

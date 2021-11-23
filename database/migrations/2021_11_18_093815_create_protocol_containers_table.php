@@ -13,13 +13,19 @@ class CreateProtocolContainersTable extends Migration
      */
     public function up()
     {
-        Schema::create('protocol_containers', function (Blueprint $table) {
+        Schema::create('ProtocolContainers', function (Blueprint $table) {
             $table->id('ProtocolContainerID');
             $table->unsignedBigInteger('ProtocolID');
-            $table->unsignedBigInteger('ContainerID');
+            $table->unsignedBigInteger('VariantID');
+            $table->integer('Count');
+            $table->unsignedBigInteger('Primary');
+            $table->unsignedBigInteger('Secondary');
+            $table->unsignedBigInteger('Tertiary');
             $table->timestamps();
             $table->foreign('ProtocolID')->references('ProtocolID')->on('Protocols');
-            $table->foreign('ContainerID')->references('ContainerID')->on('Containers');
+            $table->foreign('Primary')->references('ContainerID')->on('Containers');
+            $table->foreign('Secondary')->references('ContainerID')->on('Containers');
+            $table->foreign('Tertiary')->references('ContainerID')->on('Containers');
         });
     }
 

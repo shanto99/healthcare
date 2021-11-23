@@ -9,8 +9,8 @@ class ProtocolService {
     public static function createProtocol($productId, $marketId, $manufacturerId, $apiDetailId, $reference,
                                 $stpReferences, $packaging, $studyTypes, $tests, $containerNumber)
     {
-        DB::beginTransaction();
-        try {
+//        DB::beginTransaction();
+//        try {
             $protocol = Protocol::create([
                 'ProductID' => $productId,
                 'MarketID' => $marketId,
@@ -75,13 +75,13 @@ class ProtocolService {
                 }
             }
 
-            DB::commit();
-
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return false;
-        }
+//            DB::commit();
+//
+//
+//        } catch (\Exception $e) {
+//            DB::rollBack();
+//            return false;
+//        }
 
         return $protocol;
     }

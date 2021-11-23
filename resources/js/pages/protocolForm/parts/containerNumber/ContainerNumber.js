@@ -173,6 +173,7 @@ class ContainerNumber extends React.Component {
     }
 
     componentDidMount() {
+        this.props.lastComponentCallback(this.sendDataToParent);
         getStudyTypes().then(res => {
             const studies = res.types;
             if(studies)
@@ -196,9 +197,13 @@ class ContainerNumber extends React.Component {
     }
 
     componentWillUnmount() {
+        this.sendDataToParent();
+    }
+
+    sendDataToParent = (submit) => {
         this.props.sendDataToParent({
             containerCounts: this.state.containerCounts
-        });
+        }, submit);
     }
 
     getStudyNameForMonth(month)
@@ -269,8 +274,6 @@ class ContainerNumber extends React.Component {
         const classes = this.props.classes;
         const variants = this.state.selectedProduct.variants || [];
         const months = this.state.studyMonths;
-
-        console.log(this.state.containerCounts);
 
         return (
             <Box width="100" px={3}>

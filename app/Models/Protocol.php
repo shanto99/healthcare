@@ -42,11 +42,6 @@ class Protocol extends Model
         return $this->hasOne(ApiDetail::class, 'ApiDetailID', 'ApiDetailID');
     }
 
-    public function packagings(): HasMany
-    {
-        return $this->hasMany(ProtocolPackaging::class, 'ProtocolID', 'ProtocolID');
-    }
-
     public function studyTypes(): HasMany
     {
         return $this->hasMany(ProtocolStudy::class, 'ProtocolID', 'ProtocolID');

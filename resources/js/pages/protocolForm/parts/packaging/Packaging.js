@@ -16,15 +16,13 @@ import styles from "./styles";
 class Packaging extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
             selectedProduct: props.product,
             containers: [],
-            packaging: props.packaging || {}
+            containerInfo: props.containers
         }
 
-        this.handlePackagingTypeChange = this.handlePackagingTypeChange.bind(this);
-        this.addPackagingInfo = this.addPackagingInfo.bind(this);
+        this.addContainerInfo = this.addContainerInfo.bind(this);
         this.getContainerLabel = this.getContainerLabel.bind(this);
     }
 
@@ -38,44 +36,38 @@ class Packaging extends React.Component {
 
     componentWillUnmount() {
         this.props.sendDataToParent({
-            packaging: this.state.packaging
+            containers: this.state.containerInfo
         })
-    }
-
-    handlePackagingTypeChange(type)
-    {
-
     }
 
     static getDerivedStateFromProps(props, state) {
         return {
             selectedProduct: props.product,
-            packaging: props.packaging
+            containerInfo: props.containers
         }
     }
 
-    addPackagingInfo(variantId)
+    addContainerInfo(variantId)
     {
         const unitCount = document.getElementById(`unit-count-${variantId}`).value;
-        let primaryPackaging = document.getElementById(`primary-packaging-${variantId}`);
-            primaryPackaging = primaryPackaging.parentElement.querySelector('input').value;
-        let secondaryPackaging = document.getElementById(`secondary-packaging-${variantId}`);
-            secondaryPackaging = secondaryPackaging.parentElement.querySelector('input').value;
-        let tertiaryPackaging = document.getElementById(`tertiary-packaging-${variantId}`);
-            tertiaryPackaging = tertiaryPackaging.parentElement.querySelector('input').value;
+        let primaryContainer = document.getElementById(`primary-packaging-${variantId}`);
+        primaryContainer = primaryContainer.parentElement.querySelector('input').value;
+        let secondaryContainer = document.getElementById(`secondary-packaging-${variantId}`);
+        secondaryContainer = secondaryContainer.parentElement.querySelector('input').value;
+        let tertiaryContainer = document.getElementById(`tertiary-packaging-${variantId}`);
+        tertiaryContainer = tertiaryContainer.parentElement.querySelector('input').value;
 
-
-            this.setState(preState => {
-               const newState = {...preState};
-               const packaging = newState.packaging;
-               if(!packaging[variantId]) packaging[variantId] = {};
-               packaging[variantId][unitCount] = {
-                   primary: primaryPackaging,
-                   secondary: secondaryPackaging,
-                   tertiary: tertiaryPackaging
-               }
-               return newState;
-            });
+        this.setState(preState => {
+           const newState = {...preState};
+           const containers = newState.containerInfo;
+           if(!containers[variantId]) containers[variantId] = {};
+            containers[variantId][unitCount] = {
+               primary: primaryContainer,
+               secondary: secondaryContainer,
+               tertiary: tertiaryContainer
+           }
+           return newState;
+        });
 
     }
 
@@ -95,8 +87,8 @@ class Packaging extends React.Component {
     render() {
         const classes = this.props.classes;
         const containers = this.state.containers;
+        const containerInfo = this.state.containerInfo || {};
         const variants = this.state.selectedProduct && this.state.selectedProduct.variants || [];
-        const packaging = this.state.packaging;
         return (
             <Box width="100" px={5}>
                 <Grid container>
@@ -106,39 +98,39 @@ class Packaging extends React.Component {
                                 <b>Unit count</b>
                             </Box>
                            <Box px={2} className={classes.packagingRowCell}>
-                               <b>Primary packaging</b>
+                               <b>Primary container</b>
                            </Box>
                             <Box px={2} className={classes.packagingRowCell}>
-                                <b>Secondary packaging</b>
+                                <b>Secondary container</b>
                             </Box>
                             <Box px={2} className={classes.packagingRowCell}>
-                                <b>Tertiary packaging</b>
+                                <b>Tertiary container</b>
                             </Box>
                             <Box px={2} className={classes.packagingRowCell}>
                                 <b>Actions</b>
                             </Box>
                         </Box>
                         {variants.map((variant, index) => {
-                            let variantPackaging = packaging[variant.VariantID] || {};
+                            let variantContainers = containerInfo[variant.VariantID] || {};
                             return (
                                 <section key={`variant-${index}`}>
                                     <h4>{ variant.Variant }</h4>
                                     <section className="saved-package-info">
-                                        {Object.keys(variantPackaging).map((count, index) => {
-                                            const singlePackaging = variantPackaging[count];
+                                        {Object.keys(variantContainers).map((count, index) => {
+                                            const singleContainer = variantContainers[count];
                                             return (
                                                 <Box className={classes.packagingRow} mb={5} key={`single-pac-${index}`}>
                                                     <Box px={2} className={classes.packagingRowCell}>
                                                         <b>{count}</b>
                                                     </Box>
                                                     <Box px={2} className={classes.packagingRowCell}>
-                                                        <b>{this.getContainerLabel(singlePackaging.primary)}</b>
+                                                        <b>{this.getContainerLabel(singleContainer.primary)}</b>
                                                     </Box>
                                                     <Box px={2} className={classes.packagingRowCell}>
-                                                        <b>{this.getContainerLabel(singlePackaging.secondary)}</b>
+                                                        <b>{this.getContainerLabel(singleContainer.secondary)}</b>
                                                     </Box>
                                                     <Box px={2} className={classes.packagingRowCell}>
-                                                        <b>{this.getContainerLabel(singlePackaging.tertiary)}</b>
+                                                        <b>{this.getContainerLabel(singleContainer.tertiary)}</b>
                                                     </Box>
                                                     <Box px={2} className={classes.packagingRowCell}>
                                                         <b>Actions</b>
@@ -195,7 +187,7 @@ class Packaging extends React.Component {
                                         <Box className={classes.packagingRowCell}>
                                             <Button
                                                 variant="contained"
-                                                onClick={() => this.addPackagingInfo(variant.VariantID)}
+                                                onClick={() => this.addContainerInfo(variant.VariantID)}
                                                 color="success">
                                                 Add
                                             </Button>

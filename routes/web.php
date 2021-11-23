@@ -43,7 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/received_samples', [ReceivedSampleController::class, 'get_received_samples']);
 
     Route::get('/packagings', [PackagingController::class, 'get_packagings']);
-    Route::post('save_packaging', [PackagingController::class, 'save_packaging']);
+    Route::post('/save_packaging', [PackagingController::class, 'save_packaging']);
 
     Route::get('/containers', [ContainerController::class, 'get_containers']);
     Route::post('/save_container', [ContainerController::class, 'save_container']);

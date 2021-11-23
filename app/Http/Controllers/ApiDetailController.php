@@ -12,10 +12,8 @@ class ApiDetailController extends Controller
         $request->validate([
             'Name' => 'required',
             'Source' => 'required',
-            'BatchNo' => 'required',
-            'ExpireRetestDate' => 'required',
         ]);
-        $api_details = ApiDetail::create($request->only('Name', 'Source', 'BatchNo', 'ExpireRetestDate'));
+        $api_details = ApiDetail::create($request->only('Name', 'Source'));
 
         return response()->json([
             'api_detail' => $api_details,

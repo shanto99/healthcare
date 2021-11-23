@@ -1,27 +1,24 @@
 import axios from "axios";
 
-const saveContainer = function(name, source, dmf, resin, colorant, liner) {
+const saveContainer = function(name, type, packagings) {
     return new Promise(function (resolve, reject) {
-        axios.post('/save_container', {
+        axios.post('/save_container',{
             Name: name,
-            Source: source,
-            DMF: dmf,
-            Resin: resin,
-            Colorant: colorant,
-            Liner: liner
+            Type: type,
+            Packagings: packagings
         }).then(function(res) {
             resolve(res.data);
         }).catch(function (err) {
             if(reject) reject(err);
-        })
+        });
     });
 }
 
 const getContainers = function () {
-    return new Promise(function (resolve, reject) {
+    return new Promise(function(resolve, reject) {
         axios.get('/containers').then(function(res) {
             resolve(res.data);
-        }).catch(function (err) {
+        }).catch(function(err) {
             if(reject) reject(err);
         })
     });

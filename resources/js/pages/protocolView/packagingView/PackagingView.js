@@ -41,61 +41,62 @@ class PackagingView extends React.Component {
         return result;
     }
 
-    generatePrimaryPackagingTable = (variant) => {
-        const classes = this.props.classes;
-        const {packagings} = this.props.protocol
-        const variantPackagings = packagings.filter(function(packaging) {
-            let packagingVariantId = packaging.VariantID;
-            packagingVariantId = packagingVariantId.toString();
+    getTotalRowCount = (variant) => {
+        const containers = variant.containers;
+        let rowCount = 0;
 
-            let variantId = variant.VariantID;
-            variantId = variantId.toString();
-
-            return packagingVariantId === variantId;
+        containers.forEach(container => {
+            rowCount += container.primary_container && container.primary_container.packagings &&
+                container.primary_container.packagings.length || 1;
         });
 
-        const packs = this.getRowObject(variant, variantPackagings);
+        return rowCount;
+    }
 
+    generatePrimaryPackagingTable = (variant) => {
+        const classes = this.props.classes;
+        const containers = variant.containers;
         const rowArray = [];
-        const counts = packs.counts;
-        let variantSpan = packs.span;
 
-        Object.keys(counts).forEach((count, countIndex) => {
-            let countObj = counts[count];
-            let countSpan = countObj.span;
-            let types = countObj.types;
-            Object.keys(types).forEach((type, typeIndex) => {
-                let typeObj = types[type];
-                let typeSpan = typeObj.span;
-                let packs = typeObj.packs;
-                packs.forEach((pack, packIndex) => {
-                    rowArray.push(
-                        <TableRow>
-                            { countIndex === 0
-                            ? <TableCell rowSpan={variantSpan} className={classes.borderedCell}>
-                                    {variant.Variant}
-                              </TableCell>
-                            : null
-                            }
-                            { typeIndex === 0
-                            ? <TableCell rowSpan={countSpan} className={classes.borderedCell}>
-                                    {count}
-                              </TableCell>
-                            : null
-                            }
-                            { packIndex === 0
-                            ? <TableCell rowSpan={typeSpan} className={classes.borderedCell}>
-                                    {type}
-                              </TableCell>
-                            : null}
-                            <TableCell className={classes.borderedCell}>
-                                {pack.primary_packaging && pack.primary_packaging.Name}
-                            </TableCell>
-                        </TableRow>
-                    )
-                });
-            })
-
+        containers.forEach((count, cIndex) => {
+            let isFirst = true;
+            const primaryContainer = count.primary_container;
+            primaryContainer.packagings.forEach((packaging, packagingIndex) => {
+                const row =  (
+                  <TableRow>
+                      { isFirst
+                      ? <TableCell
+                              className={classes.borderedCell}
+                              rowSpan={this.getTotalRowCount(variant)}
+                          >
+                              {variant.Variant}mg
+                        </TableCell>
+                      : null}
+                      { packagingIndex === 0
+                      ? <TableCell
+                              className={classes.borderedCell}
+                              rowSpan={primaryContainer.packagings.length}
+                          >
+                              {count.Count}
+                        </TableCell>
+                      : null}
+                      { packagingIndex === 0
+                      ? <TableCell
+                              className={classes.borderedCell}
+                              rowSpan={primaryContainer.packagings.length}
+                          >
+                          {primaryContainer.Type}
+                      </TableCell>
+                      : null}
+                      <TableCell
+                          className={classes.borderedCell}
+                      >
+                          {packaging.Name}
+                      </TableCell>
+                  </TableRow>);
+                    isFirst = false;
+                rowArray.push(row);
+            });
         });
 
         return (

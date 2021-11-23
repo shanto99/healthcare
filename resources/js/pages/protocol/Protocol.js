@@ -5,6 +5,7 @@ import {Box, IconButton, List, ListItem, ListItemIcon, ListItemText, withStyles}
 
 import styles from "./styles";
 import {Visibility} from "@material-ui/icons";
+import {Link} from "react-router-dom";
 
 class Protocol extends React.Component {
     constructor(props) {
@@ -31,17 +32,19 @@ class Protocol extends React.Component {
                     {protocols.map((protocol, index) => {
                        let variants = protocol.product.variants.map(variant => variant.Variant);
                        return (
-                           <ListItem key={`saved_protocol_${index}`}>
-                                <ListItemText
-                                    primary={protocol.product.ProductName}
-                                    secondary={variants.toString()}
-                                />
-                               <ListItemIcon>
-                                   <IconButton>
-                                       <Visibility/>
-                                   </IconButton>
-                               </ListItemIcon>
-                           </ListItem>
+                           <Link to={`/protocol_view/${protocol.ProtocolID}`}>
+                               <ListItem key={`saved_protocol_${index}`}>
+                                   <ListItemText
+                                       primary={protocol.product.ProductName}
+                                       secondary={variants.toString()}
+                                   />
+                                   <ListItemIcon>
+                                       <IconButton>
+                                           <Visibility/>
+                                       </IconButton>
+                                   </ListItemIcon>
+                               </ListItem>
+                           </Link>
                        )
                     })}
                 </List>

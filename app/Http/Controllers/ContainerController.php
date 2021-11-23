@@ -12,7 +12,7 @@ class ContainerController extends Controller
     public function save_container(Request $request)
     {
         DB::beginTransaction();
-        $packagingIds = $request->packagings;
+        $packagingIds = $request->Packagings;
         try {
             $container = Container::create([
                 'Name' => $request->Name,
@@ -38,7 +38,7 @@ class ContainerController extends Controller
 
     public function get_containers()
     {
-        $containers = Container::with('packagings')->all();
+        $containers = Container::with('packagings')->get();
         return response()->json([
             'containers' => $containers
         ], 200);

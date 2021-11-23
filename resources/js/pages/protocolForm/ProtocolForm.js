@@ -15,7 +15,8 @@ import swal from "sweetalert";
 class ProtocolForm extends React.Component {
     constructor(props) {
         super(props);
-        this.stepLabels = ["Basic", "Packaging", "Stability study", "Samples quantity", "Container number"]
+        this.stepLabels = ["Basic", "Packaging", "Stability study", "Samples quantity", "Container number"];
+        this.lastComponentCallback = null;
         this.state = {
             product: null,
             currentStep: 0,
@@ -24,7 +25,7 @@ class ProtocolForm extends React.Component {
             manufacturer: null,
             api: null,
             stp_references: null,
-            packaging: {},
+            containers: {},
             containerCounts: {},
             studyTypes: [],
             tests: []
@@ -33,24 +34,33 @@ class ProtocolForm extends React.Component {
         this.getFormPart = this.getFormPart.bind(this);
         this.nextFormPart = this.nextFormPart.bind(this);
         this.previousFormPart = this.previousFormPart.bind(this);
-        this.savePackagingInfo = this.savePackagingInfo.bind(this);
+        this.saveContainerInfo = this.saveContainerInfo.bind(this);
         this.saveStudyType = this.saveStudyType.bind(this);
         this.saveTestWithQuantity = this.saveTestWithQuantity.bind(this);
         this.getAndSaveFormPartData = this.getAndSaveFormPartData.bind(this);
         this.createProtocol = this.createProtocol.bind(this);
     }
 
+    resetForm = () => {
+        this.setState({
+            product: null,
+            currentStep: 0,
+            reference: '',
+            market: null,
+            manufacturer: null,
+            api: null,
+            stp_references: null,
+            containers: {},
+            containerCounts: {},
+            studyTypes: [],
+            tests: []
+        });
+    }
+
     getFormPart(stepIndex)
     {
         switch (stepIndex) {
             case 0:
-                // return <ContainerNumber
-                //     product={this.state.product}
-                //     studyTypes={this.state.studyTypes}
-                //     packaging={this.state.packaging}
-                //     containerNumber={this.state.containerNumber}
-                //     sendDataToParent={this.getAndSaveFormPartData}
-                // />
                 return <Basic
                     product={this.state.product}
                     market={this.state.market}
@@ -63,7 +73,7 @@ class ProtocolForm extends React.Component {
             case 1:
                 return <Packaging
                     product={this.state.product}
-                    packaging={this.state.packaging}
+                    containers={this.state.containers}
                     sendDataToParent={this.getAndSaveFormPartData}
                 />
             case 2:
@@ -75,21 +85,26 @@ class ProtocolForm extends React.Component {
                 return <ContainerNumber
                     product={this.state.product}
                     studyTypes={this.state.studyTypes}
-                    packaging={this.state.packaging}
+                    packaging={this.state.containers}
                     containerCounts={this.state.containerCounts}
                     sendDataToParent={this.getAndSaveFormPartData}
+                    lastComponentCallback={this.lastComponentData}
                 />
             default:
                 return "Unknown form part"
         }
     }
 
-    getAndSaveFormPartData(partialData)
+    getAndSaveFormPartData(partialData, submit)
     {
         this.setState(preState => {
            const newState = {...preState};
            Object.assign(newState, partialData);
            return newState;
+        }, () => {
+            if(submit) {
+                this.createProtocol();
+            }
         });
     }
 
@@ -111,21 +126,21 @@ class ProtocolForm extends React.Component {
         }
     }
 
-    savePackagingInfo(variant, count, primary, secondary, tertiary)
+    saveContainerInfo(variant, count, primary, secondary, tertiary)
     {
-        let packaging = {...this.state.packaging};
-        if(!packaging[variant]) {
-            packaging[variant] = {};
+        let containers = {...this.state.containers};
+        if(!containers[variant]) {
+            containers[variant] = {};
         }
 
-        packaging[variant][count] = {
+        containers[variant][count] = {
             primary: primary,
             secondary: secondary,
             tertiary: tertiary
         }
 
         this.setState({
-            packaging: packaging
+            containers: containers
         });
     }
 
@@ -149,26 +164,33 @@ class ProtocolForm extends React.Component {
             const newState = {...preState};
             const tests = newState.tests;
             tests.push(test);
-
             return newState;
         })
     }
 
     createProtocol(e)
     {
-        e.preventDefault();
-        let {product, market, manufacturer, reference, packaging, api, tests, studyTypes, containerCounts, stp_references} = this.state;
+        let {product, market, manufacturer, reference, containers, api, tests, studyTypes, containerCounts, stp_references} = this.state;
         let productId = product.ProductID;
         let marketId = market.MarketID;
         let manufacturerId = manufacturer.ManufacturerID;
         let apiDetailId = api.ApiDetailID;
 
-        createProtocol(productId, marketId, manufacturerId, apiDetailId, reference, stp_references, packaging, studyTypes, tests, containerCounts).then(res => {
+        createProtocol(productId, marketId, manufacturerId, apiDetailId, reference, stp_references, containers, studyTypes, tests, containerCounts).then(res => {
             swal("Created", "Protocol created successfully!", "success");
+            this.resetForm();
         }).catch(err => {
             swal("Error", "Could not create protocol!", "error");
         })
 
+    }
+
+    submitProtocol = () => {
+        this.lastComponentCallback(true);
+    }
+
+    lastComponentData = (callback) => {
+        this.lastComponentCallback = callback;
     }
 
 
@@ -190,7 +212,7 @@ class ProtocolForm extends React.Component {
                     <Box className={classes.stepperBtnContainer}>
                         <Button onClick={this.previousFormPart}>Back</Button>
                         {this.state.currentStep === 4
-                        ? <Button onClick={this.createProtocol}>Create</Button>
+                        ? <Button onClick={this.submitProtocol}>Create</Button>
                         : <Button onClick={this.nextFormPart}>Next</Button>}
                     </Box>
                 </Box>

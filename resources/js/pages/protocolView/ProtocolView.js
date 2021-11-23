@@ -87,9 +87,9 @@ class ProtocolView extends React.Component {
                         <PackagingView
                             protocol={protocol}
                         />
-                        <PackagingProfile
-                            protocol={protocol}
-                        />
+                        {/*<PackagingProfile*/}
+                        {/*    protocol={protocol}*/}
+                        {/*/>*/}
                     </Box>}
             </React.Fragment>
         );
