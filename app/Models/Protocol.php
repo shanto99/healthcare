@@ -52,8 +52,13 @@ class Protocol extends Model
         return $this->hasMany(ProtocolTest::class, 'ProtocolID', 'ProtocolID');
     }
 
-    public function containerCounts(): HasMany
+//    public function containerCounts(): HasMany
+//    {
+//        return $this->hasMany(ContainerCount::class, 'ProtocolID', 'ProtocolID');
+//    }
+
+    public function containers(): HasMany
     {
-        return $this->hasMany(ContainerCount::class, 'ProtocolID', 'ProtocolID');
+        return $this->hasMany(ProtocolContainer::class, 'ProtocolID', 'ProtocolID');
     }
 }

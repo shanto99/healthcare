@@ -13,9 +13,4 @@ class Variant extends Model
     protected $primaryKey = "VariantID";
 
     protected $guarded = [];
-
-    public function containers(): HasMany
-    {
-        return $this->hasMany(ProtocolContainer::class, 'VariantID', 'VariantID');
-    }
 }

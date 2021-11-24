@@ -40,8 +40,10 @@ class ProtocolController extends Controller
 
     public function get_protocol_detail($protocolId): JsonResponse
     {
-        $protocol = Protocol::with('product', 'product.variants.containers.primaryContainer.packagings',
-            'product.variants.containers.secondaryContainer.packagings','product.variants.containers.tertiaryContainer.packagings',
+        $protocol = Protocol::with('product.variants', 'tests.counts.variant', 'studyTypes.condition', 'studyTypes.studyType', 'containers',
+            'containers.primaryContainer.packagings',
+            'containers.secondaryContainer.packagings',
+            'containers.tertiaryContainer.packagings',
             'manufacturer', 'market', 'stpReferences', 'api')->find($protocolId);
         if(!$protocol) {
             return response()->json([

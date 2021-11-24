@@ -16,11 +16,8 @@ class CreateProtocolTestsTable extends Migration
         Schema::create('ProtocolTests', function (Blueprint $table) {
             $table->id('TestID');
             $table->unsignedBigInteger('ProtocolID');
-            $table->unsignedBigInteger('VariantID');
             $table->string('TestName');
-            $table->integer('Quantity');
             $table->foreign('ProtocolID')->references('ProtocolID')->on('Protocols');
-            $table->foreign('VariantID')->references('VariantID')->on('Variants');
             $table->timestamps();
         });
     }

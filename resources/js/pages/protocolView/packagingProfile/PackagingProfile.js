@@ -1,35 +1,71 @@
 import React from "react";
 import {Table, TableBody, TableCell, TableHead, TableRow, withStyles} from "@material-ui/core";
 
+import mainStyles from "../styles";
 import styles from "./styles";
 
-class PackagingProfile extends React.Component {
-    componentDidMount() {
-        console.log(this.props.protocol);
-    }
+const combinedStyles = Object.assign(mainStyles, styles);
 
-    createPackagingProfileTable = () =>
+class PackagingProfile extends React.Component {
+
+    createPackagingProfileTable = (variant) =>
     {
+        const variantId = variant.VariantID.toString();
+        const classes = this.props.classes;
+        const containers = this.props.protocol.containers.filter(container => container.VariantID === variantId);
         return (
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell>
+                        <TableCell className={classes.borderedCell}>
                             Pack Details
                         </TableCell>
-                        <TableCell>
+                        <TableCell className={classes.borderedCell}>
                             Pack 1 (Primary Packaging)
                         </TableCell>
-                        <TableCell>
+                        <TableCell className={classes.borderedCell}>
                             Pack 2 (Secondary Packaging)
                         </TableCell>
-                        <TableCell>
+                        <TableCell className={classes.borderedCell}>
                             Pack 3 (Tertiary Packaging)
                         </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-
+                    {containers.map(count => (
+                        <TableRow>
+                            <TableCell className={classes.borderedCell}>
+                                {count.Count}
+                            </TableCell>
+                            <TableCell className={classes.borderedCell}>
+                                { count.primary_container
+                                ? <div>
+                                        {count.primary_container.packagings.map(packaging => (
+                                            <p>{packaging.Name}</p>
+                                        ))}
+                                  </div>
+                                : 'N/A'}
+                            </TableCell>
+                            <TableCell className={classes.borderedCell}>
+                                { count.secondary_container
+                                    ? <div>
+                                        {count.secondary_container.packagings.map(packaging => (
+                                            <p>{packaging.Name}</p>
+                                        ))}
+                                      </div>
+                                    : 'N/A'}
+                            </TableCell>
+                            <TableCell className={classes.borderedCell}>
+                                { count.tertiary_container
+                                    ? <div>
+                                        {count.secondary_container.packagings.map(packaging => (
+                                            <p>{packaging.Name}</p>
+                                        ))}
+                                      </div>
+                                    : 'N/A'}
+                            </TableCell>
+                        </TableRow>
+                    ))}
                 </TableBody>
             </Table>
         )
@@ -43,8 +79,8 @@ class PackagingProfile extends React.Component {
                 <h3>Packaging Profile:</h3>
                 {variants.map(variant => (
                     <React.Fragment>
-                        <h4>{variant.Variant}</h4>
-                        {this.createPackagingProfileTable()}
+                        <h4>For {variant.Variant} mg:</h4>
+                        {this.createPackagingProfileTable(variant)}
                     </React.Fragment>
                 ))}
             </section>
@@ -52,4 +88,4 @@ class PackagingProfile extends React.Component {
     }
 }
 
-export default withStyles(styles)(PackagingProfile);
+export default withStyles(combinedStyles)(PackagingProfile);

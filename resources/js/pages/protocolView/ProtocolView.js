@@ -4,6 +4,9 @@ import {withStyles, Box} from "@material-ui/core";
 import BasicView from "./basicView/BasicView";
 import PackagingView from "./packagingView/PackagingView";
 import PackagingProfile from "./packagingProfile/PackagingProfile";
+import PackagingComponents from "./packagingComponents/PackagingComponents";
+import StabilityStudy from "./stabilityStudy/StabilityStudy";
+import ProtocolSampleQuantity from "./protocolSampleQuantity/ProtocolSampleQuantity";
 import styles from "./styles";
 
 import Loader from "../../components/loader/Loader";
@@ -40,7 +43,6 @@ class ProtocolView extends React.Component {
         const product = this.state.protocol.product;
         let strengthLabel = "";
         const variants = product.variants;
-        console.log("Length: ", variants.length);
         variants.forEach(function(variant, index) {
             if(index === variants.length - 1) {
                 strengthLabel += ' and '
@@ -87,9 +89,18 @@ class ProtocolView extends React.Component {
                         <PackagingView
                             protocol={protocol}
                         />
-                        {/*<PackagingProfile*/}
-                        {/*    protocol={protocol}*/}
-                        {/*/>*/}
+                        <PackagingProfile
+                            protocol={protocol}
+                        />
+                        <PackagingComponents
+                            protocol={protocol}
+                        />
+                        <StabilityStudy
+                            protocol={protocol}
+                        />
+                        <ProtocolSampleQuantity
+                            protocol={protocol}
+                        />
                     </Box>}
             </React.Fragment>
         );

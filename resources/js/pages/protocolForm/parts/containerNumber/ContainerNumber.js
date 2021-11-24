@@ -41,53 +41,6 @@ class ContainerNumber extends React.Component {
                 ? this.props.containerCounts : this.initiateContainerState()
         }
 
-        // this.selectedProduct = {
-        //     ProductID: 8,
-        //     ProductName: "Azith",
-        //     variants: [{
-        //         ProductID: "8",
-        //         Variant: "100mg",
-        //         VariantID: 6
-        //     }, {
-        //         ProductID: "8",
-        //         Variant: "200mg",
-        //         VariantID: 7
-        //     }]
-        // };
-        //
-        // this.packaging = {
-        //     6: {
-        //         30: {primary: '3', secondary: '3', tertiary: '3'},
-        //         50: {primary: '3', secondary: '3', tertiary: '3'}
-        //     },
-        //     7: {
-        //         30: {primary: '3', secondary: '3', tertiary: '3'},
-        //         50: {primary: '3', secondary: '3', tertiary: '3'}
-        //     }
-        // };
-        //
-        // this.studyMonths = [1, 2, 3, 6, 9, 12];
-        //
-        // this.state = {
-        //     studies: [],
-        //     selectedProduct: this.selectedProduct,
-        //     studyTypes: [
-        //         {
-        //             conditionId: "1",
-        //             months: ['1', '2', '3'],
-        //             studyTypeId: 3
-        //         },
-        //         {
-        //             conditionId: "2",
-        //             months: ['3', '6', '9', '12'],
-        //             studyTypeId: 4
-        //         }
-        //     ],
-        //     packaging: this.packaging,
-        //     studyMonths: this.studyMonths,
-        //     containerCounts: this.initiateContainerState()
-        // }
-
 
         this.getStudyNameForMonth = this.getStudyNameForMonth.bind(this);
         this.generateRowsForVariant = this.generateRowsForVariant.bind(this);

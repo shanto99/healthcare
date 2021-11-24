@@ -5,12 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\ValidatedInput;
 
 class ProtocolContainer extends Model
 {
     use HasFactory;
     protected $table = "ProtocolContainers";
     protected $primaryKey = "ProtocolContainerID";
+
+    public function variant()
+    {
+        return $this->belongsTo(Variant::class, 'VariantID', 'VariantID');
+    }
 
     public function primaryContainer(): BelongsTo
     {

@@ -41,21 +41,22 @@ class PackagingView extends React.Component {
         return result;
     }
 
-    getTotalRowCount = (variant) => {
-        const containers = variant.containers;
-        let rowCount = 0;
-
-        containers.forEach(container => {
-            rowCount += container.primary_container && container.primary_container.packagings &&
-                container.primary_container.packagings.length || 1;
+    getTotalRowCount = (containers) => {
+        let totalRow = 0;
+        containers.forEach(function(container) {
+            let primaryContainer = container.primary_container;
+            totalRow += primaryContainer.packagings.length;
         });
 
-        return rowCount;
+        return totalRow;
     }
 
     generatePrimaryPackagingTable = (variant) => {
         const classes = this.props.classes;
-        const containers = variant.containers;
+        let containers = this.props.protocol.containers.filter(container => {
+            let variantId = variant.VariantID.toString();
+            return container.VariantID === variantId;
+        });
         const rowArray = [];
 
         containers.forEach((count, cIndex) => {
@@ -67,7 +68,7 @@ class PackagingView extends React.Component {
                       { isFirst
                       ? <TableCell
                               className={classes.borderedCell}
-                              rowSpan={this.getTotalRowCount(variant)}
+                              rowSpan={this.getTotalRowCount(containers)}
                           >
                               {variant.Variant}mg
                         </TableCell>
