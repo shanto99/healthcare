@@ -7,6 +7,7 @@ import PackagingProfile from "./packagingProfile/PackagingProfile";
 import PackagingComponents from "./packagingComponents/PackagingComponents";
 import StabilityStudy from "./stabilityStudy/StabilityStudy";
 import ProtocolSampleQuantity from "./protocolSampleQuantity/ProtocolSampleQuantity";
+import ContainerCount from "./containerCount/ContainerCount";
 import styles from "./styles";
 
 import Loader from "../../components/loader/Loader";
@@ -55,10 +56,33 @@ class ProtocolView extends React.Component {
         return strengthLabel;
     }
 
+    formatPackagingData = (protocol) => {
+        const packagings = {};
+        const containers = protocol && protocol.containers || [];
+        containers.forEach(container => {
+            const variantId = container.VariantID;
+            const count = container.Count;
+            if(!packagings[variantId]) packagings[variantId] = {};
+            packagings[variantId][count] = {
+                primary: container.primary_container.ContainerID,
+                secondary: container.secondary_container.ContainerID,
+                tertiary: container.tertiary_container.ContainerID
+            };
+        });
+
+        return packagings;
+    }
+
     render() {
         const classes = this.props.classes;
         const {protocol, isLoading} = this.state;
-        console.log(protocol);
+        const containers = this.formatPackagingData(protocol);
+        let studyTypes = protocol && protocol.study_types || [];
+        studyTypes = studyTypes.map(studyType => {
+            let newStudyType = {...studyType};
+            newStudyType.Months = JSON.parse(studyType.Months);
+            return newStudyType;
+        });
         return (
             <React.Fragment>
                 {isLoading
@@ -100,6 +124,12 @@ class ProtocolView extends React.Component {
                         />
                         <ProtocolSampleQuantity
                             protocol={protocol}
+                        />
+                        <ContainerCount
+                            product={protocol.product}
+                            studyTypes={studyTypes}
+                            packaging={containers}
+                            containerCounts={JSON.parse(protocol.ContainerCounts)}
                         />
                     </Box>}
             </React.Fragment>
