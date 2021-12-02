@@ -122,15 +122,15 @@ class ProtocolView extends React.Component {
                         <StabilityStudy
                             protocol={protocol}
                         />
-                        <ProtocolSampleQuantity
+                        {/* <ProtocolSampleQuantity
                             protocol={protocol}
-                        />
-                        <ContainerCount
+                        /> */}
+                        {/* <ContainerCount
                             product={protocol.product}
                             studyTypes={studyTypes}
                             packaging={containers}
                             containerCounts={JSON.parse(protocol.ContainerCounts)}
-                        />
+                        /> */}
                     </Box>}
             </React.Fragment>
         );

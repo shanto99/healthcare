@@ -10,7 +10,7 @@ class ProtocolTest extends Model
 {
     use HasFactory;
     protected $table = "ProtocolTests";
-    protected $primaryKey = "TestID";
+    protected $primaryKey = "ProtocolTestID";
     protected $guarded = [];
 
     public function counts(): HasMany

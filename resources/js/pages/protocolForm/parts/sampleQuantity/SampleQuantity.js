@@ -1,5 +1,6 @@
 import React from "react";
-import {Box, Button, IconButton, TextField, withStyles} from "@material-ui/core";
+import {Box, Button, IconButton, TextField, Select, 
+    withStyles, InputLabel, FormControl, MenuItem} from "@material-ui/core";
 
 import {Delete as DeleteIcon} from "@material-ui/icons";
 
@@ -12,8 +13,10 @@ class SampleQuantity extends React.Component {
         this.state = {
             selectedProduct: props.product,
             tests: props.tests || [],
+            allTests: props.allTests || [],
             testName: '',
-            counts: {}
+            counts: {},
+            selectedTest: ''
         }
 
 
@@ -50,6 +53,8 @@ class SampleQuantity extends React.Component {
         const classes = this.props.classes;
         const variants = this.state.selectedProduct.variants || [];
         const tests = this.state.tests || [];
+        const allTests = this.state.allTests || [];
+
         return (
             <Box width="100" px={5}>
                 <div className={classes.sample_quantity_headings}>
@@ -89,13 +94,35 @@ class SampleQuantity extends React.Component {
                 </section>
                 <div className={classes.sample_quantity_headings}>
                     <div className={classes.sample_quantity_heading}>
-                        <TextField
+                        <FormControl style={{ width: '300px' }}>
+                            <InputLabel id="test-select">Select test</InputLabel>
+                            <Select
+                                labelId="test-select"
+                                id="protocol-test-select"
+                                value={this.state.selectedTest}
+                                label="Select test"
+                                onChange={(e) => {
+                                    this.setState({
+                                        selectedTest: e.target.value
+                                    });
+                                }}
+                            >
+                                <MenuItem value="">
+                                    <em>Select test</em>
+                                </MenuItem>
+                                {allTests.map(test => (
+                                    <MenuItem value={test.serialId}>{test.Name}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                        
+                        {/* <TextField
                             label="Test name"
                             id="test_name"
                             onChange={e => this.setState({
                                 testName: e.target.value
                             })}
-                        />
+                        /> */}
                     </div>
                     {variants.map((variant, index) => (
                         <div key={`samp-quan-variant-${index}`} className={classes.sample_quantity_heading}>

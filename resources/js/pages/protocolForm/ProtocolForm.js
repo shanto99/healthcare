@@ -8,6 +8,7 @@ import SampleQuantity from "./parts/sampleQuantity/SampleQuantity";
 import ContainerNumber from "./parts/containerNumber/ContainerNumber";
 
 import {createProtocol} from "../../backend/protocol";
+import {getAllTests} from "../../backend/test";
 
 import styles from "./styles";
 import swal from "sweetalert";
@@ -28,7 +29,8 @@ class ProtocolForm extends React.Component {
             containers: {},
             containerCounts: {},
             studyTypes: [],
-            tests: []
+            tests: [],
+            allTests: []
         }
 
         this.getFormPart = this.getFormPart.bind(this);
@@ -39,6 +41,37 @@ class ProtocolForm extends React.Component {
         this.saveTestWithQuantity = this.saveTestWithQuantity.bind(this);
         this.getAndSaveFormPartData = this.getAndSaveFormPartData.bind(this);
         this.createProtocol = this.createProtocol.bind(this);
+    }
+
+    componentDidMount()
+    {
+        getAllTests().then(res => {
+            const tests = res.tests;
+            let formattedTests = [];
+            let serialId = 1;
+
+            tests.forEach(function(test) {
+                if(test.sub_tests && test.sub_tests.length > 0) {
+                    const subTests = test.sub_tests;
+                    subTests.forEach(subTest => {
+                        subTest.serialId = serialId;
+                        formattedTests.push(subTest);
+                        serialId++;
+                        
+                    });
+                } else {
+                    test.serialId = serialId;
+                    formattedTests.push(test);
+                    serialId++;
+                }
+            });
+
+            console.log("Formatted tests: ", formattedTests);
+
+            this.setState({
+                allTests: formattedTests
+            });
+        })
     }
 
     resetForm = () => {
@@ -79,7 +112,8 @@ class ProtocolForm extends React.Component {
             case 2:
                 return <StabilityStudy studyTypes={this.state.studyTypes} saveStudyType={this.saveStudyType}/>
             case 3:
-                return <SampleQuantity product={this.state.product} tests = {this.state.tests}
+                return <SampleQuantity product={this.state.product} allTests={this.state.allTests}
+                                       tests = {this.state.tests}
                                        saveTestWithQunatity={this.saveTestWithQuantity}/>
             case 4:
                 return <ContainerNumber
@@ -196,6 +230,7 @@ class ProtocolForm extends React.Component {
 
     render() {
         const classes = this.props.classes;
+        console.log(this.state.allTests);
         return (
             <React.Fragment>
                 <Box p={3} width="100">

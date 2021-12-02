@@ -1,6 +1,6 @@
 import React from "react";
 import {
-    Box, Chip,
+    Box,
     Paper,
     Table, TableBody,
     TableCell,

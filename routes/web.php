@@ -12,6 +12,7 @@ use App\Http\Controllers\StudyTypeController;
 use App\Http\Controllers\ConditionController;
 use App\Http\Controllers\ProtocolController;
 use App\Http\Controllers\PackagingController;
+use App\Http\Controllers\TestController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -45,6 +46,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/packagings', [PackagingController::class, 'get_packagings']);
     Route::post('/save_packaging', [PackagingController::class, 'save_packaging']);
 
+    Route::post('/save_test', [TestController::class, 'save_test']);
+
     Route::get('/containers', [ContainerController::class, 'get_containers']);
     Route::post('/save_container', [ContainerController::class, 'save_container']);
 
@@ -58,6 +61,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/get_protocols', [ProtocolController::class, 'get_all_protocols']);
 
     Route::get('/protocol_detail/{protocolId}', [ProtocolController::class, 'get_protocol_detail']);
+
+    Route::get('/get_parent_tests', [TestController::class, 'getParentTests']);
+    Route::get('/get_all_tests', [TestController::class, 'getAllTessts']);
 });
 
 Route::fallback(function () {

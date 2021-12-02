@@ -137,17 +137,6 @@ class ContainerCount extends React.Component {
         });
     }
 
-
-    getStudyTypeById(studyTypeId)
-    {
-        const studyType = this.state.studies.find(study => study.StudyTypeID === studyTypeId);
-        if(studyType) {
-            return studyType.StudyName;
-        } else {
-            return 'N/A';
-        }
-    }
-
     getStudyNameForMonth(month)
     {
         const studies = [];
@@ -155,7 +144,8 @@ class ContainerCount extends React.Component {
         studyTypes.forEach(studyType => {
             const months = studyType.Months;
             if(months.includes(month.toString())) {
-                studies.push(this.getStudyTypeById(studyType.studyTypeId).substring(0, 2));
+                const studyName = studyType.study_type && studyType.study_type.StudyName || 'Not found';
+                studies.push(studyName.substring(0, 2));
             }
         });
 
@@ -209,7 +199,12 @@ class ContainerCount extends React.Component {
     render() {
         const classes = this.props.classes;
         const variants = this.state.selectedProduct.variants || [];
-        const months = this.state.studyMonths;
+        let months = [...this.state.studyMonths];
+        months.sort(function(a, b) {
+            return a - b;
+        });
+
+        console.log("Sorted months: ", months);
 
         return (
             <Box width="100">

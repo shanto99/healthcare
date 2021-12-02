@@ -19,6 +19,7 @@ import Condition from "../../pages/condition/Condition";
 import Protocol from "../../pages/protocol/Protocol";
 import ProtocolView from "../../pages/protocolView/ProtocolView";
 import Container from "../../pages/container/Container";
+import Test from "../../pages/test/Test";
 
 class Authenticated extends React.Component {
     render() {
@@ -67,6 +68,9 @@ class Authenticated extends React.Component {
                             </Route>
                             <Route exact={true} path="/protocol_view/:id" render={(props) =>
                             <ProtocolView {...props} /> } />
+                            <Route exact path="/tests">
+                                <Test/>
+                            </Route>
                             <Route exact={true} path="/">
                                 <Home/>
                             </Route>
