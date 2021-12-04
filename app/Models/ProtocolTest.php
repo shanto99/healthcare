@@ -15,6 +15,6 @@ class ProtocolTest extends Model
 
     public function counts(): HasMany
     {
-        return $this->hasMany(TestCount::class, 'TestID', 'TestID');
+        return $this->hasMany(TestCount::class, 'ProtocolTestID', 'ProtocolTestID');
     }
 }

@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class TestCount extends Model
 {
     use HasFactory;
-    protected $table="TestCounts";
+    protected $table = "TestContainerCounts";
+
+    protected $guarded = [];
 
     protected $primaryKey = "TestCountID";
 
@@ -17,5 +19,4 @@ class TestCount extends Model
     {
         return $this->belongsTo(Variant::class, 'VariantID', 'VariantID');
     }
-
 }

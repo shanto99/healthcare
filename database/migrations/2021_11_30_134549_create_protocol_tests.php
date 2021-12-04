@@ -17,7 +17,7 @@ class CreateProtocolTests extends Migration
             $table->id('ProtocolTestID');
             $table->unsignedBigInteger('ProtocolID');
             $table->unsignedBigInteger('TestID');
-            $table->unsignedBigInteger('SubTestID');
+            $table->unsignedBigInteger('SubTestID')->nullable();
             $table->timestamps();
 
             $table->foreign('ProtocolID')->references('ProtocolID')->on('Protocols');

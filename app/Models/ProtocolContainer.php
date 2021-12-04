@@ -13,6 +13,8 @@ class ProtocolContainer extends Model
     protected $table = "ProtocolContainers";
     protected $primaryKey = "ProtocolContainerID";
 
+    protected $guarded = [];
+
     public function variant()
     {
         return $this->belongsTo(Variant::class, 'VariantID', 'VariantID');

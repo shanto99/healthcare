@@ -210,12 +210,16 @@ class ProtocolForm extends React.Component {
         let manufacturerId = manufacturer.ManufacturerID;
         let apiDetailId = api.ApiDetailID;
 
+        // console.log("Protocol submisstion: ", {productId, marketId, manufacturerId, apiDetailId, reference, stp_references, containers, studyTypes, tests, containerCounts});
+
+        // return;
+
         createProtocol(productId, marketId, manufacturerId, apiDetailId, reference, stp_references, containers, studyTypes, tests, containerCounts).then(res => {
             swal("Created", "Protocol created successfully!", "success");
             this.resetForm();
         }).catch(err => {
             swal("Error", "Could not create protocol!", "error");
-        })
+        });
 
     }
 
@@ -230,7 +234,6 @@ class ProtocolForm extends React.Component {
 
     render() {
         const classes = this.props.classes;
-        console.log(this.state.allTests);
         return (
             <React.Fragment>
                 <Box p={3} width="100">

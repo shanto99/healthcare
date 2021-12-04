@@ -36,11 +36,12 @@ class SampleQuantity extends React.Component {
 
     addTest()
     {
+        const selectedTest = this.state.allTests.find(test => test.serialId === this.state.selectedTest);
+        if(!selectedTest) return;
         const test = {
-            name: this.state.testName,
+            test: selectedTest,
             counts: this.state.counts
         }
-
         this.props.saveTestWithQunatity(test);
     }
 
@@ -49,11 +50,17 @@ class SampleQuantity extends React.Component {
         return {...state, tests};
     }
 
+    getTestName = () => {
+
+    }
+
     render() {
         const classes = this.props.classes;
         const variants = this.state.selectedProduct.variants || [];
         const tests = this.state.tests || [];
         const allTests = this.state.allTests || [];
+
+        console.log("Tests: ", tests);
 
         return (
             <Box width="100" px={5}>
@@ -76,7 +83,7 @@ class SampleQuantity extends React.Component {
                         return (
                             <div className={classes.sample_quantity_headings}  style={{ height: '50px' }} key={`saved_test_${index}`}>
                                 <div className={classes.sample_quantity_heading}>
-                                    {test.name}
+                                    {test.test.Name}
                                 </div>
                                 {variants.map((variant, index) => (
                                     <div key={`samp-saved-variant-${index}`} className={classes.sample_quantity_heading}>
