@@ -78,7 +78,7 @@ class ProtocolService
 
             $protocolTest = $protocol->tests()->create([
                 'TestID' => $testObj['TestID'],
-                'SubTestID' => isset($test['SubTestID']) ? $test['SubTestID'] : null,
+                'SubTestID' => isset($testObj['SubTestID']) ? $testObj['SubTestID'] : null,
             ]);
 
             foreach ($counts as $variantId => $count) {

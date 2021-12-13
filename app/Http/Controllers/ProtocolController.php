@@ -14,11 +14,19 @@ class ProtocolController extends Controller
     public function create_protocol(Request $request): JsonResponse
     {
         $protocol = ProtocolService::createProtocol(
-            $request->productId, $request->marketId, $request->manufacturerId, $request->apiDetailId, $request->reference, $request->stpReferences,
-            $request->packaging, $request->studyTypes, $request->tests, $request->containerNumber
+            $request->productId,
+            $request->marketId,
+            $request->manufacturerId,
+            $request->apiDetailId,
+            $request->reference,
+            $request->stpReferences,
+            $request->packaging,
+            $request->studyTypes,
+            $request->tests,
+            $request->containerNumber
         );
 
-        if(!$protocol) {
+        if (!$protocol) {
             return response()->json([
                 'error' => 'Something went wrong'
             ], 400);
@@ -40,12 +48,23 @@ class ProtocolController extends Controller
 
     public function get_protocol_detail($protocolId): JsonResponse
     {
-        $protocol = Protocol::with('product.variants', 'tests.counts.variant', 'studyTypes.condition', 'studyTypes.studyType', 'containers',
+        $protocol = Protocol::with(
+            'product.variants',
+            'tests.test',
+            'tests.subTest',
+            'tests.counts.variant',
+            'studyTypes.condition',
+            'studyTypes.studyType',
+            'containers',
             'containers.primaryContainer.packagings',
             'containers.secondaryContainer.packagings',
             'containers.tertiaryContainer.packagings',
-            'manufacturer', 'market', 'stpReferences', 'api')->find($protocolId);
-        if(!$protocol) {
+            'manufacturer',
+            'market',
+            'stpReferences',
+            'api'
+        )->find($protocolId);
+        if (!$protocol) {
             return response()->json([
                 'error' => 'No protocol found',
                 'status' => Response::HTTP_NO_CONTENT
@@ -57,5 +76,4 @@ class ProtocolController extends Controller
             'status' => Response::HTTP_OK
         ], Response::HTTP_OK);
     }
-
 }

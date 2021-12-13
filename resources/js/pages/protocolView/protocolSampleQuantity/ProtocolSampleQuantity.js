@@ -4,12 +4,23 @@ import {Table, TableHead, TableBody, TableRow, TableCell, withStyles} from "@mat
 import mainStyles from "../styles";
 
 class ProtocolSampleQuantity extends React.Component {
+
+    getTestName = (test) => {
+        if(test.sub_test) {
+            return test.sub_test.Name;
+        } else {
+            return test.test.Name;
+        }
+    }
+
     render() {
         const classes = this.props.classes;
         const protocol = this.props.protocol;
         const product = protocol.product;
 
         const tests = protocol.tests;
+
+        console.log("Tests: ", tests);
 
         return (
             <section>
@@ -52,7 +63,7 @@ class ProtocolSampleQuantity extends React.Component {
                                     {index+1}
                                 </TableCell>
                                 <TableCell className={classes.borderedCell}>
-                                    {test.TestName}
+                                    {this.getTestName(test)}
                                 </TableCell>
                                 {product.variants.map(variant => {
                                     let variantId = variant.VariantID.toString();
