@@ -13,6 +13,7 @@ use App\Http\Controllers\ConditionController;
 use App\Http\Controllers\ProtocolController;
 use App\Http\Controllers\PackagingController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\ObservationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -64,6 +65,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/get_parent_tests', [TestController::class, 'getParentTests']);
     Route::get('/get_all_tests', [TestController::class, 'getAllTessts']);
+
+    Route::get('/get_sample_tests/{sampleId}', [ObservationController::class, 'getTests']);
+    Route::get('/get_sample_studies/{sampleId}', [ObservationController::class, 'getStudies']);
 });
 
 Route::fallback(function () {

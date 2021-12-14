@@ -20,22 +20,26 @@ import {getManufacturers} from "../../backend/manufacturer";
 
 import styles from "./styles";
 import {getProducts} from "../../backend/product";
+import { getProtocols } from "../../backend/protocol";
 
 import {formatDate} from "../../Utility";
 import {saveReceivedSample, getReceivedSamples} from "../../backend/receivedSample";
 import {GiMedicines} from "react-icons/gi";
 import TextWithIcon from "../../components/TextWithIcon";
+import { Link } from "react-router-dom";
 
 class ReceivedSample extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            protocols: [],
             samples: [],
             receivingDate: new Date(),
             manufacturers: [],
             products: [],
             selectedManufacturer: '',
             selectedProduct: '',
+            selectedProtocol: '',
             grn: '',
             batch: '',
             ar: '',
@@ -50,15 +54,17 @@ class ReceivedSample extends React.Component {
     }
 
     componentDidMount() {
-        getManufacturers().then(res => {
-            const manufacturers = res.manufacturers || [];
-            getProducts().then(res => {
-                const products = res.products || [];
-                this.setState({
-                    manufacturers: manufacturers,
-                    products: products
-                }, this.getSavedReceivedSamples);
-            });
+        Promise.all([getProtocols(), getProducts(), getManufacturers()]).then(responses => {
+            const protocols = responses[0] && responses[0].protocols || [];
+            const products = responses[1] && responses[1].products || [];
+            const manufacturers = responses[2] && responses[2].manufacturers || [];
+
+            this.setState({
+                manufacturers: manufacturers,
+                products: products,
+                protocols
+            }, this.getSavedReceivedSamples);
+            
         });
     }
 
@@ -83,9 +89,14 @@ class ReceivedSample extends React.Component {
     handleProductChange(e)
     {
         let product = e.target.value;
-        console.log(product);
         this.setState({
             selectedProduct: product
+        });
+    }
+    handleProtocolSelect = (e) => {
+        const protocolId = e.target.value;
+        this.setState({
+            selectedProtocol: protocolId
         });
     }
     handleReceivingDateChange(date)
@@ -98,10 +109,11 @@ class ReceivedSample extends React.Component {
     handleFormSubmit(e)
     {
         e.preventDefault();
-        let {selectedManufacturer, selectedProduct, grn, batch, remark, ar, receivingDate} = this.state;
+        let {selectedManufacturer, selectedProduct, selectedProtocol, grn, batch, remark, ar, receivingDate} = this.state;
         receivingDate = formatDate(receivingDate);
 
-        saveReceivedSample(receivingDate, selectedManufacturer, selectedProduct, grn, batch, ar, remark).then(res => {
+        saveReceivedSample(receivingDate, selectedManufacturer, 
+            selectedProduct, selectedProtocol, grn, batch, ar, remark).then(res => {
             swal("Received", "Sample received successfully", "success");
             this.getSavedReceivedSamples();
         }).catch(err => {
@@ -136,6 +148,7 @@ class ReceivedSample extends React.Component {
     render() {
         const classes = this.props.classes;
         const samples = this.state.samples;
+        const selectedProtocol = this.state.selectedProtocol;
         return (
             <Box width="100">
                 <Grid container spacing={2}>
@@ -143,14 +156,16 @@ class ReceivedSample extends React.Component {
                         <List>
                             {samples.map(sample => {
                                 return (
-                                    <ListItem key={sample.AR}>
-                                        <ListItemIcon>
-                                            <GiMedicines fontSize="30px"/>
-                                        </ListItemIcon>
-                                        <ListItemText primary={sample.product.ProductName} secondary={
-                                            <TextWithIcon items={this.getSecondaryText(sample)}/>
-                                        } />
-                                    </ListItem>
+                                    <Link to={`/observation/${sample.AR}`}>
+                                        <ListItem key={sample.AR}>
+                                            <ListItemIcon>
+                                                <GiMedicines fontSize="30px"/>
+                                            </ListItemIcon>
+                                            <ListItemText primary={sample.product.ProductName} secondary={
+                                                <TextWithIcon items={this.getSecondaryText(sample)}/>
+                                            } />
+                                        </ListItem>
+                                    </Link>
                                 )
                             })}
                         </List>
@@ -205,6 +220,24 @@ class ReceivedSample extends React.Component {
                                             </MenuItem>
                                             {this.state.products.map((product, index) => (
                                                 <MenuItem key={index} value={product.ProductID}>{product.ProductName}</MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                </Box>
+                                <Box mt={2}>
+                                    <FormControl variant="outlined" fullWidth>
+                                        <InputLabel id="protocol-label">Protocol</InputLabel>
+                                        <Select
+                                            labelId="protocol-label"
+                                            label="Protocol"
+                                            value={selectedProtocol}
+                                            onChange={this.handleProtocolSelect}
+                                        >
+                                            <MenuItem value="">
+                                                <em>None</em>
+                                            </MenuItem>
+                                            {this.state.protocols.map((protocol, index) => (
+                                                <MenuItem key={index} value={protocol.ProtocolID}>{protocol.product.ProductName}</MenuItem>
                                             ))}
                                         </Select>
                                     </FormControl>

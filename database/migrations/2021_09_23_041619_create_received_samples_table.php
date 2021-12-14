@@ -18,12 +18,14 @@ class CreateReceivedSamplesTable extends Migration
             $table->date('ReceivingDate');
             $table->unsignedBigInteger('ManufacturerID');
             $table->unsignedBigInteger('ProductID');
-            $table->foreign('ManufacturerID')->references('ManufacturerID')->on('Manufacturers');
-            $table->foreign('ProductID')->references('ProductID')->on('Products');
+            $table->unsignedBigInteger('ProtocolID');
             $table->string('GRN');
             $table->string('Batch');
             $table->string('Remark');
             $table->timestamps();
+            $table->foreign('ManufacturerID')->references('ManufacturerID')->on('Manufacturers');
+            $table->foreign('ProductID')->references('ProductID')->on('Products');
+            $table->foreign('ProtocolID')->references('ProtocolID')->on('Protocols');
         });
     }
 

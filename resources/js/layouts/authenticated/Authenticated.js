@@ -20,6 +20,7 @@ import Protocol from "../../pages/protocol/Protocol";
 import ProtocolView from "../../pages/protocolView/ProtocolView";
 import Container from "../../pages/container/Container";
 import Test from "../../pages/test/Test";
+import InputObservation from "../../pages/inputObservation/InputObservation";
 
 class Authenticated extends React.Component {
     render() {
@@ -71,6 +72,7 @@ class Authenticated extends React.Component {
                             <Route exact path="/tests">
                                 <Test/>
                             </Route>
+                            <Route exact={true} path="/observation/:sampleId" render={(props) => <InputObservation {...props} />} />
                             <Route exact={true} path="/">
                                 <Home/>
                             </Route>

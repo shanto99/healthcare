@@ -13,7 +13,7 @@ class ReceivedSample extends Model
     protected $keyType = "string";
     public $incrementing = false;
 
-    protected $fillable = ['AR', 'ReceivingDate', 'ManufacturerID', 'ProductID', 'GRN', 'Batch', 'Remark'];
+    protected $fillable = ['AR', 'ReceivingDate', 'ManufacturerID', 'ProductID', 'GRN', 'Batch', 'Remark', 'ProtocolID'];
 
 
     public function product()
@@ -26,4 +26,8 @@ class ReceivedSample extends Model
         return $this->hasOne(Manufacturer::class, 'ManufacturerID', 'ManufacturerID');
     }
 
+    public function protocol()
+    {
+        return $this->belongsTo(Protocol::class, 'ProtocolID', 'ProtocolID');
+    }
 }
