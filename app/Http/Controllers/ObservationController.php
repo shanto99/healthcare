@@ -27,4 +27,13 @@ class ObservationController extends Controller
             'status' => 200
         ], 200);
     }
+
+    public function getObservations($sampleId)
+    {
+        $sample = ReceivedSample::with('tests.test', 'tests.subTest')->find($sampleId);
+        return response()->json([
+            'sample' => $sample,
+            'status' => 200
+        ], 200);
+    }
 }

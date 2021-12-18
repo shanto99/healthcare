@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Protocol;
 use App\Models\ReceivedSample;
+use App\Models\SampleTest;
 use Illuminate\Http\Request;
 
 class ReceivedSampleController extends Controller
@@ -21,6 +23,17 @@ class ReceivedSampleController extends Controller
         ]);
 
         $receivedSample = ReceivedSample::create($request->only('AR', 'ReceivingDate', 'ManufacturerID', 'ProductID', 'ProtocolID', 'GRN', 'Batch', 'Remark'));
+
+        $protocol = Protocol::find($request->ProtocolID);
+
+        $tests = $protocol->tests;
+
+        foreach ($tests as $test) {
+            SampleTest::create([
+                'AR' => $request->AR,
+                'ProtocolTestID' => $test->ProtocolTestID
+            ]);
+        }
 
         return response()->json([
             'receivedSample' => $receivedSample,

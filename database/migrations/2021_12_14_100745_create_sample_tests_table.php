@@ -15,13 +15,13 @@ class CreateSampleTestsTable extends Migration
     {
         Schema::create('SampleTests', function (Blueprint $table) {
             $table->id('SampleTestID');
-            $table->unsignedBigInteger('TestID');
-            $table->unsignedBigInteger('SubTestID');
-            $table->string('result');
+            $table->string('AR');
+            $table->unsignedBigInteger('ProtocolTestID');
+            $table->string('Result')->nullable();
             $table->timestamps();
 
-            $table->foreign('TestID')->references('TestID')->on('Tests');
-            $table->foreign('SubTestID')->references('SubTestID')->on('SubTests');
+            $table->foreign('AR')->references('AR')->on('ReceivedSamples');
+            $table->foreign('ProtocolTestID')->references('ProtocolTestID')->on('ProtocolTests');
         });
     }
 

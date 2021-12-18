@@ -30,4 +30,9 @@ class ReceivedSample extends Model
     {
         return $this->belongsTo(Protocol::class, 'ProtocolID', 'ProtocolID');
     }
+
+    public function tests()
+    {
+        return $this->hasMany(SampleTest::class, 'AR', 'AR');
+    }
 }

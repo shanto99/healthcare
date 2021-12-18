@@ -68,6 +68,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/get_sample_tests/{sampleId}', [ObservationController::class, 'getTests']);
     Route::get('/get_sample_studies/{sampleId}', [ObservationController::class, 'getStudies']);
+
+    Route::get('/get_sample_observations/{sampleId}', [ObservationController::class, 'getObservations']);
 });
 
 Route::fallback(function () {

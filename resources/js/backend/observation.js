@@ -21,4 +21,14 @@ const getTests = function(sampleId) {
     });
 }
 
-export {getTests, getStudies};
+const getObservations = function(sampleId) {
+    return new Promise(function(resolve, reject) {
+        axios.get(`/get_sample_observations/${sampleId}`).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            if(reject) reject(err);
+        })
+    });
+}
+
+export {getTests, getStudies, getObservations};
