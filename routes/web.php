@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ManufacturerController;
 use App\Http\Controllers\ApiDetailController;
+use App\Http\Controllers\BatchController;
 use App\Http\Controllers\MarketController;
 use App\Http\Controllers\ReceivedSampleController;
 use App\Http\Controllers\ContainerController;
@@ -70,6 +71,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/get_sample_studies/{sampleId}', [ObservationController::class, 'getStudies']);
 
     Route::get('/get_sample_observations/{sampleId}', [ObservationController::class, 'getObservations']);
+
+    Route::post('/submit_observations', [ObservationController::class, 'submitObservations']);
+    Route::get('/sample_variants/{sampleId}', [ObservationController::class, 'getSampleVariants']);
+
+    Route::post('/save_batch', [BatchController::class, 'saveBatch']);
+    Route::get('/get_sample_batches/{sampleId}', [BatchController::class, 'getSampleBatches']);
 });
 
 Route::fallback(function () {

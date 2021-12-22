@@ -26,13 +26,22 @@ class ReceivedSampleController extends Controller
 
         $protocol = Protocol::find($request->ProtocolID);
 
+        $studies = $protocol->studyTypes;
+
         $tests = $protocol->tests;
 
-        foreach ($tests as $test) {
-            SampleTest::create([
-                'AR' => $request->AR,
-                'ProtocolTestID' => $test->ProtocolTestID
-            ]);
+        foreach ($studies as $study) {
+            $months = json_decode($study->Months);
+            foreach ($months as $month) {
+                foreach ($tests as $test) {
+                    SampleTest::create([
+                        'AR' => $request->AR,
+                        'ProtocolTestID' => $test->ProtocolTestID,
+                        'StudyID' => $study->StudyID,
+                        'Month' => $month
+                    ]);
+                }
+            }
         }
 
         return response()->json([

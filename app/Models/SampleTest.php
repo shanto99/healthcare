@@ -13,13 +13,8 @@ class SampleTest extends Model
 
     protected $guarded = [];
 
-    public function test()
+    public function protocolTest()
     {
-        return $this->belongsTo(Test::class, 'TestID', 'TestID');
-    }
-
-    public function subTest()
-    {
-        return $this->belongsTo(SubTest::class, 'SubTestID', 'SubTestID');
+        return $this->belongsTo(ProtocolTest::class, 'ProtocolTestID', 'ProtocolTestID');
     }
 }

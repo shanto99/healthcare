@@ -35,4 +35,9 @@ class ReceivedSample extends Model
     {
         return $this->hasMany(SampleTest::class, 'AR', 'AR');
     }
+
+    public function batches()
+    {
+        return $this->hasMany(SampleBatch::class, 'AR', 'AR');
+    }
 }
