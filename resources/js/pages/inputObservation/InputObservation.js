@@ -1,7 +1,7 @@
 import React from "react";
 import "./style.css";
 
-import {getTests, getStudies, getObservations, submitObservations, getSampleVariants, getBatches} from "../../backend/observation";
+import {getTests, getStudies, getObservations, submitObservations, getSampleVariants, getBatches, observationReport} from "../../backend/observation";
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@material-ui/core";
 import swal from "sweetalert";
 import {AddOutlined} from "@material-ui/icons";
@@ -22,7 +22,7 @@ class InputObservation extends React.Component {
             batches: [],
             studies: [],
             selectedStudy: null,
-            selectedBatch: "",
+            selectedBatch: null,
             observations: [],
         };
     }
@@ -45,25 +45,26 @@ class InputObservation extends React.Component {
                 studies: studies,
                 observations: observations,
                 selectedStudy: studies[0],
-                batches: batches
+                batches: batches,
+                selectedBatch: batches[0]
             });
 
         });
 
     }
 
-    findObservation = (studyId, month, protocolTestId) => {
+    findObservation = (studyId, batchId, month, protocolTestId) => {
         studyId = studyId.toString();
         month = month.toString();
         protocolTestId = protocolTestId.toString();
+        batchId = batchId.toString();
 
         let foundIndex = -1;
 
         const observations = this.state.observations;
         
         const foundObservation = observations.find(function(observation, index) {
-            console.log("Observation: ", observation);
-            let found =  observation.ProtocolTestID.toString() === protocolTestId 
+            let found =  observation.ProtocolTestID.toString() === protocolTestId && observation.SampleBatchID === batchId
             && observation.Month.toString() === month && observation.StudyID.toString() === studyId
             if(found) foundIndex = index;
             return found;
@@ -82,16 +83,19 @@ class InputObservation extends React.Component {
 
     getTestValue = (month, protocolTestId, type="Value") => {
         const studyId = this.state.selectedStudy && this.state.selectedStudy.StudyID || "";
-        const foundTest = this.findObservation(studyId, month, protocolTestId);
+        const batchId = this.state.selectedBatch && this.state.selectedBatch.SampleBatchID || "";
+        const foundTest = this.findObservation(studyId, batchId, month, protocolTestId);
         return foundTest && foundTest.test && foundTest.test[type] || "";
     }
 
     handleObservationInput = (month, protocolTestId, value, valueType="Value") => {
         const studyId = this.state.selectedStudy && this.state.selectedStudy.StudyID || "";
+        const batchId = this.state.selectedBatch && this.state.selectedBatch.SampleBatchID || "";
+
          this.setState(preState => {
              const newState = {...preState};
              const observations = newState.observations;
-             const foundObservation = this.findObservation(studyId, month, protocolTestId);
+             const foundObservation = this.findObservation(studyId, batchId, month, protocolTestId);
              if(foundObservation && foundObservation.index !== -1) {
                 const observation = observations[foundObservation.index];
                 observation[valueType] = value;
@@ -100,9 +104,13 @@ class InputObservation extends React.Component {
                     AR: this.state.sampleId,
                     ProtocolTestID: protocolTestId,
                     StudyID: studyId,
-                    SampleBatchID: this.state.selectedBatch,
-                    Month: month
-                 };
+                    SampleBatchID: this.state.selectedBatch.SampleBatchID,
+                    Month: month,
+                    Value: null,
+                    Min: null,
+                    Avg: null,
+                    Max: null
+                 }
 
                  newObservation[valueType] = value;
                 
@@ -114,12 +122,13 @@ class InputObservation extends React.Component {
     }
 
     submitObservation = () => {
-        // const tests = this.state.tests;
-        // submitObservations(tests).then(res => {
-        //     swal("Submitted!", "Observations submitted successfully", "success");
-        // }).catch(err => {
-        //     swal("Error", "Could not submit observations", "error");
-        // });
+        const observations = this.state.observations;
+        console.log("Observations: ", observations);
+        submitObservations(observations).then(res => {
+            swal("Submitted!", "Observations submitted successfully", "success");
+        }).catch(err => {
+            swal("Error", "Could not submit observations", "error");
+        });
     }
 
     openBatchModal = () => {
@@ -139,10 +148,20 @@ class InputObservation extends React.Component {
     }
 
     handleBatchSelect = (e) => {
-        const batchId = e.target.value;
+        const sampleBatchId = e.target.value;
+        const selectedBatch = this.state.batches.find(batch => batch.SampleBatchID === sampleBatchId);
         this.setState({
-            selectedBatch: batchId
+            selectedBatch: selectedBatch
         });
+    }
+
+    generateObservationReport = () => {
+        const studyId = this.state.selectedStudy && this.state.selectedStudy.StudyID || "";
+        const batchId = this.state.selectedBatch && this.state.selectedBatch.SampleBatchID || "";
+        const sampleId = this.state.sampleId;
+        observationReport(sampleId, studyId, batchId).then(res => {
+            console.log(res);
+        })
     }
 
     render() {
@@ -188,7 +207,7 @@ class InputObservation extends React.Component {
                             <Select
                                 labelId="study-type-id"
                                 label="Select study type"
-                                value={selectedBatch}
+                                value={selectedBatch && selectedBatch.SampleBatchID || ""}
                                 onChange={this.handleBatchSelect}
                             >
                                 <MenuItem value="">
@@ -205,6 +224,8 @@ class InputObservation extends React.Component {
                             <AddOutlined fontSize="large" />
                         </span>
                     </section>
+
+                    <button onClick={this.generateObservationReport}>Report</button>
 
                 </div>
                 <TableContainer>
@@ -226,7 +247,6 @@ class InputObservation extends React.Component {
                         </TableHead>
                         <TableBody>
                             {tests.map(test => {
-                                console.log("dfasdf: ", test);
                             return (<TableRow>
                                         <TableCell>
                                             {test.Name}
@@ -246,13 +266,19 @@ class InputObservation extends React.Component {
                                                     : <section>
                                                         <TextField
                                                             label="Min"
-                                                            value={this.getTestValue(month, test.ProtocolTestID, "Min")} />
+                                                            value={this.getTestValue(month, test.ProtocolTestID, "Min")} 
+                                                            onChange={(e) => this.handleObservationInput(month, test.ProtocolTestID, e.target.value, "Min")}
+                                                            />
                                                         <TextField
                                                             label="Avg"
-                                                            value={this.getTestValue(month, test.ProtocolTestID, "Avg")} />
+                                                            value={this.getTestValue(month, test.ProtocolTestID, "Avg")} 
+                                                            onChange={(e) => this.handleObservationInput(month, test.ProtocolTestID, e.target.value, "Avg")}
+                                                            />
                                                         <TextField
                                                             label="Max"
-                                                            value={this.getTestValue(month, test.ProtocolTestID, "Max")} />
+                                                            value={this.getTestValue(month, test.ProtocolTestID, "Max")} 
+                                                            onChange={(e) => this.handleObservationInput(month, test.ProtocolTestID, e.target.value, "Max")}
+                                                            />
                                                         </section>
                                                     }
                                                     

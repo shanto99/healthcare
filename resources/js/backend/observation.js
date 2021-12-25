@@ -31,11 +31,11 @@ const getObservations = function(sampleId) {
     });
 }
 
-const submitObservations = function(tests)
+const submitObservations = function(observations)
 {
     return new Promise(function(resolve, reject) {
         axios.post('/submit_observations', {
-            tests: tests
+            observations: observations
         }).then(function(res) {
             resolve(res.data);
         }).catch(function(err) {
@@ -82,4 +82,12 @@ const getBatches = function(sampleId) {
     });
 }
 
-export {getTests, getStudies, getObservations, submitObservations, getSampleVariants, saveBatch, getBatches};
+const observationReport = function(sampleId, studyId, batchId) {
+    return new Promise(function(resolve, reject) {
+        axios.get(`/generate_obervation_report/${sampleId}/${studyId}/${batchId}`).then(function(res) {
+            resolve(res.data);
+        })
+    })
+}
+
+export {getTests, getStudies, getObservations, submitObservations, getSampleVariants, saveBatch, getBatches, observationReport};

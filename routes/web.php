@@ -77,6 +77,8 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/save_batch', [BatchController::class, 'saveBatch']);
     Route::get('/get_sample_batches/{sampleId}', [BatchController::class, 'getSampleBatches']);
+
+    Route::get('/generate_obervation_report/{sampleId}/{studyId}/{batchId}', [ObservationController::class, 'generateObservationReport']);
 });
 
 Route::fallback(function () {

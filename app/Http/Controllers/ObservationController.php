@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProtocolStudy;
 use App\Models\ReceivedSample;
+use App\Models\SampleBatch;
 use App\Models\SampleTest;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 class ObservationController extends Controller
 {
@@ -50,17 +53,26 @@ class ObservationController extends Controller
 
     public function submitObservations(Request $request)
     {
-        $tests = $request->tests;
-        foreach ($tests as $test) {
-            SampleTest::where('SampleTestID', $test['SampleTestID'])->update([
-                'Min' => $test['Min'],
-                'Avg' => $test['Avg'],
-                'Max' => $test['Max'],
-                'Value' => $test['Value']
-            ]);
+        $observations = $request->observations;
+        foreach ($observations as $observation) {
+
+            $sampleTest = SampleTest::where('AR', $observation['AR'])
+                ->where('ProtocolTestID', $observation['ProtocolTestID'])->where('Month', $observation['Month'])
+                ->where('StudyID', $observation['StudyID'])->where('SampleBatchID', $observation['SampleBatchID'])->first();
+
+            if ($sampleTest) {
+                $sampleTest->update([
+                    'Value' => $observation['Value'],
+                    'Min' => $observation['Min'],
+                    'Avg' => $observation['Avg'],
+                    'Max' => $observation['Max']
+                ]);
+            } else {
+                $sampleTest = SampleTest::create($observation);
+            }
         }
         return response()->json([
-            'message' => 'Observation saved',
+            'message' => 'Observations saved',
             'status' => 200
         ], 200);
     }
@@ -73,5 +85,39 @@ class ObservationController extends Controller
             'variants' => $sample->product->variants,
             'status' => 200
         ], 200);
+    }
+
+    public function generateObservationReport($sampleId, $studyId, $batchId)
+    {
+        // $sampleBatch = SampleBatch::with('variant')->find($batchId);
+        $sample = ReceivedSample::with('product', 'protocol.tests.test.subTests')->find($sampleId);
+        $observations = $sample->testsForBatchStudy($studyId, $batchId);
+        $protocolStudy = ProtocolStudy::with('condition', 'studyType')->find($studyId);
+        $allTests = $sample->protocol->tests;
+
+        $formattedResult = [];
+
+        foreach ($allTests as $test) {
+            $observation = $observations->first(function ($obsrvtn) use ($studyId, $batchId, $test) {
+                return $obsrvtn->StudyID == $studyId && $obsrvtn->SampleBatchID == $batchId && $obsrvtn->ProtocolTestID == $test->ProtocolTestID;
+            });
+
+            if ($observation) {
+                $test->Value = $observation->Value;
+                $test->Min = $observation->Min;
+                $test->Avg = $observation->Avg;
+                $test->Max = $observation->Max;
+            }
+
+            array_push($formattedResult, $observation);
+        }
+
+        return response()->json([
+            'sample' => $sample,
+            'allTests' => $sample->protocol->tests,
+            'tests' => $observations,
+            'study' => $protocolStudy,
+            'result' => $formattedResult
+        ]);
     }
 }

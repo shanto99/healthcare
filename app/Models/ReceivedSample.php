@@ -40,4 +40,9 @@ class ReceivedSample extends Model
     {
         return $this->hasMany(SampleBatch::class, 'AR', 'AR');
     }
+
+    public function testsForBatchStudy($studyId, $batchId)
+    {
+        return $this->tests()->where('StudyID', $studyId)->where('SampleBatchID', $batchId)->get();
+    }
 }

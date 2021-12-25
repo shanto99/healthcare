@@ -10,4 +10,9 @@ class SampleBatch extends Model
     use HasFactory;
     protected $table = "SampleBatches";
     protected $guarded = [];
+
+    public function variant()
+    {
+        return $this->belongsTo(Variant::class, 'VariantID', 'Variat');
+    }
 }
