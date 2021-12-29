@@ -15,7 +15,7 @@ import {
     ListItem,
     ListItemText
 } from "@material-ui/core";
-import {Add, AddBox as AddBoxIcon} from "@material-ui/icons";
+import { AddBox as AddBoxIcon} from "@material-ui/icons";
 
 import {createTest, getParentTests, getAllTests} from "../../backend/test";
 
@@ -38,7 +38,9 @@ class Test extends React.Component {
             isParent: false,
             hasParent: false,
             parentTests: [],
-            tests: []
+            tests: [],
+            expression: "",
+            defaultValue: ""
         }
     }
 
@@ -99,7 +101,9 @@ class Test extends React.Component {
     }
 
     saveTest = () => {
-        const {testName, specifications, childTestName, childSpecifications, isMinMax, isParent, parentTest} = this.state;
+        const {testName, specifications, childTestName, expression, defaultValue,
+            childSpecifications, isMinMax, isParent, parentTest} = this.state;
+
         if(testName === "" || (!isParent && specifications === "")) {
             swal("Error", "Test name or specifications is missing", "error");
             return;
@@ -110,7 +114,8 @@ class Test extends React.Component {
             return;
         }
 
-        createTest(testName, specifications, childTestName, childSpecifications, isMinMax, parentTest).then(res => {
+        createTest(testName, expression, defaultValue, specifications, childTestName, 
+            childSpecifications, isMinMax, parentTest).then(res => {
             if(res.status === 200) {
                 swal("Created!", "New test created", "success");
             }
@@ -221,6 +226,27 @@ class Test extends React.Component {
                                 />
                             </div>
                         : null}
+
+                        <TextField 
+                            variant="outlined"
+                            label="Expression"
+                            placeholder="EX: ${}"
+                            style={{ marginBottom: '10px' }}
+                            onChange={(e) => this.setState({
+                                expression: e.target.value
+                            })}
+
+                        />
+
+                        <TextField
+                            variant="outlined"
+                            label="Default"
+                            style={{ marginBottom: '10px' }}
+                            onChange={(e) => this.setState({
+                                defaultValue: e.target.value
+                            })}
+                        />
+                        <br/>
 
                         <FormControlLabel
                             control={

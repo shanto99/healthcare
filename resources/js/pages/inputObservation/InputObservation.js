@@ -160,7 +160,13 @@ class InputObservation extends React.Component {
         const batchId = this.state.selectedBatch && this.state.selectedBatch.SampleBatchID || "";
         const sampleId = this.state.sampleId;
         observationReport(sampleId, studyId, batchId).then(res => {
-            console.log(res);
+            const url = window.URL.createObjectURL(new Blob([res]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'report.pdf');
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
         })
     }
 

@@ -7,7 +7,8 @@ use App\Models\ReceivedSample;
 use App\Models\SampleBatch;
 use App\Models\SampleTest;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use stdClass;
+use PDF;
 
 class ObservationController extends Controller
 {
@@ -89,35 +90,96 @@ class ObservationController extends Controller
 
     public function generateObservationReport($sampleId, $studyId, $batchId)
     {
-        // $sampleBatch = SampleBatch::with('variant')->find($batchId);
-        $sample = ReceivedSample::with('product', 'protocol.tests.test.subTests')->find($sampleId);
+        $sampleBatch = SampleBatch::with('variant')->find($batchId);
+        $sample = ReceivedSample::with('product', 'protocol.tests.test.subTests', 'manufacturer')->find($sampleId);
         $observations = $sample->testsForBatchStudy($studyId, $batchId);
         $protocolStudy = ProtocolStudy::with('condition', 'studyType')->find($studyId);
+        $months = json_decode($protocolStudy->Months);
         $allTests = $sample->protocol->tests;
+        $product = $sample->product;
+        $manufacturer = $sample->manufacturer;
+        $variant = $sampleBatch->variant;
 
-        $formattedResult = [];
+        $formattedResult = collect([]);
 
         foreach ($allTests as $test) {
-            $observation = $observations->first(function ($obsrvtn) use ($studyId, $batchId, $test) {
-                return $obsrvtn->StudyID == $studyId && $obsrvtn->SampleBatchID == $batchId && $obsrvtn->ProtocolTestID == $test->ProtocolTestID;
+
+            $resultTest = $formattedResult->first(function ($res) use ($test) {
+                $testId = (string)$test->TestID;
+                return $testId == $res->TestID;
             });
 
-            if ($observation) {
-                $test->Value = $observation->Value;
-                $test->Min = $observation->Min;
-                $test->Avg = $observation->Avg;
-                $test->Max = $observation->Max;
-            }
+            if (!$resultTest) {
+                $testObj = new stdClass();
+                $testObj->Name = $test->test->Name;
+                $testObj->TestID = $test->test->TestID;
 
-            array_push($formattedResult, $observation);
+                $resultObj = $test->test;
+
+                if (isset($test->test->subTests) && $test->test->subTests->count() > 0) {
+                    $resultObj = $test->test->subTests[0];
+                    $testObj->SubTests = collect([]);
+
+                    $subTestObj = new stdClass();
+                    $subTestObj->Name = $resultObj->Name;
+                    $subTestObj->Specifications = $resultObj->Specifications;
+                    $subTestObj->IsMinMax = $resultObj->IsMinMax == "1";
+                    $subTestObj->Months = new stdClass();
+
+                    foreach ($months as $month) {
+                        $observation = $observations->first(function ($obsrvtn) use ($studyId, $batchId, $test, $month) {
+                            return $obsrvtn->StudyID == $studyId &&
+                                $obsrvtn->SampleBatchID == $batchId &&
+                                $obsrvtn->Month == $month &&
+                                $obsrvtn->ProtocolTestID == $test->ProtocolTestID;
+                        });
+
+                        if ($observation) {
+                            $subTestObj->Months->{$month} = [
+                                'Value' => $observation->Value ? preg_replace('/\${}/', $observation->Value, $resultObj->Expression) : $resultObj->DefaultValue,
+                                'Min' => $observation->Min ? preg_replace('/\${}/', $observation->Min, $resultObj->Expression) : $resultObj->DefaultValue,
+                                'Avg' => $observation->Avg ? preg_replace('/\${}/', $observation->Avg, $resultObj->Expression) : $resultObj->DefaultValue,
+                                'Max' => $observation->Max ? preg_replace('/\${}/', $observation->Max, $resultObj->Expression) : $resultObj->DefaultValue
+                            ];
+                        }
+                    }
+
+                    $testObj->SubTests->push($subTestObj);
+                } else {
+                    $testObj->IsMinMax = $resultObj->IsMinMax == "1";
+                    $testObj->Specifications = $resultObj->Specifications;
+                    $testObj->Months = new stdClass();
+
+                    foreach ($months as $month) {
+                        $observation = $observations->first(function ($obsrvtn) use ($studyId, $batchId, $test, $month) {
+                            return $obsrvtn->StudyID == $studyId &&
+                                $obsrvtn->SampleBatchID == $batchId &&
+                                $obsrvtn->Month == $month &&
+                                $obsrvtn->ProtocolTestID == $test->ProtocolTestID;
+                        });
+                        if ($observation) {
+                            $testObj->Months->{$month} = [
+                                'Value' => $observation->Value,
+                                'Min' => $observation->Min,
+                                'Avg' => $observation->Avg,
+                                'Max' => $observation->Max
+                            ];
+                        }
+                    }
+                }
+                $formattedResult->push($testObj);
+            }
         }
 
-        return response()->json([
-            'sample' => $sample,
-            'allTests' => $sample->protocol->tests,
-            'tests' => $observations,
-            'study' => $protocolStudy,
-            'result' => $formattedResult
-        ]);
+        $pdf = PDF::loadView('observation', [
+            'formattedResult' => $formattedResult,
+            'months' => $months,
+            'product' => $product,
+            'manufacturer' => $manufacturer,
+            'sampleBatch' => $sampleBatch,
+            'protocolStudy' => $protocolStudy
+        ])->setPaper('a4', 'landscape');
+
+        return $pdf->download('report.pdf');
     }
 }

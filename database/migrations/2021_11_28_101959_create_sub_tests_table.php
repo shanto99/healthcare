@@ -19,6 +19,8 @@ class CreateSubTestsTable extends Migration
             $table->string('Name');
             $table->string('Specifications');
             $table->boolean('IsMinMax')->default(false);
+            $table->string('Expression')->default(null);
+            $table->string('DefaultValue')->default('N/A');
             $table->timestamps();
             $table->foreign('TestID')->references('TestID')->on('Tests');
         });

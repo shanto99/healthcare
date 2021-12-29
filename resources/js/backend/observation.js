@@ -84,7 +84,9 @@ const getBatches = function(sampleId) {
 
 const observationReport = function(sampleId, studyId, batchId) {
     return new Promise(function(resolve, reject) {
-        axios.get(`/generate_obervation_report/${sampleId}/${studyId}/${batchId}`).then(function(res) {
+        axios.get(`/generate_obervation_report/${sampleId}/${studyId}/${batchId}`, {
+            responseType: 'blob'
+        }).then(function(res) {
             resolve(res.data);
         })
     })

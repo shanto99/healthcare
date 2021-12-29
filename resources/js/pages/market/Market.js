@@ -2,7 +2,8 @@ import React from "react";
 import {Box, Button, Grid, List, ListItem, ListItemIcon, ListItemText, TextField, withStyles} from "@material-ui/core";
 import {
     HomeWork as HomeWorkIcon,
-    Place as PlaceIcon
+    Place as PlaceIcon,
+    Edit as EditIcon
 } from "@material-ui/icons";
 
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
@@ -61,6 +62,10 @@ class Market extends React.Component {
         });
     }
 
+    editMarket = () => {
+
+    }
+
     render() {
         const markets = this.state.markets;
         return (
@@ -78,13 +83,14 @@ class Market extends React.Component {
                                             text: market[field]
                                         })
                                     }
-                                })
+                                });
                                 return (
-                                    <ListItem key={index}>
+                                    <ListItem key={index} style={{ width: 'fit-content' }}>
                                         <ListItemIcon>
                                             <HomeWorkIcon fontSize="large"/>
                                         </ListItemIcon>
                                         <ListItemText
+                                            style={{ marginRight: '15px' }}
                                             primary={market.Name}
                                             secondary={
                                                 <TextWithIcon
@@ -92,12 +98,15 @@ class Market extends React.Component {
                                                 />
                                             }
                                         />
+                                        <ListItemIcon style={{ cursor: 'pointer' }}>
+                                            <EditIcon fontSize="medium"/>
+                                        </ListItemIcon>
                                     </ListItem>
                                 )
                             })}
                         </List>
                     </Grid>
-                    <Grid item lg={8} md={12}>
+                    <Grid item lg={4} md={12}>
                         <ValidatorForm
                             ref="form"
                             onSubmit={this.createMarket}

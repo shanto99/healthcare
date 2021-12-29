@@ -9,10 +9,11 @@ class SampleBatch extends Model
 {
     use HasFactory;
     protected $table = "SampleBatches";
+    protected $primaryKey = "SampleBatchID";
     protected $guarded = [];
 
     public function variant()
     {
-        return $this->belongsTo(Variant::class, 'VariantID', 'Variat');
+        return $this->belongsTo(Variant::class, 'VariantID', 'VariantID');
     }
 }

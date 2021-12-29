@@ -18,6 +18,8 @@ class CreateTestsTable extends Migration
             $table->string('Name');
             $table->string('Specifications')->nullable();
             $table->boolean('IsMinMax')->default(false);
+            $table->string('Expression')->default(null);
+            $table->string('DefaultValue')->default('N/A');
             $table->timestamps();
         });
     }

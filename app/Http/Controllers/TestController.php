@@ -32,7 +32,9 @@ class TestController extends Controller
             $parentTest = Test::find($request->ParentTest);
             $test = $parentTest->subTests()->create([
                 'Name' => $request->TestName,
-                'Specifications' => $request->Specifications
+                'Specifications' => $request->Specifications,
+                'Expression' => $request->Expression,
+                'DefaultValue' => $request->DefaultValue
             ]);
         } else {
 
@@ -42,12 +44,16 @@ class TestController extends Controller
                 ]);
                 $test->subTests()->create([
                     'Name' => $request->ChildTestName,
-                    'Specifications' => $request->ChildSpecifications
+                    'Specifications' => $request->ChildSpecifications,
+                    'Expression' => $request->Expression,
+                    'DefaultValue' => $request->DefaultValue
                 ]);
             } else {
                 $test = Test::create([
                     'Name' => $request->TestName,
-                    'Specifications' => $request->Specifications
+                    'Specifications' => $request->Specifications,
+                    'Expression' => $request->Expression,
+                    'DefaultValue' => $request->DefaultValue
                 ]);
             }
         }
