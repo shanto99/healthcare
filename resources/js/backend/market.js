@@ -1,11 +1,12 @@
 import axios from "axios";
 
-const createMarket = function(name, marketCondition)
+const createMarket = function(name, marketCondition, marketId)
 {
     return new Promise(function(resolve, reject) {
         axios.post('/create_market', {
             Name: name,
-            MarketCondition: marketCondition
+            MarketCondition: marketCondition,
+            MarketID: marketId
         }).then(function (res) {
             resolve(res.data);
         }).catch(function(err) {

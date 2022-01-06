@@ -36,7 +36,9 @@ class BatchInput extends React.Component {
         selectedVariant = selectedVariant.VariantID;
 
         saveBatch(sampleId, batchNo, batchSize, selectedVariant, mfgDate, initiationDate).then(res => {
-            console.log(res);
+            let newBatch = res.batch;
+            console.log(newBatch);
+            this.props.closeModal(newBatch);
         }).catch(err => {
             console.log("Could not save batch",err);
             swal("Error", "Could not save batch", "error");

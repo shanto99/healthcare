@@ -1,7 +1,7 @@
 const styles = theme => ({
     formContainer: {
         width: '100%',
-        maxWidth: '800px',
+        maxWidth: '1200px',
         margin: '0 auto'
     }
 });

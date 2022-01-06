@@ -20,6 +20,7 @@ class Market extends React.Component {
 
         this.state = {
             markets: [],
+            editingMarketId: null,
             name: '',
             marketCondition: ''
         };
@@ -53,8 +54,8 @@ class Market extends React.Component {
     createMarket(e)
     {
         e.preventDefault();
-        const {name, marketCondition} = this.state;
-        createMarket(name, marketCondition).then(res => {
+        const {name, marketCondition, editingMarketId} = this.state;
+        createMarket(name, marketCondition, editingMarketId).then(res => {
             swal("Created!", "Market created successfully!", "success");
             this.getMarkets();
         }).catch(err => {
@@ -62,12 +63,25 @@ class Market extends React.Component {
         });
     }
 
-    editMarket = () => {
+    editMarket = (marketId) => {
+        let editingMarket = this.state.markets.find(market => market.MarketID === marketId);
+        if(editingMarket) {
+            this.setState({
+                editingMarketId: marketId,
+                name: editingMarket.Name,
+                marketCondition: editingMarket.MarketCondition
+            });
+        }
+    }
 
+    cancelMarketEdit = () => {
+        this.setState({
+            editingMarketId: null
+        });
     }
 
     render() {
-        const markets = this.state.markets;
+        const {markets, editingMarketId} = this.state;
         return (
             <Box width="100" p={3}>
                 <Grid container spacing={2}>
@@ -99,7 +113,7 @@ class Market extends React.Component {
                                             }
                                         />
                                         <ListItemIcon style={{ cursor: 'pointer' }}>
-                                            <EditIcon fontSize="medium"/>
+                                            <EditIcon fontSize="medium" onClick={() => this.editMarket(market.MarketID)}/>
                                         </ListItemIcon>
                                     </ListItem>
                                 )
@@ -142,13 +156,23 @@ class Market extends React.Component {
                                         this.updateFieldValue(e.target.value, 'marketCondition')
                                 }
                             />
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                color="primary"
-                            >
-                                Save market
-                            </Button>
+                            <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                                { editingMarketId
+                                ? <Button 
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={this.cancelMarketEdit}>
+                                    Cancel edit
+                                  </Button>
+                                  : null}
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="primary"
+                                >
+                                    Save market
+                                </Button>
+                            </div>
                         </ValidatorForm>
                     </Grid>
                 </Grid>

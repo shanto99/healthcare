@@ -30,7 +30,9 @@ class ContainerNumber extends React.Component {
                 }
             });
         });
-        this.months = this.months.sort();
+        this.months = this.months.sort(function(a, b) {
+            return a - b;
+        });
         this.state = {
             studies: [],
             selectedProduct: props.product,

@@ -120,111 +120,113 @@ class Basic extends React.Component {
         const classes = this.props.classes;
         const {products, markets, manufacturers, api_details} = this.state;
         const variants = this.state.selectedProduct && this.state.selectedProduct.variants || [];
+        
         return (
             <Box width="100" px={5}>
-                <Grid container spacing={5} className={classes.formContainer}>
-                    <Grid item lg={6} md={12} container spacing={2}>
-                        <Grid item lg={12} sm={12}>
-                            <FormControl fullWidth>
-                                <InputLabel id="select-product-label">Product</InputLabel>
-                                <Select
-                                    labelId="select-product-label"
-                                    label="Product"
-                                    value={this.state.selectedProduct && this.state.selectedProduct.ProductID || ""}
-                                    onChange={this.handleProductChange}
-                                >
-                                    {products.map((product, index) => (
-                                        <MenuItem value={product.ProductID} key={`product_drop_${index}`}>
-                                            {product.ProductName}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
+                <Grid container spacing={4} className={classes.formContainer}>
+                        <Grid item lg={6} md={12} container spacing={2}>
+                            <Grid item lg={12} sm={12}>
+                                <FormControl fullWidth>
+                                    <InputLabel id="select-product-label">Product</InputLabel>
+                                    <Select
+                                        labelId="select-product-label"
+                                        label="Product"
+                                        value={this.state.selectedProduct && this.state.selectedProduct.ProductID || ""}
+                                        onChange={this.handleProductChange}
+                                    >
+                                        {products.map((product, index) => (
+                                            <MenuItem value={product.ProductID} key={`product_drop_${index}`}>
+                                                {product.ProductName}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid item lg={12} sm={12}>
+                                <FormControl fullWidth>
+                                    <InputLabel id="select-market-label">Market</InputLabel>
+                                    <Select
+                                        labelId="select-market-label"
+                                        label="Market"
+                                        value={this.state.selectedMarket ? this.state.selectedMarket.MarketID : ''}
+                                        onChange={this.handleMarketChange}
+                                    >
+                                        {markets.map((market, index) => (
+                                            <MenuItem key={`mar-${index}`} value={market.MarketID}>{market.Name}</MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid item lg={12} sm={12}>
+                                <FormControl fullWidth>
+                                    <InputLabel id="select-manufacturer-label">Manufacturer</InputLabel>
+                                    <Select
+                                        labelId="select-manufacturer-label"
+                                        label="Manufacturer"
+                                        value={this.state.selectedManufacturer ? this.state.selectedManufacturer.ManufacturerID : ''}
+                                        onChange={this.handleManufacturerChange}
+                                    >
+                                        {manufacturers.map((manufacturer, index) => (
+                                            <MenuItem key={`manu-${index}`} value={manufacturer.ManufacturerID}>{manufacturer.Name}</MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid item lg={12} sm={12}>
+                                <FormControl fullWidth>
+                                    <InputLabel id="select-api-label">API Details</InputLabel>
+                                    <Select
+                                        labelId="select-api-label"
+                                        label="API Details"
+                                        value={this.state.selectedApi ? this.state.selectedApi.ApiDetailID : ''}
+                                        onChange={this.handleApiDetailChange}
+                                    >
+                                        {api_details.map((api, index) => (
+                                            <MenuItem key={`api-${index}`} value={api.ApiDetailID}>{api.Name}</MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid item lg={12} sm={12}>
+                                <TextField
+                                    label="Reference"
+                                    fullWidth
+                                    value={this.state.reference}
+                                    onChange={(e) => this.setState({
+                                        reference: e.target.value
+                                    })}
+                                />
+                            </Grid>
                         </Grid>
-                        <Grid item lg={12} sm={12}>
-                            <FormControl fullWidth>
-                                <InputLabel id="select-market-label">Market</InputLabel>
-                                <Select
-                                    labelId="select-market-label"
-                                    label="Market"
-                                    value={this.state.selectedMarket ? this.state.selectedMarket.MarketID : ''}
-                                    onChange={this.handleMarketChange}
-                                >
-                                    {markets.map((market, index) => (
-                                        <MenuItem key={`mar-${index}`} value={market.MarketID}>{market.Name}</MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        <Grid item lg={12} sm={12}>
-                            <FormControl fullWidth>
-                                <InputLabel id="select-manufacturer-label">Manufacturer</InputLabel>
-                                <Select
-                                    labelId="select-manufacturer-label"
-                                    label="Manufacturer"
-                                    value={this.state.selectedManufacturer ? this.state.selectedManufacturer.ManufacturerID : ''}
-                                    onChange={this.handleManufacturerChange}
-                                >
-                                    {manufacturers.map((manufacturer, index) => (
-                                        <MenuItem key={`manu-${index}`} value={manufacturer.ManufacturerID}>{manufacturer.Name}</MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        <Grid item lg={12} sm={12}>
-                            <FormControl fullWidth>
-                                <InputLabel id="select-api-label">API Details</InputLabel>
-                                <Select
-                                    labelId="select-api-label"
-                                    label="API Details"
-                                    value={this.state.selectedApi ? this.state.selectedApi.ApiDetailID : ''}
-                                    onChange={this.handleApiDetailChange}
-                                >
-                                    {api_details.map((api, index) => (
-                                        <MenuItem key={`api-${index}`} value={api.ApiDetailID}>{api.Name}</MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        <Grid item lg={12} sm={12}>
-                            <TextField
-                                label="Reference"
-                                fullWidth
-                                value={this.state.reference}
-                                onChange={(e) => this.setState({
-                                    reference: e.target.value
-                                })}
-                            />
-                        </Grid>
-                    </Grid>
-                    <Grid item container lg={6} md={12} spacing={2}>
-                        {variants.map(variant => {
-                            const variantStpRef = this.stp_references && this.stp_references[variant.VariantID];
-                            const stp = variantStpRef ? variantStpRef['stp'] : '';
-                            const specification = variantStpRef ? variantStpRef['specification'] : '';
-                            return (
-                                <React.Fragment>
-                                    <h4>Strength: {variant.Variant}</h4>
-                                    <TextField
-                                        label="Specification No"
-                                        fullWidth
-                                        defaultValue={specification}
-                                        onChange={(e) => {
-                                                this.handleStpSpecificationChange(variant.VariantID, "specification", e.target.value);
+                        <Grid item container lg={6} md={12} spacing={2}>
+                            {variants.map(variant => {
+                                const variantStpRef = this.stp_references && this.stp_references[variant.VariantID];
+                                const stp = variantStpRef ? variantStpRef['stp'] : '';
+                                const specification = variantStpRef ? variantStpRef['specification'] : '';
+                                return (
+                                    <React.Fragment>
+                                        <h4>Strength: {variant.Variant}</h4>
+                                        <TextField
+                                            label="Specification No"
+                                            fullWidth
+                                            defaultValue={specification}
+                                            onChange={(e) => {
+                                                    this.handleStpSpecificationChange(variant.VariantID, "specification", e.target.value);
+                                                }}
+                                        />
+                                        <TextField
+                                            label="STP No"
+                                            fullWidth
+                                            defaultValue={stp}
+                                            onChange={(e) => {
+                                                this.handleStpSpecificationChange(variant.VariantID, "stp", e.target.value);
                                             }}
-                                    />
-                                    <TextField
-                                        label="STP No"
-                                        fullWidth
-                                        defaultValue={stp}
-                                        onChange={(e) => {
-                                            this.handleStpSpecificationChange(variant.VariantID, "stp", e.target.value);
-                                        }}
-                                    />
-                                </React.Fragment>
-                            )
-                        })}
-                    </Grid>
+                                        />
+                                    </React.Fragment>
+                                )
+                            })}
+                        </Grid>
+                    
                 </Grid>
             </Box>
         );

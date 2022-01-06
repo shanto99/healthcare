@@ -14,7 +14,15 @@ class MarketController extends Controller
             'MarketCondition' => 'required'
         ]);
 
-        $market = Market::create($request->only('Name','MarketCondition'));
+        if ($request->MarketID) {
+            $market = Market::find($request->MarketID);
+            $market->update([
+                'Name' => $request->Name,
+                'MarketCondition' => $request->MarketCondition
+            ]);
+        } else {
+            $market = Market::create($request->only('Name', 'MarketCondition'));
+        }
 
         return response()->json([
             'market' => $market,

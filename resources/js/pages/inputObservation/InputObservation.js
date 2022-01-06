@@ -4,7 +4,9 @@ import "./style.css";
 import {getTests, getStudies, getObservations, submitObservations, getSampleVariants, getBatches, observationReport} from "../../backend/observation";
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@material-ui/core";
 import swal from "sweetalert";
+import { KeyboardDatePicker } from '@material-ui/pickers';
 import {AddOutlined} from "@material-ui/icons";
+import { format } from "date-fns";
 
 import BatchInput from "./batchInput/BatchInput";
 
@@ -64,7 +66,8 @@ class InputObservation extends React.Component {
         const observations = this.state.observations;
         
         const foundObservation = observations.find(function(observation, index) {
-            let found =  observation.ProtocolTestID.toString() === protocolTestId && observation.SampleBatchID === batchId
+            if(observation.ProtocolTestID == "10") console.log("Observation: ", observation);
+            let found =  observation.ProtocolTestID.toString() === protocolTestId && observation.SampleBatchID.toString() === batchId
             && observation.Month.toString() === month && observation.StudyID.toString() === studyId
             if(found) foundIndex = index;
             return found;
@@ -81,16 +84,31 @@ class InputObservation extends React.Component {
         });
     }
 
-    getTestValue = (month, protocolTestId, type="Value") => {
+    getTestValue = (month, protocolTest, type="Value") => {
+        const protocolTestId = protocolTest.ProtocolTestID;
         const studyId = this.state.selectedStudy && this.state.selectedStudy.StudyID || "";
         const batchId = this.state.selectedBatch && this.state.selectedBatch.SampleBatchID || "";
         const foundTest = this.findObservation(studyId, batchId, month, protocolTestId);
-        return foundTest && foundTest.test && foundTest.test[type] || "";
+        if(protocolTest.IsDate) {
+            let withdrawDate = foundTest && foundTest.test && foundTest.test[type] || null;
+            if(withdrawDate) {
+                withdrawDate = new Date(withdrawDate);
+            }
+            return withdrawDate;
+        } else {
+            return foundTest && foundTest.test && foundTest.test[type] || "";
+        }
+        
     }
 
-    handleObservationInput = (month, protocolTestId, value, valueType="Value") => {
+    handleObservationInput = (month, protocolTest, value, valueType="Value") => {
+        const protocolTestId = protocolTest.ProtocolTestID;
         const studyId = this.state.selectedStudy && this.state.selectedStudy.StudyID || "";
         const batchId = this.state.selectedBatch && this.state.selectedBatch.SampleBatchID || "";
+
+        if(protocolTest.IsDate) {
+            value = format(value, 'yyyy-MM-dd');
+        }
 
          this.setState(preState => {
              const newState = {...preState};
@@ -123,7 +141,6 @@ class InputObservation extends React.Component {
 
     submitObservation = () => {
         const observations = this.state.observations;
-        console.log("Observations: ", observations);
         submitObservations(observations).then(res => {
             swal("Submitted!", "Observations submitted successfully", "success");
         }).catch(err => {
@@ -139,9 +156,15 @@ class InputObservation extends React.Component {
         })
     }
 
-    closeBatchModal = () => {
+    closeBatchModal = (batch) => {
         this.setState(preState => {
             const newState = {...preState};
+            if(batch) {
+                let batches = newState.batches;
+                batches.push(batch);
+
+                newState.batches = batches;
+            }
             newState.batchModal = false;
             return newState;
         });
@@ -263,27 +286,38 @@ class InputObservation extends React.Component {
                                         {months.map(month => {
                                             return (
                                                 <TableCell>
-                                                    { !test.IsMinMax
+                                                    { test.IsDate
+                                                    ? <KeyboardDatePicker
+                                                        autoOk
+                                                        variant="inline"
+                                                        label="Withdraw date"
+                                                        format="yyyy-MM-dd"
+                                                        value={this.getTestValue(month, test)}
+                                                        fullWidth
+                                                        InputAdornmentProps={{ position: "start" }}
+                                                        onChange={(date) => this.handleObservationInput(month, test, date)}
+                                                    />
+                                                    : !test.IsMinMax
                                                     ? <TextField 
                                                         label="Observation" 
-                                                        value={this.getTestValue(month, test.ProtocolTestID)} 
-                                                        onChange={(e) => this.handleObservationInput(month, test.ProtocolTestID, e.target.value)}
+                                                        value={this.getTestValue(month, test)} 
+                                                        onChange={(e) => this.handleObservationInput(month, test, e.target.value)}
                                                         />
                                                     : <section>
                                                         <TextField
                                                             label="Min"
-                                                            value={this.getTestValue(month, test.ProtocolTestID, "Min")} 
-                                                            onChange={(e) => this.handleObservationInput(month, test.ProtocolTestID, e.target.value, "Min")}
+                                                            value={this.getTestValue(month, test, "Min")} 
+                                                            onChange={(e) => this.handleObservationInput(month, test, e.target.value, "Min")}
                                                             />
                                                         <TextField
                                                             label="Avg"
-                                                            value={this.getTestValue(month, test.ProtocolTestID, "Avg")} 
-                                                            onChange={(e) => this.handleObservationInput(month, test.ProtocolTestID, e.target.value, "Avg")}
+                                                            value={this.getTestValue(month, test, "Avg")} 
+                                                            onChange={(e) => this.handleObservationInput(month, test, e.target.value, "Avg")}
                                                             />
                                                         <TextField
                                                             label="Max"
-                                                            value={this.getTestValue(month, test.ProtocolTestID, "Max")} 
-                                                            onChange={(e) => this.handleObservationInput(month, test.ProtocolTestID, e.target.value, "Max")}
+                                                            value={this.getTestValue(month, test, "Max")} 
+                                                            onChange={(e) => this.handleObservationInput(month, test, e.target.value, "Max")}
                                                             />
                                                         </section>
                                                     }

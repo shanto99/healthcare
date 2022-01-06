@@ -23,7 +23,8 @@ class ObservationController extends Controller
                 'ProtocolTestID' => $pTest['ProtocolTestID'],
                 'Name' => $test['Name'],
                 'Specifications' => $test['Specifications'],
-                'IsMinMax' => $test['IsMinMax'] === "1"
+                'IsMinMax' => $test['IsMinMax'] === "1",
+                'IsDate' => $test['IsDate'] === "1",
             ];
         }, $tests);
 

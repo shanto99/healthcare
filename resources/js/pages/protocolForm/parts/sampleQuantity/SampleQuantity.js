@@ -60,8 +60,6 @@ class SampleQuantity extends React.Component {
         const tests = this.state.tests || [];
         const allTests = this.state.allTests || [];
 
-        console.log("Tests: ", tests);
-
         return (
             <Box width="100" px={5}>
                 <div className={classes.sample_quantity_headings}>

@@ -15,6 +15,8 @@ use App\Http\Controllers\ProtocolController;
 use App\Http\Controllers\PackagingController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\ObservationController;
+use App\Http\Controllers\ReportController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -79,6 +81,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/get_sample_batches/{sampleId}', [BatchController::class, 'getSampleBatches']);
 
     Route::get('/generate_obervation_report/{sampleId}/{studyId}/{batchId}', [ObservationController::class, 'generateObservationReport']);
+
+    Route::get('/generate_report', [ReportController::class, 'generateReport']);
 });
 
 Route::fallback(function () {
