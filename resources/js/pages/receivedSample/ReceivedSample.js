@@ -41,7 +41,6 @@ class ReceivedSample extends React.Component {
             selectedProduct: '',
             selectedProtocol: '',
             grn: '',
-            batch: '',
             ar: '',
             remark: ''
         }
@@ -109,16 +108,16 @@ class ReceivedSample extends React.Component {
     handleFormSubmit(e)
     {
         e.preventDefault();
-        let {selectedManufacturer, selectedProduct, selectedProtocol, grn, batch, remark, ar, receivingDate} = this.state;
+        let {selectedManufacturer, selectedProduct, selectedProtocol, grn, remark, ar, receivingDate} = this.state;
         receivingDate = formatDate(receivingDate);
 
         saveReceivedSample(receivingDate, selectedManufacturer, 
-            selectedProduct, selectedProtocol, grn, batch, ar, remark).then(res => {
+            selectedProduct, selectedProtocol, grn, ar, remark).then(res => {
             swal("Received", "Sample received successfully", "success");
             this.getSavedReceivedSamples();
         }).catch(err => {
             swal("Error", "Somthing went wrong" ,"error");
-        })
+        });
     }
 
     getSecondaryText(sample)
@@ -252,17 +251,6 @@ class ReceivedSample extends React.Component {
                                     autoComplete="off"
                                     autoFocus
                                     onChange={(e) => this.setState({grn: e.target.value})}
-                                />
-                                <TextField
-                                    variant="outlined"
-                                    margin="normal"
-                                    value={this.state.batch}
-                                    required
-                                    fullWidth
-                                    label="Batch Number"
-                                    autoComplete="off"
-                                    autoFocus
-                                    onChange={(e) => this.setState({batch: e.target.value})}
                                 />
                                 <TextField
                                     variant="outlined"

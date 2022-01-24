@@ -10,6 +10,11 @@ class BatchController extends Controller
     public function saveBatch(Request $request)
     {
         $batch =  SampleBatch::create($request->all());
+
+        // save planned withdraw date
+
+
+
         return response()->json([
             'batch' => $batch,
             'status' => 200

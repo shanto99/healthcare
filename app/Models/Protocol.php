@@ -42,9 +42,14 @@ class Protocol extends Model
         return $this->hasOne(ApiDetail::class, 'ApiDetailID', 'ApiDetailID');
     }
 
+    public function apis()
+    {
+        return $this->hasManyThrough(ApiDetail::class, ProtocolApi::class, 'ProtocolID', 'ApiDetailID', 'ProtocolID', 'ApiDetailID');
+    }
+
     public function studyTypes(): HasMany
     {
-        return $this->hasMany(ProtocolStudy::class, 'ProtocolID', 'ProtocolID');
+        return $this->hasMany(ProtocolStudy::class, 'ProtocolID', 'ProtocolID',);
     }
 
     public function tests(): HasMany
@@ -52,10 +57,10 @@ class Protocol extends Model
         return $this->hasMany(ProtocolTest::class, 'ProtocolID', 'ProtocolID');
     }
 
-//    public function containerCounts(): HasMany
-//    {
-//        return $this->hasMany(ContainerCount::class, 'ProtocolID', 'ProtocolID');
-//    }
+    //    public function containerCounts(): HasMany
+    //    {
+    //        return $this->hasMany(ContainerCount::class, 'ProtocolID', 'ProtocolID');
+    //    }
 
     public function containers(): HasMany
     {

@@ -55,13 +55,14 @@ const getSampleVariants = function(sampleId)
     });
 }
 
-const saveBatch = function(sampleId, batchNo, batchSize, variantId, mfgDate, initiationDate) {
+const saveBatch = function(sampleId, batchNo, batchSize, variantId, mfgDate, expDate, initiationDate) {
     return new Promise(function(resolve, reject) {
         axios.post('/save_batch', {
             VariantID: variantId,
             BatchNo: batchNo,
             BatchSize: batchSize,
             MfgDate: mfgDate,
+            ExpDate: expDate,
             InitiationDate: initiationDate,
             AR: sampleId
         }).then(function(res) {

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const saveReceivedSample = function(receivingDate, manufacturer, product, protocol, grn, batch, ar, remark)
+const saveReceivedSample = function(receivingDate, manufacturer, product, protocol, grn, ar, remark)
 {
     return new Promise(function(resolve, reject) {
         axios.post('/save_received_sample', {
@@ -10,7 +10,6 @@ const saveReceivedSample = function(receivingDate, manufacturer, product, protoc
             ManufacturerID: manufacturer,
             ProductID: product,
             ProtocolID: protocol,
-            Batch: batch,
             Remark: remark
         }).then(function(res) {
             resolve(res.data);

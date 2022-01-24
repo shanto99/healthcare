@@ -62,7 +62,8 @@ class ProtocolController extends Controller
             'manufacturer',
             'market',
             'stpReferences',
-            'api'
+            'api',
+            'apis'
         )->find($protocolId);
         if (!$protocol) {
             return response()->json([

@@ -14,6 +14,7 @@ class BatchInput extends React.Component {
         batchNo: '',
         batchSize: '',
         mfgDate: new Date(),
+        expDate: new Date(),
         initiationDate: new Date(),
         variants: this.props.variants,
         selectedVariant: null
@@ -30,14 +31,13 @@ class BatchInput extends React.Component {
     }
 
     saveBatch = () => {
-        let {sampleId, batchNo, batchSize, selectedVariant, mfgDate, initiationDate} = this.state;
+        let {sampleId, batchNo, batchSize, selectedVariant, mfgDate, expDate, initiationDate} = this.state;
         mfgDate = formatDate(mfgDate);
         initiationDate = formatDate(initiationDate);
         selectedVariant = selectedVariant.VariantID;
 
-        saveBatch(sampleId, batchNo, batchSize, selectedVariant, mfgDate, initiationDate).then(res => {
+        saveBatch(sampleId, batchNo, batchSize, selectedVariant, mfgDate, expDate, initiationDate).then(res => {
             let newBatch = res.batch;
-            console.log(newBatch);
             this.props.closeModal(newBatch);
         }).catch(err => {
             console.log("Could not save batch",err);
@@ -47,7 +47,7 @@ class BatchInput extends React.Component {
     }
 
     render(){
-        const {variants, selectedVariant, batchNo, batchSize, mfgDate, initiationDate} = this.state;
+        const {variants, selectedVariant, batchNo, batchSize, mfgDate, expDate, initiationDate} = this.state;
         return (
             <div className="modalContainer">
                 <div className="modal">
@@ -83,16 +83,16 @@ class BatchInput extends React.Component {
                             <InputLabel
                                 id="select-variant"
                             >
-                                Select variant
+                                Select strength
                             </InputLabel>
                             <Select
                                 labelId="select-variant"
-                                label="Select variant"
+                                label="Select strength"
                                 value={selectedVariant && selectedVariant.VariantID || ""}
                                 onChange={this.selectVariant}
                             >
                                 <MenuItem value="">
-                                    Select variant
+                                    Select strength
                                 </MenuItem>
                                 {variants.map(variant => (
                                     <MenuItem value={variant.VariantID}>
@@ -112,6 +112,19 @@ class BatchInput extends React.Component {
                                     fullWidth
                                     InputAdornmentProps={{ position: "start" }}
                                     onChange={(date) => this.setState({ mfgDate: date })}
+                                />
+                        </FormControl>
+                        <FormControl className="formControl">
+                            <KeyboardDatePicker
+                                    autoOk
+                                    variant="inline"
+                                    inputVariant="outlined"
+                                    label="Exp date"
+                                    format="yyyy-MM-dd"
+                                    value={expDate}
+                                    fullWidth
+                                    InputAdornmentProps={{ position: "start" }}
+                                    onChange={(date) => this.setState({ expDate: date })}
                                 />
                         </FormControl>
                         <FormControl className="formControl">

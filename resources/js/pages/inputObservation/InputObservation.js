@@ -1,8 +1,11 @@
 import React from "react";
 import "./style.css";
 
-import {getTests, getStudies, getObservations, submitObservations, getSampleVariants, getBatches, observationReport} from "../../backend/observation";
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@material-ui/core";
+import {getTests, getStudies, getObservations, 
+    submitObservations, getSampleVariants, getBatches, observationReport} from "../../backend/observation";
+import { Box, Button, FormControl, InputLabel, 
+    MenuItem, Select, Table, TableBody, TableCell, TableContainer, 
+    TableHead, TableRow, TextField } from "@material-ui/core";
 import swal from "sweetalert";
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import {AddOutlined} from "@material-ui/icons";

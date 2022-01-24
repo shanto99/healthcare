@@ -18,31 +18,38 @@ class ReceivedSampleController extends Controller
             'ProductID' => 'required',
             'ProtocolID' => 'required',
             'GRN' => 'required',
-            'Batch' => 'required',
             'Remark' => 'required'
         ]);
 
-        $receivedSample = ReceivedSample::create($request->only('AR', 'ReceivingDate', 'ManufacturerID', 'ProductID', 'ProtocolID', 'GRN', 'Batch', 'Remark'));
+        $receivedSample = ReceivedSample::create($request->only(
+            'AR',
+            'ReceivingDate',
+            'ManufacturerID',
+            'ProductID',
+            'ProtocolID',
+            'GRN',
+            'Remark'
+        ));
 
-        $protocol = Protocol::find($request->ProtocolID);
+        // $protocol = Protocol::find($request->ProtocolID);
 
-        $studies = $protocol->studyTypes;
+        // $studies = $protocol->studyTypes;
 
-        $tests = $protocol->tests;
+        // $tests = $protocol->tests;
 
-        foreach ($studies as $study) {
-            $months = json_decode($study->Months);
-            foreach ($months as $month) {
-                foreach ($tests as $test) {
-                    SampleTest::create([
-                        'AR' => $request->AR,
-                        'ProtocolTestID' => $test->ProtocolTestID,
-                        'StudyID' => $study->StudyID,
-                        'Month' => $month
-                    ]);
-                }
-            }
-        }
+        // foreach ($studies as $study) {
+        //     $months = json_decode($study->Months);
+        //     foreach ($months as $month) {
+        //         foreach ($tests as $test) {
+        //             SampleTest::create([
+        //                 'AR' => $request->AR,
+        //                 'ProtocolTestID' => $test->ProtocolTestID,
+        //                 'StudyID' => $study->StudyID,
+        //                 'Month' => $month
+        //             ]);
+        //         }
+        //     }
+        // }
 
         return response()->json([
             'receivedSample' => $receivedSample,
