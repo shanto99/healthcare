@@ -28,7 +28,6 @@ class HealthCare extends React.Component {
     {
        getUser().then(res => {
            let user = res.user;
-           console.log(user);
            this.props.login(user);
            this.setState({
                isLoading: false
@@ -41,7 +40,6 @@ class HealthCare extends React.Component {
     }
 
     render() {
-        console.log(this.state.isLoading);
         return (
             <React.Fragment>
                 <CssBaseline/>

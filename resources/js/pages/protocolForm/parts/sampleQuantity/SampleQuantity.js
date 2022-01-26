@@ -1,6 +1,7 @@
 import React from "react";
 import {Box, Button, IconButton, TextField, Select, 
     withStyles, InputLabel, FormControl, MenuItem} from "@material-ui/core";
+import nextId from "react-id-generator";
 
 import {Delete as DeleteIcon} from "@material-ui/icons";
 
@@ -116,18 +117,11 @@ class SampleQuantity extends React.Component {
                                     <em>Select test</em>
                                 </MenuItem>
                                 {allTests.map(test => (
-                                    <MenuItem value={test.serialId}>{test.Name}</MenuItem>
+                                    <MenuItem value={test.serialId} key={nextId("prtcl-samp-qunty-tst-")}>{test.Name}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
                         
-                        {/* <TextField
-                            label="Test name"
-                            id="test_name"
-                            onChange={e => this.setState({
-                                testName: e.target.value
-                            })}
-                        /> */}
                     </div>
                     {variants.map((variant, index) => (
                         <div key={`samp-quan-variant-${index}`} className={classes.sample_quantity_heading}>

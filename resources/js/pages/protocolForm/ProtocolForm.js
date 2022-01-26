@@ -66,8 +66,6 @@ class ProtocolForm extends React.Component {
                 }
             });
 
-            console.log("Formatted tests: ", formattedTests);
-
             this.setState({
                 allTests: formattedTests
             });

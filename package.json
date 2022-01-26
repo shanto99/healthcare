@@ -32,6 +32,7 @@
         "date-fns": "^2.24.0",
         "material-ui-chip-input": "^2.0.0-beta.2",
         "react-icons": "^4.2.0",
+        "react-id-generator": "^3.0.2",
         "react-loader-spinner": "^4.0.0",
         "react-material-ui-form-validator": "^2.1.4",
         "react-redux": "^7.2.5",

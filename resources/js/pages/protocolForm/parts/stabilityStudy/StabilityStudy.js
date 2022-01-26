@@ -55,7 +55,7 @@ class StabilityStudy extends React.Component {
                const newState = {...preState};
                Object.assign(newState, resultObj);
                return newState;
-           }, () => console.log(this.state));
+           });
         });
     }
 
@@ -178,7 +178,7 @@ class StabilityStudy extends React.Component {
 
                         <Button
                             variant="outlined"
-                            color="success"
+                            color="primary"
                             onClick={this.saveStudyType}
                         >
                             Save

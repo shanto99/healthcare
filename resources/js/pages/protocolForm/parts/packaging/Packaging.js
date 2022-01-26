@@ -149,6 +149,7 @@ class Packaging extends React.Component {
                                                 <Select
                                                     labelId="select-container-label"
                                                     label="Container"
+                                                    defaultValue=""
                                                 >
                                                     {containers.map((container, index) => (
                                                         <MenuItem key={`con-${index}`} value={container.ContainerID}>{container.Name}</MenuItem>
@@ -162,6 +163,7 @@ class Packaging extends React.Component {
                                                 <Select
                                                     labelId="select-container-label"
                                                     label="Container"
+                                                    defaultValue=""
                                                     id={`secondary-packaging-${variant.VariantID}`}
                                                 >
                                                     {containers.map((container, index) => (
@@ -176,6 +178,7 @@ class Packaging extends React.Component {
                                                 <Select
                                                     labelId="select-container-label"
                                                     label="Container"
+                                                    defaultValue=""
                                                     id={`tertiary-packaging-${variant.VariantID}`}
                                                 >
                                                     {containers.map((container, index) => (
@@ -188,7 +191,7 @@ class Packaging extends React.Component {
                                             <Button
                                                 variant="contained"
                                                 onClick={() => this.addContainerInfo(variant.VariantID)}
-                                                color="success">
+                                                color="primary">
                                                 Add
                                             </Button>
                                         </Box>

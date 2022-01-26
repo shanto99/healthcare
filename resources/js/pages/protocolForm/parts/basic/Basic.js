@@ -4,6 +4,8 @@ import {
     Select, TextField, withStyles, Box, Typography
 } from "@material-ui/core";
 
+import nextId from "react-id-generator";
+
 import {getProducts} from "../../../../backend/product";
 import {getMarkets} from "../../../../backend/market";
 import {getManufacturers} from "../../../../backend/manufacturer";
@@ -14,14 +16,13 @@ import styles from "./styles";
 class Basic extends React.Component {
     constructor(props) {
         super(props);
-        console.log(props);
         this.stp_references = props.stp_references;
         this.state = {
             products: [],
             selectedProduct: props.product,
             selectedMarket: props.market,
             selectedManufacturer: props.manufacturer,
-            selectedApi: props.api,
+            selectedApis: props.api || [],
             reference: props.reference,
             markets: [],
             manufacturers: [],
@@ -100,13 +101,14 @@ class Basic extends React.Component {
     handleApiDetailChange(e)
     {
         const apiDetailId = e.target.value;
-        const apiDetail = this.state.api_details.find(apiDetail => apiDetail.ApiDetailID === apiDetailId);
-        if(apiDetail)
-        {
-            this.setState({
-                selectedApi: apiDetail
-            });
-        }
+      
+        this.setState(preState => {
+            const newState = {...preState};
+            let selectedApis = newState.selectedApis;
+            selectedApis = [...apiDetailId];
+            newState.selectedApis = selectedApis;
+            return newState;
+        });
     }
 
     handleStpSpecificationChange(variantId, type, value)
@@ -118,7 +120,7 @@ class Basic extends React.Component {
 
     render() {
         const classes = this.props.classes;
-        const {products, markets, manufacturers, api_details} = this.state;
+        const {products, markets, manufacturers, api_details, selectedApis} = this.state;
         const variants = this.state.selectedProduct && this.state.selectedProduct.variants || [];
         
         return (
@@ -135,7 +137,7 @@ class Basic extends React.Component {
                                         onChange={this.handleProductChange}
                                     >
                                         {products.map((product, index) => (
-                                            <MenuItem value={product.ProductID} key={`product_drop_${index}`}>
+                                            <MenuItem value={product.ProductID} key={nextId("prtcl-prod-")}>
                                                 {product.ProductName}
                                             </MenuItem>
                                         ))}
@@ -152,7 +154,7 @@ class Basic extends React.Component {
                                         onChange={this.handleMarketChange}
                                     >
                                         {markets.map((market, index) => (
-                                            <MenuItem key={`mar-${index}`} value={market.MarketID}>{market.Name}</MenuItem>
+                                            <MenuItem key={nextId("prtcl-mrkt-")} value={market.MarketID}>{market.Name}</MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
@@ -167,7 +169,7 @@ class Basic extends React.Component {
                                         onChange={this.handleManufacturerChange}
                                     >
                                         {manufacturers.map((manufacturer, index) => (
-                                            <MenuItem key={`manu-${index}`} value={manufacturer.ManufacturerID}>{manufacturer.Name}</MenuItem>
+                                            <MenuItem key={nextId("prtcl-mnf-")} value={manufacturer.ManufacturerID}>{manufacturer.Name}</MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
@@ -178,18 +180,19 @@ class Basic extends React.Component {
                                     <Select
                                         labelId="select-api-label"
                                         label="API Details"
-                                        value={this.state.selectedApi ? this.state.selectedApi.ApiDetailID : ''}
+                                        multiple
+                                        value={selectedApis}
                                         onChange={this.handleApiDetailChange}
                                     >
                                         {api_details.map((api, index) => (
-                                            <MenuItem key={`api-${index}`} value={api.ApiDetailID}>{api.Name}</MenuItem>
+                                            <MenuItem key={nextId("prtcl-api-")} value={api.ApiDetailID}>{api.Name}</MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
                             </Grid>
                             <Grid item lg={12} sm={12}>
                                 <TextField
-                                    label="Reference"
+                                    label="Reason"
                                     fullWidth
                                     value={this.state.reference}
                                     onChange={(e) => this.setState({
@@ -204,7 +207,7 @@ class Basic extends React.Component {
                                 const stp = variantStpRef ? variantStpRef['stp'] : '';
                                 const specification = variantStpRef ? variantStpRef['specification'] : '';
                                 return (
-                                    <React.Fragment>
+                                    <React.Fragment key={nextId("prtcl-vrnt-")}>
                                         <h4>Strength: {variant.Variant}</h4>
                                         <TextField
                                             label="Specification No"

@@ -11,7 +11,7 @@ class BasicView extends React.Component {
         const protocol = this.props.protocol;
         const product = protocol.product;
         const specifications = protocol.stp_references;
-        const apis = protocol.apis;
+        const apis = protocol.apis || [];
 
         const specCount = {};
         const stpCount = {};
@@ -85,7 +85,7 @@ class BasicView extends React.Component {
         return (
             <div>
                 <section>
-                    <h3>Reference:</h3>
+                    <h3>Reason:</h3>
                     <p>
                         SOP of Stability Designing adn Handling of Stability Protocol ({ protocol.Reference })
                     </p>
@@ -142,7 +142,7 @@ class BasicView extends React.Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {apis.map(api => {
+                            {protocol.apis.map(api => {
                                 return (
                                     <TableRow>
                                         <TableCell className={classes.borderedCell} rowSpan={2}>

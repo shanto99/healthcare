@@ -88,16 +88,6 @@ class Market extends React.Component {
                     <Grid item lg={4} md={12}>
                         <List>
                             {markets.map((market, index) => {
-                                const secondaryItems = [];
-                                ['MarketCondition'].forEach(function(field) {
-                                    if(market[field]) {
-                                        const icon = <PlaceIcon fontSize="small"/>
-                                        secondaryItems.push({
-                                            icon: icon,
-                                            text: market[field]
-                                        })
-                                    }
-                                });
                                 return (
                                     <ListItem key={index} style={{ width: 'fit-content' }}>
                                         <ListItemIcon>
@@ -106,11 +96,6 @@ class Market extends React.Component {
                                         <ListItemText
                                             style={{ marginRight: '15px' }}
                                             primary={market.Name}
-                                            secondary={
-                                                <TextWithIcon
-                                                    items={secondaryItems}
-                                                />
-                                            }
                                         />
                                         <ListItemIcon style={{ cursor: 'pointer' }}>
                                             <EditIcon fontSize="medium" onClick={() => this.editMarket(market.MarketID)}/>
@@ -139,21 +124,6 @@ class Market extends React.Component {
                                 onChange={
                                     (e) =>
                                         this.updateFieldValue(e.target.value, 'name')
-                                }
-                            />
-
-                            <TextValidator
-                                variant="outlined"
-                                margin="normal"
-                                value={this.state.marketCondition}
-                                required
-                                fullWidth
-                                label="Market Condition"
-                                autoComplete="off"
-                                autoFocus
-                                onChange={
-                                    (e) =>
-                                        this.updateFieldValue(e.target.value, 'marketCondition')
                                 }
                             />
                             <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>

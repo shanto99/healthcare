@@ -11,6 +11,7 @@ import {
     withStyles
 } from "@material-ui/core";
 import ChipInput from 'material-ui-chip-input';
+import nextId from "react-id-generator";
 
 import {getStudyTypes} from "../../../../backend/study_type";
 
@@ -256,7 +257,7 @@ class ContainerNumber extends React.Component {
                             </TableRow>
                             <TableRow>
                                 {months.map(month => (
-                                    <TableCell>
+                                    <TableCell key={nextId("prtcl-contcnt-mnth-")}>
                                         {this.getStudyNameForMonth(month)}
                                     </TableCell>
                                 ))}
