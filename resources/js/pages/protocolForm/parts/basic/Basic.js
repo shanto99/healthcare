@@ -22,7 +22,7 @@ class Basic extends React.Component {
             selectedProduct: props.product,
             selectedMarket: props.market,
             selectedManufacturer: props.manufacturer,
-            selectedApis: props.api || [],
+            selectedApis: props.selectedApis || [],
             reference: props.reference,
             markets: [],
             manufacturers: [],
@@ -59,7 +59,7 @@ class Basic extends React.Component {
             product: this.state.selectedProduct,
             market: this.state.selectedMarket,
             manufacturer: this.state.selectedManufacturer,
-            api: this.state.selectedApi,
+            selectedApis: this.state.selectedApis,
             reference: this.state.reference,
             stp_references: this.stp_references
         });

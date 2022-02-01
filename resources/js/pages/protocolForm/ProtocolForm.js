@@ -24,7 +24,7 @@ class ProtocolForm extends React.Component {
             reference: '',
             market: null,
             manufacturer: null,
-            api: null,
+            selectedApis: [],
             stp_references: null,
             containers: {},
             containerCounts: {},
@@ -79,7 +79,7 @@ class ProtocolForm extends React.Component {
             reference: '',
             market: null,
             manufacturer: null,
-            api: null,
+            selectedApis: [],
             stp_references: null,
             containers: {},
             containerCounts: {},
@@ -96,7 +96,7 @@ class ProtocolForm extends React.Component {
                     product={this.state.product}
                     market={this.state.market}
                     manufacturer={this.state.manufacturer}
-                    api={this.state.api}
+                    selectedApis={this.state.selectedApis}
                     reference={this.state.reference}
                     stp_references={this.state.stp_references}
                     sendDataToParent={this.getAndSaveFormPartData}
@@ -129,6 +129,7 @@ class ProtocolForm extends React.Component {
 
     getAndSaveFormPartData(partialData, submit)
     {
+        console.log("Partial data: ", partialData);
         this.setState(preState => {
            const newState = {...preState};
            Object.assign(newState, partialData);
@@ -202,17 +203,16 @@ class ProtocolForm extends React.Component {
 
     createProtocol(e)
     {
-        let {product, market, manufacturer, reference, containers, api, tests, studyTypes, containerCounts, stp_references} = this.state;
+        let {product, market, manufacturer, reference, containers, selectedApis, tests, studyTypes, containerCounts, stp_references} = this.state;
         let productId = product.ProductID;
         let marketId = market.MarketID;
         let manufacturerId = manufacturer.ManufacturerID;
-        let apiDetailId = api.ApiDetailID;
 
         // console.log("Protocol submisstion: ", {productId, marketId, manufacturerId, apiDetailId, reference, stp_references, containers, studyTypes, tests, containerCounts});
 
         // return;
 
-        createProtocol(productId, marketId, manufacturerId, apiDetailId, reference, stp_references, containers, studyTypes, tests, containerCounts).then(res => {
+        createProtocol(productId, marketId, manufacturerId, selectedApis, reference, stp_references, containers, studyTypes, tests, containerCounts).then(res => {
             swal("Created", "Protocol created successfully!", "success");
             this.resetForm();
         }).catch(err => {
