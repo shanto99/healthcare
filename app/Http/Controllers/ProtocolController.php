@@ -13,6 +13,7 @@ class ProtocolController extends Controller
 {
     public function create_protocol(Request $request): JsonResponse
     {
+        dd($request->all());
         $protocol = ProtocolService::createProtocol(
             $request->productId,
             $request->marketId,
