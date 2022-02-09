@@ -1,7 +1,9 @@
 import React from "react";
-import {Box, Button, IconButton, TextField, Select, 
+import {Box, Button, IconButton, TextField, Select,
     withStyles, InputLabel, FormControl, MenuItem} from "@material-ui/core";
 import nextId from "react-id-generator";
+
+import SpecificationModal from "./specificationModal/SpecificationModal";
 
 import {Delete as DeleteIcon} from "@material-ui/icons";
 
@@ -15,9 +17,11 @@ class SampleQuantity extends React.Component {
             selectedProduct: props.product,
             tests: props.tests || [],
             allTests: props.allTests || [],
+            studyTypes: props.studyTypes || [],
             testName: '',
             counts: {},
-            selectedTest: ''
+            selectedTest: '',
+            addingTest: null
         }
 
 
@@ -51,8 +55,10 @@ class SampleQuantity extends React.Component {
         return {...state, tests};
     }
 
-    getTestName = () => {
-
+    handleTestSelect = (e) => {
+        this.setState({
+            addingTest: e.target.value
+        });
     }
 
     render() {
@@ -60,6 +66,9 @@ class SampleQuantity extends React.Component {
         const variants = this.state.selectedProduct.variants || [];
         const tests = this.state.tests || [];
         const allTests = this.state.allTests || [];
+        const studyTypes = this.state.studyTypes || [];
+
+        console.log("Study types: ", studyTypes);
 
         return (
             <Box width="100" px={5}>
@@ -107,11 +116,7 @@ class SampleQuantity extends React.Component {
                                 id="protocol-test-select"
                                 value={this.state.selectedTest}
                                 label="Select test"
-                                onChange={(e) => {
-                                    this.setState({
-                                        selectedTest: e.target.value
-                                    });
-                                }}
+                                onChange={this.handleTestSelect}
                             >
                                 <MenuItem value="">
                                     <em>Select test</em>
@@ -121,7 +126,7 @@ class SampleQuantity extends React.Component {
                                 ))}
                             </Select>
                         </FormControl>
-                        
+
                     </div>
                     {variants.map((variant, index) => (
                         <div key={`samp-quan-variant-${index}`} className={classes.sample_quantity_heading}>
@@ -141,6 +146,9 @@ class SampleQuantity extends React.Component {
                         >Add</Button>
                     </div>
                 </div>
+                {this.state.addingTest
+                ? <SpecificationModal studyTypes={studyTypes}/>
+                : null}
             </Box>
         );
     }

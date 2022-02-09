@@ -111,9 +111,10 @@ class StabilityStudy extends React.Component {
     {
         const {selectedStudy, selectedCondition, months} = this.state;
         const studyTypeId = selectedStudy.StudyTypeID;
+        const studyName = selectedStudy.StudyName;
         const conditionId = selectedCondition.ConditionID;
 
-        this.props.saveStudyType(studyTypeId, months, conditionId);
+        this.props.saveStudyType(studyTypeId, studyName, months, conditionId);
     }
 
     static getDerivedStateFromProps(props, state) {

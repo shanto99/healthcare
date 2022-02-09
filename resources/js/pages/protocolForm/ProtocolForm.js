@@ -57,7 +57,7 @@ class ProtocolForm extends React.Component {
                         subTest.serialId = serialId;
                         formattedTests.push(subTest);
                         serialId++;
-                        
+
                     });
                 } else {
                     test.serialId = serialId;
@@ -112,6 +112,7 @@ class ProtocolForm extends React.Component {
             case 3:
                 return <SampleQuantity product={this.state.product} allTests={this.state.allTests}
                                        tests = {this.state.tests}
+                                       studyTypes={this.state.studyTypes}
                                        saveTestWithQunatity={this.saveTestWithQuantity}/>
             case 4:
                 return <ContainerNumber
@@ -177,13 +178,14 @@ class ProtocolForm extends React.Component {
         });
     }
 
-    saveStudyType(studyTypeId, months, conditionId)
+    saveStudyType(studyTypeId, studyName, months, conditionId)
     {
         this.setState(preState => {
             const newState = {...preState};
             const studyTypes = newState.studyTypes;
             studyTypes.push({
                 studyTypeId: studyTypeId,
+                studyName: studyName,
                 months: months,
                 conditionId: conditionId
             });
