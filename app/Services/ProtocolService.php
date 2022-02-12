@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\Protocol;
+use App\Models\ProtocolApi;
+use App\Models\TestSpecification;
 use Illuminate\Support\Facades\DB;
 
 class ProtocolService
@@ -11,7 +13,7 @@ class ProtocolService
         $productId,
         $marketId,
         $manufacturerId,
-        $apiDetailId,
+        $apiDetailIds,
         $reference,
         $stpReferences,
         $packaging,
@@ -25,7 +27,6 @@ class ProtocolService
             'ProductID' => $productId,
             'MarketID' => $marketId,
             'ManufacturerID' => $manufacturerId,
-            'ApiDetailID' => $apiDetailId,
             'Reference' => $reference,
             'ContainerCounts' => json_encode($containerNumber)
         ]);
@@ -75,11 +76,20 @@ class ProtocolService
         foreach ($tests as $test) {
             $testObj = $test['test'];
             $counts = $test['counts'];
+            $specifications = $test['specifications'];
 
             $protocolTest = $protocol->tests()->create([
                 'TestID' => $testObj['TestID'],
                 'SubTestID' => isset($testObj['SubTestID']) ? $testObj['SubTestID'] : null,
             ]);
+
+            foreach ($specifications as $studyTypeId => $specification) {
+                $studyType = $protocol->studyTypes()->where('StudyTypeID', $studyTypeId)->first();
+                $protocolTest->specifications()->create([
+                    'StudyID' => $studyType->StudyID,
+                    'Specifications' => $specification
+                ]);
+            }
 
             foreach ($counts as $variantId => $count) {
                 $protocolTest->counts()->create([
@@ -87,6 +97,15 @@ class ProtocolService
                     'Count' => $count
                 ]);
             }
+        }
+
+        //dd($apiDetailIds);
+
+        foreach ($apiDetailIds as $apiDetailId) {
+            ProtocolApi::create([
+                'ProtocolID' => $protocol->ProtocolID,
+                'ApiDetailID' => $apiDetailId
+            ]);
         }
 
         //            DB::commit();

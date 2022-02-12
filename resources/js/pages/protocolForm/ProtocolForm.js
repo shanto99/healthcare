@@ -210,7 +210,7 @@ class ProtocolForm extends React.Component {
         let marketId = market.MarketID;
         let manufacturerId = manufacturer.ManufacturerID;
 
-        // console.log("Protocol submisstion: ", {productId, marketId, manufacturerId, apiDetailId, reference, stp_references, containers, studyTypes, tests, containerCounts});
+        // console.log("Protocol submisstion: ", {productId, marketId, manufacturerId, selectedApis, reference, stp_references, containers, studyTypes, tests, containerCounts});
 
         // return;
 

@@ -21,6 +21,7 @@ class SampleQuantity extends React.Component {
             testName: '',
             counts: {},
             selectedTest: '',
+            specifications: null,
             addingTest: null
         }
 
@@ -45,9 +46,21 @@ class SampleQuantity extends React.Component {
         if(!selectedTest) return;
         const test = {
             test: selectedTest,
-            counts: this.state.counts
+            counts: this.state.counts,
+            specifications: this.state.specifications
         }
+
         this.props.saveTestWithQunatity(test);
+    }
+
+    selectTest = (specifications) => {
+        this.setState(preState => {
+            const newState = {...preState};
+            newState.selectedTest = preState.addingTest,
+            newState.specifications = specifications;
+
+            return newState;
+        });
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -67,8 +80,6 @@ class SampleQuantity extends React.Component {
         const tests = this.state.tests || [];
         const allTests = this.state.allTests || [];
         const studyTypes = this.state.studyTypes || [];
-
-        console.log("Study types: ", studyTypes);
 
         return (
             <Box width="100" px={5}>
@@ -147,7 +158,10 @@ class SampleQuantity extends React.Component {
                     </div>
                 </div>
                 {this.state.addingTest
-                ? <SpecificationModal studyTypes={studyTypes}/>
+                ? <SpecificationModal 
+                    close={() => this.setState({ addingTest: null })} 
+                    selectTest={this.selectTest}
+                    studyTypes={studyTypes}/>
                 : null}
             </Box>
         );

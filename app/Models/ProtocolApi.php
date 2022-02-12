@@ -9,4 +9,8 @@ class ProtocolApi extends Model
 {
     use HasFactory;
     protected $table = "ProtocolApi";
+
+    public $timestamps = false;
+
+    protected $guarded = [];
 }

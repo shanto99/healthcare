@@ -44,7 +44,7 @@ class Protocol extends Model
 
     public function apis()
     {
-        return $this->hasManyThrough(ApiDetail::class, ProtocolApi::class, 'ProtocolID', 'ApiDetailID', 'ProtocolID', 'ApiDetailID');
+        return $this->belongsToMany(ApiDetail::class, ProtocolApi::class, 'ProtocolID', 'ApiDetailID');
     }
 
     public function studyTypes(): HasMany

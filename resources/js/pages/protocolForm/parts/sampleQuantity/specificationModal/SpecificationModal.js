@@ -9,12 +9,19 @@ class SpecificationModal extends React.Component {
         this.state = {
             studyTypes: props.studyTypes,
             specifications: null,
-
         }
+
+        this.specifications = {};
     }
 
     handleSpecificationChange = (studyTypeId, value) => {
-        console.log({studyTypeId, value});
+        this.specifications[studyTypeId] = value;
+    }
+
+    handleFormSubmit = (e) => {
+        e.preventDefault();
+        this.props.selectTest(this.specifications);
+        this.props.close();
     }
 
 
@@ -24,7 +31,7 @@ class SpecificationModal extends React.Component {
             <div className="modalContainer">
                 <div className="modal">
                     <h4>Specifications: </h4>
-                    <form className="specification-form">
+                    <form className="specification-form" onSubmit={this.handleFormSubmit}>
                         {studyTypes.map(type => (
                             <TextField
                                 key={nextId("study-type-spec-")}
@@ -37,14 +44,22 @@ class SpecificationModal extends React.Component {
                             />
                         ))}
                         <br/>
-                        <Button
-                            style={{marginTop: '20px'}}
-                            color="secondary"
-                            variant="contained"
-                            type="submit"
-                        >
-                            Save
-                        </Button>
+                        <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
+                            <Button
+                                color="primary"
+                                variant="contained"
+                                onClick={this.props.close}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                color="secondary"
+                                variant="contained"
+                                type="submit"
+                            >
+                                Save
+                            </Button>
+                        </div>          
                     </form>
                 </div>
             </div>

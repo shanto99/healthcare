@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const createProtocol = function(productId, marketId, manufacturerId, apiDetailId, reference,
+const createProtocol = function(productId, marketId, manufacturerId, apiDetails, reference,
                                 stpReferences, packaging, studyTypes, tests, containerNumber) {
 
 
     return new Promise(function (resolve, reject) {
         axios.post('/create_protocol', {
-            productId, marketId, manufacturerId, apiDetailId, reference,
+            productId, marketId, manufacturerId, apiDetails, reference,
             stpReferences, packaging, studyTypes, tests, containerNumber
         }).then(function (res) {
             resolve(res.data);

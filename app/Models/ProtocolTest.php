@@ -27,4 +27,9 @@ class ProtocolTest extends Model
     {
         return $this->belongsTo(SubTest::class, 'SubTestID', 'SubTestID');
     }
+
+    public function specifications()
+    {
+        return $this->hasMany(TestSpecification::class, 'ProtocolTestID', 'ProtocolTestID');
+    }
 }
