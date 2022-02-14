@@ -14,8 +14,10 @@ class ObservationController extends Controller
 {
     public function getTests($sampleId)
     {
-        $sample = ReceivedSample::with('protocol.tests.test', 'protocol.tests.subTest')->where('AR', $sampleId)->first();
+        $sample = ReceivedSample::with('protocol.tests.specifications', 'protocol.tests.test', 'protocol.tests.subTest')->where('AR', $sampleId)->first();
         $tests = $sample->protocol->tests->toArray();
+
+        dd($tests);
 
         $tests = array_map(function ($pTest) {
             $test = $pTest['sub_test'] ? $pTest['sub_test'] : $pTest['test'];

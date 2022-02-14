@@ -46,7 +46,8 @@ class ProtocolForm extends React.Component {
     componentDidMount()
     {
         getAllTests().then(res => {
-            const tests = res.tests;
+            let tests = res.tests;
+            tests = tests.filter(test => test.IsCommon === "0");
             let formattedTests = [];
             let serialId = 1;
 
@@ -94,6 +95,7 @@ class ProtocolForm extends React.Component {
             case 0:
                 return <Basic
                     product={this.state.product}
+                    selectProduct={(product) => this.setState({product})}
                     market={this.state.market}
                     manufacturer={this.state.manufacturer}
                     selectedApis={this.state.selectedApis}
@@ -108,7 +110,7 @@ class ProtocolForm extends React.Component {
                     sendDataToParent={this.getAndSaveFormPartData}
                 />
             case 2:
-                return <StabilityStudy studyTypes={this.state.studyTypes} saveStudyType={this.saveStudyType}/>
+                return <StabilityStudy studyTypes={this.state.studyTypes} saveStudyType={this.saveStudyType} removeStudyType={this.removeStudyType}/>
             case 3:
                 return <SampleQuantity product={this.state.product} allTests={this.state.allTests}
                                        tests = {this.state.tests}
@@ -130,7 +132,6 @@ class ProtocolForm extends React.Component {
 
     getAndSaveFormPartData(partialData, submit)
     {
-        console.log("Partial data: ", partialData);
         this.setState(preState => {
            const newState = {...preState};
            Object.assign(newState, partialData);
@@ -189,6 +190,16 @@ class ProtocolForm extends React.Component {
                 months: months,
                 conditionId: conditionId
             });
+            return newState;
+        })
+    }
+
+    removeStudyType = (studyTypeId) => {
+        this.setState(preState => {
+            const newState = {...preState};
+            let studyTypes = newState.studyTypes;
+            studyTypes = studyTypes.filter(type => type.studyTypeId !== studyTypeId);
+            newState.studyTypes = studyTypes;
             return newState;
         })
     }

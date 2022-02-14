@@ -69,6 +69,7 @@ class Basic extends React.Component {
     {
         const productId = e.target.value;
         const product = this.state.products.find(product => product.ProductID === productId);
+        this.props.selectProduct(product);
         if(product) {
             this.setState({
                 selectedProduct: product
@@ -101,7 +102,7 @@ class Basic extends React.Component {
     handleApiDetailChange(e)
     {
         const apiDetailId = e.target.value;
-      
+
         this.setState(preState => {
             const newState = {...preState};
             let selectedApis = newState.selectedApis;
@@ -122,7 +123,7 @@ class Basic extends React.Component {
         const classes = this.props.classes;
         const {products, markets, manufacturers, api_details, selectedApis} = this.state;
         const variants = this.state.selectedProduct && this.state.selectedProduct.variants || [];
-        
+
         return (
             <Box width="100" px={5}>
                 <Grid container spacing={4} className={classes.formContainer}>
@@ -229,7 +230,7 @@ class Basic extends React.Component {
                                 )
                             })}
                         </Grid>
-                    
+
                 </Grid>
             </Box>
         );

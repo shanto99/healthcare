@@ -7,16 +7,20 @@ import {
     List,
     ListItem,
     ListItemText,
+    ListItemIcon,
     MenuItem,
     Select,
-    TextField
+    withStyles
 } from "@material-ui/core";
 import ChipInput from 'material-ui-chip-input';
+import { Delete as DeleteIcon } from "@material-ui/icons";
 
 import TextWithIcon from "../../../../components/TextWithIcon";
 
 import {getAllConditions} from "../../../../backend/condition";
 import {getStudyTypes} from "../../../../backend/study_type";
+
+import styles from "./styles";
 
 class StabilityStudy extends React.Component {
     constructor(props) {
@@ -119,7 +123,7 @@ class StabilityStudy extends React.Component {
 
     static getDerivedStateFromProps(props, state) {
         return {
-            studyTypes: props.studyTypes
+            studyTypes: props.studyTypes,
         }
     }
 
@@ -134,9 +138,12 @@ class StabilityStudy extends React.Component {
     }
 
     render() {
-        const {conditions, types, selectedStudy, selectedCondition, studyTypes} = this.state;
+        let {conditions, types, selectedStudy, selectedCondition, studyTypes} = this.state;
+        let studyTypeIds = studyTypes.map(studyType => studyType.studyTypeId);
+        types = types.filter(type => !studyTypeIds.includes(type.StudyTypeID));
+        const {classes} = this.props;
         return (
-            <Box width="100" px={5}>
+            <Box className={classes.studyTypeForm} px={5}>
                 <Grid container spacing={3}>
                     <Grid item lg={6}>
                         <Box width="100" mb={3}>
@@ -203,6 +210,9 @@ class StabilityStudy extends React.Component {
                                                 {text: type.months.toString()}
                                             ]}/>}
                                         />
+                                        <ListItemIcon style={{ cursor: 'pointer' }}>
+                                            <DeleteIcon color="secondary" fontSize="medium" onClick={() => this.props.removeStudyType(type.studyTypeId)}/>
+                                        </ListItemIcon>
                                     </ListItem>
                                 )
                             })}
@@ -214,4 +224,4 @@ class StabilityStudy extends React.Component {
     }
 }
 
-export default StabilityStudy;
+export default withStyles(styles)(StabilityStudy);

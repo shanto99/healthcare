@@ -8,6 +8,7 @@ import {
     Select,
     MenuItem, FormControl, Button,
 } from "@material-ui/core";
+import {Delete as DeleteIcon} from "@material-ui/icons";
 
 import {getContainers} from "../../../../backend/container";
 
@@ -16,10 +17,28 @@ import styles from "./styles";
 class Packaging extends React.Component {
     constructor(props) {
         super(props);
+
+        const counts = {};
+        const primaryContainers = {};
+        const secondaryContainers = {};
+        const tertiaryContainers = {};
+
+        const variants = props.product && props.product.variants || [];
+        variants.forEach(variant => {
+            counts[variant.VariantID] = 0;
+            primaryContainers[variant.variantID] = '';
+            secondaryContainers[variant.VariantID] = '';
+            tertiaryContainers[variant.VariantID] = '';
+        });
+
         this.state = {
             selectedProduct: props.product,
             containers: [],
-            containerInfo: props.containers
+            containerInfo: props.containers,
+            counts: counts,
+            primaryContainers: primaryContainers,
+            secondaryContainers: secondaryContainers,
+            tertiaryContainers: tertiaryContainers
         }
 
         this.addContainerInfo = this.addContainerInfo.bind(this);
@@ -35,38 +54,35 @@ class Packaging extends React.Component {
     }
 
     componentWillUnmount() {
+        console.log("Will unmount");
         this.props.sendDataToParent({
             containers: this.state.containerInfo
         })
     }
 
-    static getDerivedStateFromProps(props, state) {
-        return {
-            selectedProduct: props.product,
-            containerInfo: props.containers
-        }
-    }
-
     addContainerInfo(variantId)
     {
-        const unitCount = document.getElementById(`unit-count-${variantId}`).value;
-        let primaryContainer = document.getElementById(`primary-packaging-${variantId}`);
-        primaryContainer = primaryContainer.parentElement.querySelector('input').value;
-        let secondaryContainer = document.getElementById(`secondary-packaging-${variantId}`);
-        secondaryContainer = secondaryContainer.parentElement.querySelector('input').value;
-        let tertiaryContainer = document.getElementById(`tertiary-packaging-${variantId}`);
-        tertiaryContainer = tertiaryContainer.parentElement.querySelector('input').value;
-
         this.setState(preState => {
-           const newState = {...preState};
-           const containers = newState.containerInfo;
-           if(!containers[variantId]) containers[variantId] = {};
-            containers[variantId][unitCount] = {
-               primary: primaryContainer,
-               secondary: secondaryContainer,
-               tertiary: tertiaryContainer
-           }
-           return newState;
+            const unitCount = preState.counts[variantId];
+            const primaryContainer = preState.primaryContainers[variantId];
+            const secondaryContainer = preState.secondaryContainers[variantId];
+            const tertiaryContainer = preState.tertiaryContainers[variantId];
+
+            const newState = {...preState};
+            const containers = newState.containerInfo;
+            if(!containers[variantId]) containers[variantId] = {};
+                containers[variantId][unitCount] = {
+                primary: primaryContainer,
+                secondary: secondaryContainer,
+                tertiary: tertiaryContainer
+            }
+
+            newState.counts[variantId] = '';
+            newState.primaryContainers[variantId] = '';
+            newState.secondaryContainers[variantId] = '';
+            newState.tertiaryContainers[variantId] = '';
+
+            return newState;
         });
 
     }
@@ -76,7 +92,7 @@ class Packaging extends React.Component {
         const containers = this.state.containers;
         let container = containers.find(function(container) {
             const id = container.ContainerID;
-            return id.toString() === containerId;
+            return id.toString() === containerId.toString();
         });
         if(container) {
             return container.Name;
@@ -84,11 +100,48 @@ class Packaging extends React.Component {
         return 'N/A';
     }
 
+    handleUnitCountChange = (variantId, value) => {
+        let counts = {...this.state.counts};
+        counts[variantId] = value;
+        this.setState({
+            counts: counts
+        });
+    }
+
+    handlePackagingChange = (variantId, packagingType, value) => {
+        this.setState(preState => {
+            const newState = {...preState};
+            let containers = null;
+            if(packagingType === 'primary') containers = newState.primaryContainers;
+            else if(packagingType === 'secondary') containers = newState.secondaryContainers;
+            else if(packagingType === 'tertiary') containers = newState.tertiaryContainers;
+
+            containers[variantId] = value;
+
+            return newState;
+
+        })
+    }
+
+    removeContainerRow = (variantId, count) => {
+        console.log({variantId, count});
+        this.setState(preState => {
+            const newState = {...preState};
+            const containers = newState.containerInfo;
+            if(containers && containers[variantId] && containers[variantId][count]) {
+                delete containers[variantId][count];
+            }
+
+            return newState;
+        });
+    }
+
     render() {
         const classes = this.props.classes;
         const containers = this.state.containers;
         const containerInfo = this.state.containerInfo || {};
         const variants = this.state.selectedProduct && this.state.selectedProduct.variants || [];
+        const {counts, primaryContainers, secondaryContainers, tertiaryContainers} = this.state;
         return (
             <Box width="100" px={5}>
                 <Grid container>
@@ -133,7 +186,7 @@ class Packaging extends React.Component {
                                                         <b>{this.getContainerLabel(singleContainer.tertiary)}</b>
                                                     </Box>
                                                     <Box px={2} className={classes.packagingRowCell}>
-                                                        <b>Actions</b>
+                                                        <DeleteIcon color="secondary" onClick={() => this.removeContainerRow(variant.VariantID, count)}/>
                                                     </Box>
                                                 </Box>
                                             )
@@ -141,7 +194,8 @@ class Packaging extends React.Component {
                                     </section>
                                     <Box className={classes.packagingRow}>
                                         <Box px={2} className={classes.packagingRowCell}>
-                                            <TextField label="Unit count" id={`unit-count-${variant.VariantID}`} />
+                                            <TextField label="Unit count"
+                                            value={counts[variant.VariantID] || ""} onChange={(e) => this.handleUnitCountChange(variant.VariantID, e.target.value)} />
                                         </Box>
                                         <Box px={2} className={classes.packagingRowCell}>
                                             <FormControl fullWidth id={`primary-packaging-${variant.VariantID}`} >
@@ -149,7 +203,8 @@ class Packaging extends React.Component {
                                                 <Select
                                                     labelId="select-container-label"
                                                     label="Container"
-                                                    defaultValue=""
+                                                    value={primaryContainers[variant.VariantID] || ""}
+                                                    onChange={(e) => this.handlePackagingChange(variant.VariantID, 'primary', e.target.value)}
                                                 >
                                                     {containers.map((container, index) => (
                                                         <MenuItem key={`con-${index}`} value={container.ContainerID}>{container.Name}</MenuItem>
@@ -163,8 +218,8 @@ class Packaging extends React.Component {
                                                 <Select
                                                     labelId="select-container-label"
                                                     label="Container"
-                                                    defaultValue=""
-                                                    id={`secondary-packaging-${variant.VariantID}`}
+                                                    value={secondaryContainers[variant.VariantID] || ""}
+                                                    onChange={(e) => this.handlePackagingChange(variant.VariantID, 'secondary', e.target.value)}
                                                 >
                                                     {containers.map((container, index) => (
                                                         <MenuItem key={`con-${index}`} value={container.ContainerID}>{container.Name}</MenuItem>
@@ -178,8 +233,8 @@ class Packaging extends React.Component {
                                                 <Select
                                                     labelId="select-container-label"
                                                     label="Container"
-                                                    defaultValue=""
-                                                    id={`tertiary-packaging-${variant.VariantID}`}
+                                                    value={tertiaryContainers[variant.VariantID] || ""}
+                                                    onChange={(e) => this.handlePackagingChange(variant.VariantID, 'tertiary', e.target.value)}
                                                 >
                                                     {containers.map((container, index) => (
                                                         <MenuItem key={`con-${index}`} value={container.ContainerID}>{container.Name}</MenuItem>

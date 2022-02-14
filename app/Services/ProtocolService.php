@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Protocol;
 use App\Models\ProtocolApi;
+use App\Models\Test;
 use App\Models\TestSpecification;
 use Illuminate\Support\Facades\DB;
 
@@ -72,6 +73,16 @@ class ProtocolService
         }
 
         // save tests
+
+        $commonTests = Test::where('IsCommon', true)->get();
+
+        foreach ($commonTests as $commonTest) {
+            array_push($tests, [
+                'test' => ['TestID' => $commonTest->TestID],
+                'counts' => [],
+                'specifications' => []
+            ]);
+        }
 
         foreach ($tests as $test) {
             $testObj = $test['test'];

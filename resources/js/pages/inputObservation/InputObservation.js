@@ -1,10 +1,10 @@
 import React from "react";
 import "./style.css";
 
-import {getTests, getStudies, getObservations, 
+import {getTests, getStudies, getObservations,
     submitObservations, getSampleVariants, getBatches, observationReport} from "../../backend/observation";
-import { Box, Button, FormControl, InputLabel, 
-    MenuItem, Select, Table, TableBody, TableCell, TableContainer, 
+import { Box, Button, FormControl, InputLabel,
+    MenuItem, Select, Table, TableBody, TableCell, TableContainer,
     TableHead, TableRow, TextField } from "@material-ui/core";
 import swal from "sweetalert";
 import { KeyboardDatePicker } from '@material-ui/pickers';
@@ -35,7 +35,7 @@ class InputObservation extends React.Component {
     componentDidMount()
     {
         const sampleId = this.state.sampleId;
-        Promise.all([getTests(sampleId), getStudies(sampleId), 
+        Promise.all([getTests(sampleId), getStudies(sampleId),
             getObservations(sampleId), getSampleVariants(sampleId),
             getBatches(sampleId)]).then(responses => {
             const tests = responses[0].tests || [];
@@ -67,7 +67,7 @@ class InputObservation extends React.Component {
         let foundIndex = -1;
 
         const observations = this.state.observations;
-        
+
         const foundObservation = observations.find(function(observation, index) {
             if(observation.ProtocolTestID == "10") console.log("Observation: ", observation);
             let found =  observation.ProtocolTestID.toString() === protocolTestId && observation.SampleBatchID.toString() === batchId
@@ -101,7 +101,7 @@ class InputObservation extends React.Component {
         } else {
             return foundTest && foundTest.test && foundTest.test[type] || "";
         }
-        
+
     }
 
     handleObservationInput = (month, protocolTest, value, valueType="Value") => {
@@ -134,7 +134,7 @@ class InputObservation extends React.Component {
                  }
 
                  newObservation[valueType] = value;
-                
+
                 observations.push(newObservation);
              }
 
@@ -301,40 +301,40 @@ class InputObservation extends React.Component {
                                                         onChange={(date) => this.handleObservationInput(month, test, date)}
                                                     />
                                                     : !test.IsMinMax
-                                                    ? <TextField 
-                                                        label="Observation" 
-                                                        value={this.getTestValue(month, test)} 
+                                                    ? <TextField
+                                                        label="Observation"
+                                                        value={this.getTestValue(month, test)}
                                                         onChange={(e) => this.handleObservationInput(month, test, e.target.value)}
                                                         />
                                                     : <section>
                                                         <TextField
                                                             label="Min"
-                                                            value={this.getTestValue(month, test, "Min")} 
+                                                            value={this.getTestValue(month, test, "Min")}
                                                             onChange={(e) => this.handleObservationInput(month, test, e.target.value, "Min")}
                                                             />
                                                         <TextField
                                                             label="Avg"
-                                                            value={this.getTestValue(month, test, "Avg")} 
+                                                            value={this.getTestValue(month, test, "Avg")}
                                                             onChange={(e) => this.handleObservationInput(month, test, e.target.value, "Avg")}
                                                             />
                                                         <TextField
                                                             label="Max"
-                                                            value={this.getTestValue(month, test, "Max")} 
+                                                            value={this.getTestValue(month, test, "Max")}
                                                             onChange={(e) => this.handleObservationInput(month, test, e.target.value, "Max")}
                                                             />
                                                         </section>
                                                     }
-                                                    
+
                                                 </TableCell>
                                             )
-                                        })} 
+                                        })}
                                 </TableRow>)
                             })}
                         </TableBody>
                     </Table>
                 </TableContainer>
                 <div className="observationFooter">
-                    <Button 
+                    <Button
                         variant="outlined"
                         onClick={this.submitObservation}
                     >
@@ -344,7 +344,7 @@ class InputObservation extends React.Component {
                 {this.state.batchModal
                 ? <BatchInput sampleId={sampleId} variants={variants} closeModal={this.closeBatchModal}/>
                 : null}
-                
+
             </Box>
         )
     }
