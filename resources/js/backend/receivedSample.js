@@ -1,10 +1,9 @@
 import axios from "axios";
 
-const saveReceivedSample = function(receivingDate, manufacturer, product, protocol, grn, ar, remark)
+const saveReceivedSample = function(receivingDate, manufacturer, product, protocol, grn, remark)
 {
     return new Promise(function(resolve, reject) {
-        axios.post('/save_received_sample', {
-            AR: ar,
+        axios.post('/healthcare/save_received_sample', {
             GRN: grn,
             ReceivingDate: receivingDate,
             ManufacturerID: manufacturer,
@@ -23,7 +22,7 @@ const saveReceivedSample = function(receivingDate, manufacturer, product, protoc
 
 const getReceivedSamples = function() {
     return new Promise(function (resolve, reject) {
-        axios.get('/received_samples').then(function(res) {
+        axios.get('/healthcare/received_samples').then(function(res) {
             resolve(res.data);
         }).catch(function(err) {
             if(reject) reject(err);

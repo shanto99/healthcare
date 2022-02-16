@@ -41,7 +41,6 @@ class ReceivedSample extends React.Component {
             selectedProduct: '',
             selectedProtocol: '',
             grn: '',
-            ar: '',
             remark: ''
         }
 
@@ -63,7 +62,7 @@ class ReceivedSample extends React.Component {
                 products: products,
                 protocols
             }, this.getSavedReceivedSamples);
-            
+
         });
     }
 
@@ -108,11 +107,11 @@ class ReceivedSample extends React.Component {
     handleFormSubmit(e)
     {
         e.preventDefault();
-        let {selectedManufacturer, selectedProduct, selectedProtocol, grn, remark, ar, receivingDate} = this.state;
+        let {selectedManufacturer, selectedProduct, selectedProtocol, grn, remark, receivingDate} = this.state;
         receivingDate = formatDate(receivingDate);
 
-        saveReceivedSample(receivingDate, selectedManufacturer, 
-            selectedProduct, selectedProtocol, grn, ar, remark).then(res => {
+        saveReceivedSample(receivingDate, selectedManufacturer,
+            selectedProduct, selectedProtocol, grn, remark).then(res => {
             swal("Received", "Sample received successfully", "success");
             this.getSavedReceivedSamples();
         }).catch(err => {
@@ -132,7 +131,7 @@ class ReceivedSample extends React.Component {
             text: sample.ReceivingDate
         });
         let secondaryText = '';
-        ['AR', 'GRN', 'Batch'].forEach(function(field, index) {
+        ['GRN', 'Batch'].forEach(function(field, index) {
             if(index > 0) secondaryText += ', '
             secondaryText += `${field}: ${sample[field]}`;
         });
@@ -155,8 +154,8 @@ class ReceivedSample extends React.Component {
                         <List>
                             {samples.map(sample => {
                                 return (
-                                    <Link to={`/observation/${sample.AR}`}>
-                                        <ListItem key={sample.AR}>
+                                    <Link to={`/observation/${sample.SampleID}`}>
+                                        <ListItem key={sample.SampleID}>
                                             <ListItemIcon>
                                                 <GiMedicines fontSize="30px"/>
                                             </ListItemIcon>
@@ -251,17 +250,6 @@ class ReceivedSample extends React.Component {
                                     autoComplete="off"
                                     autoFocus
                                     onChange={(e) => this.setState({grn: e.target.value})}
-                                />
-                                <TextField
-                                    variant="outlined"
-                                    margin="normal"
-                                    value={this.state.ar}
-                                    required
-                                    fullWidth
-                                    label="AR Number"
-                                    autoComplete="off"
-                                    autoFocus
-                                    onChange={(e) => this.setState({ar: e.target.value})}
                                 />
                                 <TextField
                                     variant="outlined"

@@ -2,7 +2,7 @@ import axios from "axios";
 
 const createCondition = function(condition) {
     return new Promise(function(resolve, reject) {
-        axios.post('/create_condition', {
+        axios.post('/healthcare/create_condition', {
             Condition: condition
         }).then(function(res) {
            resolve(res.data);
@@ -14,7 +14,7 @@ const createCondition = function(condition) {
 
 const getAllConditions = function () {
     return new Promise(function(resolve, reject) {
-       axios.get('/all_conditions').then(function(res) {
+       axios.get('/healthcare/all_conditions').then(function(res) {
            resolve(res.data);
        }).catch(function (err) {
             if(reject) reject(err);

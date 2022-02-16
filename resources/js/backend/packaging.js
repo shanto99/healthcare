@@ -1,7 +1,7 @@
 import axios from "axios";
 const savePackaging = function(name, source, dmf, resin, colorant, liner) {
     return new Promise(function (resolve, reject) {
-        axios.post('/save_packaging', {
+        axios.post('/healthcare/save_packaging', {
             Name: name,
             Source: source,
             DMF: dmf,
@@ -17,7 +17,7 @@ const savePackaging = function(name, source, dmf, resin, colorant, liner) {
 }
 const getPackagings = function (){
   return new Promise(function(resolve, reject) {
-    axios.get('/packagings').then(function(res) {
+    axios.get('/healthcare/packagings').then(function(res) {
         resolve(res.data);
     }).catch(function(err) {
         if(reject) reject(err);

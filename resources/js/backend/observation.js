@@ -3,7 +3,7 @@ import axios from "axios";
 const getStudies = function(sampleId)
 {
     return new Promise(function(resolve, reject) {
-        axios.get(`/get_sample_studies/${sampleId}`).then(res => {
+        axios.get(`/healthcare/get_sample_studies/${sampleId}`).then(res => {
             resolve(res.data);
         }).catch(err => {
             if(reject) reject(err);
@@ -13,7 +13,7 @@ const getStudies = function(sampleId)
 
 const getTests = function(sampleId) {
     return new Promise(function(resolve, reject) {
-        axios.get(`/get_sample_tests/${sampleId}`).then(res => {
+        axios.get(`/healthcare/get_sample_tests/${sampleId}`).then(res => {
             resolve(res.data);
         }).catch(err => {
             if(reject) reject(err);
@@ -23,7 +23,7 @@ const getTests = function(sampleId) {
 
 const getObservations = function(sampleId) {
     return new Promise(function(resolve, reject) {
-        axios.get(`/get_sample_observations/${sampleId}`).then(res => {
+        axios.get(`/healthcare/get_sample_observations/${sampleId}`).then(res => {
             resolve(res.data);
         }).catch(err => {
             if(reject) reject(err);
@@ -34,7 +34,7 @@ const getObservations = function(sampleId) {
 const submitObservations = function(observations)
 {
     return new Promise(function(resolve, reject) {
-        axios.post('/submit_observations', {
+        axios.post('/healthcare/submit_observations', {
             observations: observations
         }).then(function(res) {
             resolve(res.data);
@@ -47,7 +47,7 @@ const submitObservations = function(observations)
 const getSampleVariants = function(sampleId)
 {
     return new Promise(function(resolve, reject) {
-        axios.get(`/sample_variants/${sampleId}`).then(function(res) {
+        axios.get(`/healthcare/sample_variants/${sampleId}`).then(function(res) {
             resolve(res.data);
         }).catch(function(err) {
             if(reject) reject(err);
@@ -57,7 +57,7 @@ const getSampleVariants = function(sampleId)
 
 const saveBatch = function(sampleId, batchNo, batchSize, variantId, mfgDate, expDate, initiationDate) {
     return new Promise(function(resolve, reject) {
-        axios.post('/save_batch', {
+        axios.post('/healthcare/save_batch', {
             VariantID: variantId,
             BatchNo: batchNo,
             BatchSize: batchSize,
@@ -75,7 +75,7 @@ const saveBatch = function(sampleId, batchNo, batchSize, variantId, mfgDate, exp
 
 const getBatches = function(sampleId) {
     return new Promise(function(resolve, reject) {
-        axios.get(`/get_sample_batches/${sampleId}`).then(function(res) {
+        axios.get(`/healthcare/get_sample_batches/${sampleId}`).then(function(res) {
             resolve(res.data);
         }).catch(function(err) {
             if(reject) reject(err);
@@ -85,7 +85,7 @@ const getBatches = function(sampleId) {
 
 const observationReport = function(sampleId, studyId, batchId) {
     return new Promise(function(resolve, reject) {
-        axios.get(`/generate_obervation_report/${sampleId}/${studyId}/${batchId}`, {
+        axios.get(`/healthcare/generate_obervation_report/${sampleId}/${studyId}/${batchId}`, {
             responseType: 'blob'
         }).then(function(res) {
             resolve(res.data);

@@ -3,7 +3,7 @@ import axios from "axios";
 const getParentTests = function()
 {
     return new Promise(function(resolve, reject) {
-        axios.get('/get_parent_tests').then(function(res) {
+        axios.get('/healthcare/get_parent_tests').then(function(res) {
             resolve(res.data);
         }).catch(function(err) {
             if(reject) {
@@ -15,7 +15,7 @@ const getParentTests = function()
 
 const getAllTests = function() {
     return new Promise(function(resolve, reject) {
-        axios.get('/get_all_tests').then(function(res) {
+        axios.get('/healthcare/get_all_tests').then(function(res) {
             resolve(res.data);
         }).catch(function(err) {
             if(reject) {
@@ -45,12 +45,10 @@ const createTest = function(testName, expression, defaultValue, specifications, 
             ParentTest: parentTest
         };
 
-        console.log({expression, defaultValue});
-
         if(expression) payload['Expression'] = expression;
         if(defaultValue) payload['DefaultValue'] = defaultValue;
 
-        axios.post('/save_test', payload).then(function (res) {
+        axios.post('/healthcare/save_test', payload).then(function (res) {
             resolve(res.data);
         }).catch(function(err) {
             if(reject) reject(err);

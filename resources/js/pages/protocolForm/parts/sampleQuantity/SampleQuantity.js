@@ -45,8 +45,8 @@ class SampleQuantity extends React.Component {
         const selectedTest = this.state.allTests.find(test => test.serialId === this.state.selectedTest);
         if(!selectedTest) return;
         const test = {
-            test: selectedTest,
-            counts: this.state.counts,
+            test:  Object.assign({}, selectedTest),
+            counts: Object.assign({}, this.state.counts),
             specifications: this.state.specifications
         }
 
@@ -158,8 +158,8 @@ class SampleQuantity extends React.Component {
                     </div>
                 </div>
                 {this.state.addingTest
-                ? <SpecificationModal 
-                    close={() => this.setState({ addingTest: null })} 
+                ? <SpecificationModal
+                    close={() => this.setState({ addingTest: null })}
                     selectTest={this.selectTest}
                     studyTypes={studyTypes}/>
                 : null}

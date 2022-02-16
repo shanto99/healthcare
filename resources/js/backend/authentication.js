@@ -1,7 +1,7 @@
 import axios from "axios";
 const createUser = function(userId, userName, phone, password) {
     return new Promise(function(resolve, reject) {
-        axios.post('/create_user', {
+        axios.post('/healthcare/create_user', {
             UserID: userId,
             UserName: userName,
             Phone: phone,
@@ -18,7 +18,7 @@ const createUser = function(userId, userName, phone, password) {
 
 const signIn = function(userId, password) {
     return new Promise(function(resolve, reject) {
-        axios.post('/sign_in', {
+        axios.post('/healthcare/sign_in', {
             UserID: userId,
             Password: password
         }).then(function(res) {
@@ -31,7 +31,7 @@ const signIn = function(userId, password) {
 
 const signOut = function() {
     return new Promise(function (resolve, reject) {
-        axios.post('/logout').then(function(res) {
+        axios.post('/healthcare/logout').then(function(res) {
             resolve();
         }).catch(function(err) {
             if(reject) reject();
@@ -41,7 +41,7 @@ const signOut = function() {
 
 const getUser = function () {
     return new Promise(function(resolve, reject) {
-        axios.get('/user').then(function(res) {
+        axios.get('/healthcare/user').then(function(res) {
             resolve(res.data);
         }).catch(function (err) {
             reject(err);

@@ -45,7 +45,7 @@ class HealthCare extends React.Component {
                 <CssBaseline/>
                 {this.state.isLoading
                 ? <Loader/>
-                : <Router>
+                : <Router basename="healthcare">
                         <Switch>
                             <Route path="/auth">
                                 <Authentication/>

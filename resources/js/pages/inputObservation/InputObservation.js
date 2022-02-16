@@ -88,6 +88,7 @@ class InputObservation extends React.Component {
     }
 
     getTestValue = (month, protocolTest, type="Value") => {
+        if(protocolTest.Name === "Planned withdraw date") return this.getPlannedWithdrawDate(month);
         const protocolTestId = protocolTest.ProtocolTestID;
         const studyId = this.state.selectedStudy && this.state.selectedStudy.StudyID || "";
         const batchId = this.state.selectedBatch && this.state.selectedBatch.SampleBatchID || "";
@@ -102,6 +103,16 @@ class InputObservation extends React.Component {
             return foundTest && foundTest.test && foundTest.test[type] || "";
         }
 
+    }
+
+    getPlannedWithdrawDate = (month) => {
+        console.log({month});
+        const selectedBatch = this.state.selectedBatch;
+        if(selectedBatch) {
+            let initiationDate = new Date(selectedBatch.InitiationDate);
+            initiationDate.setMonth(initiationDate.getMonth() + Number(month));
+            return initiationDate;
+        }
     }
 
     handleObservationInput = (month, protocolTest, value, valueType="Value") => {
@@ -284,7 +295,7 @@ class InputObservation extends React.Component {
                                             {test.Name}
                                         </TableCell>
                                         <TableCell>
-                                            {test.Specifications}
+                                            {test.Specifications[selectedStudy.StudyID]}
                                         </TableCell>
                                         {months.map(month => {
                                             return (
