@@ -45,13 +45,8 @@ class SampleQuantity extends React.Component {
         const selectedTest = this.state.allTests.find(test => test.serialId === this.state.selectedTest);
         if(!selectedTest) return;
         const test = {
-<<<<<<< HEAD
             test: selectedTest,
             counts: {...this.state.counts},
-=======
-            test:  Object.assign({}, selectedTest),
-            counts: Object.assign({}, this.state.counts),
->>>>>>> cbd0e7957ba83ad53d91ed33983777cdcb9774c1
             specifications: this.state.specifications
         }
 
