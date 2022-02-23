@@ -87,7 +87,7 @@ class BasicView extends React.Component {
                 <section>
                     <h3>Reason:</h3>
                     <p>
-                        SOP of Stability Designing adn Handling of Stability Protocol ({ protocol.Reference })
+                        {protocol.Reference}
                     </p>
                 </section>
                 <section>
@@ -145,10 +145,10 @@ class BasicView extends React.Component {
                             {protocol.apis.map(api => {
                                 return (
                                     <TableRow>
-                                        <TableCell className={classes.borderedCell} rowSpan={2}>
+                                        <TableCell className={classes.borderedCell}>
                                             {api.Name}
                                         </TableCell>
-                                        <TableCell className={classes.borderedCell} rowSpan={2}>
+                                        <TableCell className={classes.borderedCell}>
                                             {api.Source}
                                         </TableCell>
                                     </TableRow>

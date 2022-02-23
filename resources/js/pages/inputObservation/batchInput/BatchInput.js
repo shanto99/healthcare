@@ -17,6 +17,9 @@ class BatchInput extends React.Component {
         expDate: new Date(),
         initiationDate: new Date(),
         variants: this.props.variants,
+        counts: this.props.counts,
+        countOptions: [],
+        selectedCount: '',
         selectedVariant: null
     };
 
@@ -25,7 +28,8 @@ class BatchInput extends React.Component {
         const selectedVariant = this.state.variants.find(variant => variant.VariantID == variantId);
         if(selectedVariant) {
             this.setState({
-                selectedVariant: selectedVariant
+                selectedVariant: selectedVariant,
+                countOptions: this.state.counts[variantId] || []
             });
         }
     }
@@ -43,11 +47,11 @@ class BatchInput extends React.Component {
             console.log("Could not save batch",err);
             swal("Error", "Could not save batch", "error");
         });
-        
+
     }
 
     render(){
-        const {variants, selectedVariant, batchNo, batchSize, mfgDate, expDate, initiationDate} = this.state;
+        const {variants, selectedVariant, batchNo, batchSize, mfgDate, expDate, initiationDate, countOptions} = this.state;
         return (
             <div className="modalContainer">
                 <div className="modal">
@@ -101,6 +105,28 @@ class BatchInput extends React.Component {
                                 ))}
                             </Select>
                         </FormControl>
+                        <FormControl variant="outlined" className="formControl">
+                            <InputLabel
+                                id="select-variant-count"
+                            >
+                                Select count
+                            </InputLabel>
+                            <Select
+                                labelId="select-variant-count"
+                                label="Select count"
+                                value={this.state.selectedCount}
+                                onChange={(e) => this.setState({ selectedCount: e.target.value })}
+                            >
+                                <MenuItem value="">
+                                    Select count
+                                </MenuItem>
+                                {countOptions.map(count => (
+                                    <MenuItem value={count}>
+                                        { count }
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
                         <FormControl className="formControl">
                             <KeyboardDatePicker
                                     autoOk
@@ -142,13 +168,13 @@ class BatchInput extends React.Component {
                         </FormControl>
 
                         <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-                            <Button 
+                            <Button
                                 variant="outlined"
                                 onClick={this.props.closeModal}
                             >
                                 close
                             </Button>
-                            <Button 
+                            <Button
                                 variant="outlined"
                                 onClick={this.saveBatch}
                             >

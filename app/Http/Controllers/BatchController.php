@@ -23,7 +23,7 @@ class BatchController extends Controller
 
     public function getSampleBatches($sampleId)
     {
-        $batches = SampleBatch::where('AR', $sampleId)->get();
+        $batches = SampleBatch::where('SampleID', $sampleId)->get();
         return response()->json([
             'batches' => $batches,
             'status' => 200

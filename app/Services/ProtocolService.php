@@ -94,10 +94,9 @@ class ProtocolService
                 'SubTestID' => isset($testObj['SubTestID']) ? $testObj['SubTestID'] : null,
             ]);
 
-            foreach ($specifications as $studyTypeId => $specification) {
-                $studyType = $protocol->studyTypes()->where('StudyTypeID', $studyTypeId)->first();
+            foreach ($specifications as $variantId => $specification) {
                 $protocolTest->specifications()->create([
-                    'StudyID' => $studyType->StudyID,
+                    'VariantID' => $variantId,
                     'Specifications' => $specification
                 ]);
             }

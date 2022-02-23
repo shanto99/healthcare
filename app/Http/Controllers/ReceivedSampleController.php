@@ -5,14 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\Protocol;
 use App\Models\ReceivedSample;
 use App\Models\SampleTest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ReceivedSampleController extends Controller
 {
+    public function generateSampleId()
+    {
+        $yearMonthString = Carbon::today()->format('Y-m');
+        $count = ReceivedSample::whereBetween('created_at', [Carbon::today()->startOfYear(), Carbon::today()->endOfYear()])->count();
+        $count += 1;
+        return $yearMonthString . '-' . $count;
+    }
     public function save_received_sample(Request $request)
     {
         $request->validate([
-            'AR' => 'required',
             'ReceivingDate' => 'required',
             'ManufacturerID' => 'required',
             'ProductID' => 'required',
@@ -21,15 +28,20 @@ class ReceivedSampleController extends Controller
             'Remark' => 'required'
         ]);
 
-        $receivedSample = ReceivedSample::create($request->only(
-            'AR',
+        $sampleId = $this->generateSampleId();
+
+        $sampleData = $request->only(
             'ReceivingDate',
             'ManufacturerID',
             'ProductID',
             'ProtocolID',
             'GRN',
             'Remark'
-        ));
+        );
+
+        $sampleData['SampleID'] = $sampleId;
+
+        $receivedSample = ReceivedSample::create($sampleData);
 
         // $protocol = Protocol::find($request->ProtocolID);
 

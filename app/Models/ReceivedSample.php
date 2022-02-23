@@ -9,11 +9,11 @@ class ReceivedSample extends Model
 {
     use HasFactory;
     protected $table = "ReceivedSamples";
-    protected $primaryKey = "AR";
+    protected $primaryKey = "SampleID";
     protected $keyType = "string";
     public $incrementing = false;
 
-    protected $fillable = ['AR', 'ReceivingDate', 'ManufacturerID', 'ProductID', 'GRN', 'Batch', 'Remark', 'ProtocolID'];
+    protected $fillable = ['SampleID', 'ReceivingDate', 'ManufacturerID', 'ProductID', 'GRN', 'Batch', 'Remark', 'ProtocolID'];
 
 
     public function product()
@@ -33,12 +33,12 @@ class ReceivedSample extends Model
 
     public function tests()
     {
-        return $this->hasMany(SampleTest::class, 'AR', 'AR');
+        return $this->hasMany(SampleTest::class, 'SampleID', 'SampleID');
     }
 
     public function batches()
     {
-        return $this->hasMany(SampleBatch::class, 'AR', 'AR');
+        return $this->hasMany(SampleBatch::class, 'SampleID', 'SampleID');
     }
 
     public function testsForBatchStudy($studyId, $batchId)

@@ -2,7 +2,7 @@ import axios from "axios";
 
 const saveProduct = function(productName, variants) {
     return new Promise(function(resolve, reject) {
-        axios.post('/create_product', {
+        axios.post('/healthcare/create_product', {
             ProductName: productName,
             Variants: variants
         }).then(function(res) {
@@ -18,7 +18,7 @@ const saveProduct = function(productName, variants) {
 const getProducts = function()
 {
     return new Promise(function (resolve, reject) {
-       axios.get('/products').then(function(res) {
+       axios.get('/healthcare/products').then(function(res) {
            resolve(res.data);
        }).catch(function(err) {
            if(reject) {

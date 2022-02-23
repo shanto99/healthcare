@@ -58,9 +58,9 @@ class PackagingView extends React.Component {
             return container.VariantID === variantId;
         });
         const rowArray = [];
-
+        let isFirst = true;
         containers.forEach((count, cIndex) => {
-            let isFirst = true;
+
             const primaryContainer = count.primary_container;
             primaryContainer.packagings.forEach((packaging, packagingIndex) => {
                 const row =  (

@@ -57,8 +57,10 @@ class ProtocolSampleQuantity extends React.Component {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {tests.map((test, index) => (
-                            <TableRow>
+                        {tests.map((test, index) => {
+                            if(test.test && test.test.IsCommon && test.test.IsCommon === "1") return null;
+                            return (
+                                <TableRow>
                                 <TableCell className={classes.borderedCell}>
                                     {index+1}
                                 </TableCell>
@@ -75,7 +77,8 @@ class ProtocolSampleQuantity extends React.Component {
                                     )
                                 })}
                             </TableRow>
-                        ))}
+                            )
+                        })}
                     </TableBody>
                 </Table>
             </section>

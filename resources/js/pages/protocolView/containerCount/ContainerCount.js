@@ -21,7 +21,6 @@ class ContainerCount extends React.Component {
         super(props);
         this.containerNumber = props.containerNumber || {}
         this.months = [];
-        console.log("asdfasdf: ", props.studyTypes)
         props.studyTypes.forEach((studyType) => {
             studyType.Months.forEach(month => {
                 month = Number(month);
@@ -203,8 +202,6 @@ class ContainerCount extends React.Component {
         months.sort(function(a, b) {
             return a - b;
         });
-
-        console.log("Sorted months: ", months);
 
         return (
             <Box width="100">

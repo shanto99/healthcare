@@ -2,7 +2,7 @@ import axios from "axios";
 
 const saveContainer = function(name, type, packagings) {
     return new Promise(function (resolve, reject) {
-        axios.post('/save_container',{
+        axios.post('/healthcare/save_container',{
             Name: name,
             Type: type,
             Packagings: packagings
@@ -16,7 +16,7 @@ const saveContainer = function(name, type, packagings) {
 
 const getContainers = function () {
     return new Promise(function(resolve, reject) {
-        axios.get('/containers').then(function(res) {
+        axios.get('/healthcare/containers').then(function(res) {
             resolve(res.data);
         }).catch(function(err) {
             if(reject) reject(err);

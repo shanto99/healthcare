@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Protocol;
 use App\Models\ProtocolStudy;
 use App\Models\ReceivedSample;
 use App\Models\SampleBatch;
@@ -14,17 +15,25 @@ class ObservationController extends Controller
 {
     public function getTests($sampleId)
     {
-        $sample = ReceivedSample::with('protocol.tests.specifications', 'protocol.tests.test', 'protocol.tests.subTest')->where('AR', $sampleId)->first();
+        $sample = ReceivedSample::with('protocol.tests.specifications', 'protocol.tests.test', 'protocol.tests.subTest')->where('SampleID', $sampleId)->first();
         $tests = $sample->protocol->tests->toArray();
 
-        dd($tests);
+        function formatSpecifications($specifications)
+        {
+            $formattedSpecs = [];
+            foreach ($specifications as $specification) {
+                $formattedSpecs[$specification['VariantID']] = $specification['Specifications'];
+            }
+
+            return $formattedSpecs;
+        }
 
         $tests = array_map(function ($pTest) {
             $test = $pTest['sub_test'] ? $pTest['sub_test'] : $pTest['test'];
             return [
                 'ProtocolTestID' => $pTest['ProtocolTestID'],
                 'Name' => $test['Name'],
-                'Specifications' => $test['Specifications'],
+                'Specifications' => isset($pTest['specifications']) ? formatSpecifications($pTest['specifications']) : [],
                 'IsMinMax' => $test['IsMinMax'] === "1",
                 'IsDate' => $test['IsDate'] === "1",
             ];
@@ -38,7 +47,7 @@ class ObservationController extends Controller
 
     public function getStudies($sampleId)
     {
-        $sample = ReceivedSample::with('protocol.studyTypes.studyType')->where('AR', $sampleId)->first();
+        $sample = ReceivedSample::with('protocol.studyTypes.studyType')->where('SampleID', $sampleId)->first();
         $studies = $sample->protocol->studyTypes;
         return response()->json([
             'studies' => $studies,
@@ -48,7 +57,7 @@ class ObservationController extends Controller
 
     public function getObservations($sampleId)
     {
-        $observations = SampleTest::where('AR', $sampleId)->get();
+        $observations = SampleTest::where('SampleID', $sampleId)->get();
         return response()->json([
             'observations' => $observations,
             'status' => 200
@@ -60,7 +69,7 @@ class ObservationController extends Controller
         $observations = $request->observations;
         foreach ($observations as $observation) {
 
-            $sampleTest = SampleTest::where('AR', $observation['AR'])
+            $sampleTest = SampleTest::where('SampleID', $observation['SampleID'])
                 ->where('ProtocolTestID', $observation['ProtocolTestID'])->where('Month', $observation['Month'])
                 ->where('StudyID', $observation['StudyID'])->where('SampleBatchID', $observation['SampleBatchID'])->first();
 
@@ -83,7 +92,7 @@ class ObservationController extends Controller
 
     public function getSampleVariants($sampleId)
     {
-        $sample = ReceivedSample::with('product.variants')->where('AR', $sampleId)->first();
+        $sample = ReceivedSample::with('product.variants')->where('SampleID', $sampleId)->first();
 
         return response()->json([
             'variants' => $sample->product->variants,
@@ -184,5 +193,26 @@ class ObservationController extends Controller
         ])->setPaper('a4', 'landscape');
 
         return $pdf->download('report.pdf');
+    }
+
+    public function getCounts($sampleId)
+    {
+        $receivedSample = ReceivedSample::with('protocol.containers')->find($sampleId);
+        $unitCounts = [];
+        if ($receivedSample) {
+            $protocol = $receivedSample->protocol;
+            $variants = $protocol->containers->groupBy('VariantID');
+
+            $variants->each(function ($counts, $variant) use (&$unitCounts) {
+                $unitCounts[$variant] = $counts->map(function ($count) {
+                    return $count->Count;
+                })->toArray();
+            });
+
+            return response()->json([
+                'counts' => $unitCounts,
+                'status' => 200
+            ]);
+        }
     }
 }

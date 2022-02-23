@@ -46,7 +46,7 @@ class SampleQuantity extends React.Component {
         if(!selectedTest) return;
         const test = {
             test: selectedTest,
-            counts: this.state.counts,
+            counts: {...this.state.counts},
             specifications: this.state.specifications
         }
 
@@ -76,10 +76,9 @@ class SampleQuantity extends React.Component {
 
     render() {
         const classes = this.props.classes;
-        const variants = this.state.selectedProduct.variants || [];
-        const tests = this.state.tests || [];
-        const allTests = this.state.allTests || [];
-        const studyTypes = this.state.studyTypes || [];
+        const variants = this.state.selectedProduct.variants ? JSON.parse(JSON.stringify(this.state.selectedProduct.variants)) : [];
+        const tests = this.state.tests ? JSON.parse(JSON.stringify(this.state.tests)) : [];
+        const allTests = this.state.allTests ? JSON.parse(JSON.stringify(this.state.allTests)) : [];
 
         return (
             <Box width="100" px={5}>
@@ -158,10 +157,10 @@ class SampleQuantity extends React.Component {
                     </div>
                 </div>
                 {this.state.addingTest
-                ? <SpecificationModal 
-                    close={() => this.setState({ addingTest: null })} 
+                ? <SpecificationModal
+                    close={() => this.setState({ addingTest: null })}
                     selectTest={this.selectTest}
-                    studyTypes={studyTypes}/>
+                    variants={variants}/>
                 : null}
             </Box>
         );

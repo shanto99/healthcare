@@ -3,7 +3,7 @@ import axios from "axios";
 const createApiDetail = function(name, source)
 {
     return new Promise(function(resolve, reject) {
-        axios.post('/create_api_detail', {
+        axios.post('/healthcare/create_api_detail', {
             Name: name,
             Source: source
         }).then(function (res) {
@@ -17,7 +17,7 @@ const createApiDetail = function(name, source)
 
 const getApiDetails = function() {
     return new Promise(function(resolve, reject) {
-        axios.get('/api_details').then(function(res) {
+        axios.get('/healthcare/api_details').then(function(res) {
             resolve(res.data);
         }).catch(function(err) {
             if(reject) reject(err);

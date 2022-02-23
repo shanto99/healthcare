@@ -2,7 +2,7 @@ import React from "react";
 import "./style.css";
 
 import {getTests, getStudies, getObservations,
-    submitObservations, getSampleVariants, getBatches, observationReport} from "../../backend/observation";
+    submitObservations, getSampleVariants, getBatches, observationReport, getCounts} from "../../backend/observation";
 import { Box, Button, FormControl, InputLabel,
     MenuItem, Select, Table, TableBody, TableCell, TableContainer,
     TableHead, TableRow, TextField } from "@material-ui/core";
@@ -29,6 +29,7 @@ class InputObservation extends React.Component {
             selectedStudy: null,
             selectedBatch: null,
             observations: [],
+            counts: []
         };
     }
 
@@ -37,12 +38,14 @@ class InputObservation extends React.Component {
         const sampleId = this.state.sampleId;
         Promise.all([getTests(sampleId), getStudies(sampleId),
             getObservations(sampleId), getSampleVariants(sampleId),
-            getBatches(sampleId)]).then(responses => {
+            getBatches(sampleId), getCounts(sampleId)]).then(responses => {
+                console.log("Responses: ", responses);
             const tests = responses[0].tests || [];
             const studies = responses[1].studies || [];
             const observations = responses[2].observations || [];
             const variants = responses[3].variants || [];
             const batches = responses[4].batches || [];
+            const counts = responses[5].counts || [];
 
             this.setState({
                 variants: variants,
@@ -51,7 +54,8 @@ class InputObservation extends React.Component {
                 observations: observations,
                 selectedStudy: studies[0],
                 batches: batches,
-                selectedBatch: batches[0]
+                selectedBatch: batches[0],
+                counts: counts || []
             });
 
         });
@@ -69,7 +73,6 @@ class InputObservation extends React.Component {
         const observations = this.state.observations;
 
         const foundObservation = observations.find(function(observation, index) {
-            if(observation.ProtocolTestID == "10") console.log("Observation: ", observation);
             let found =  observation.ProtocolTestID.toString() === protocolTestId && observation.SampleBatchID.toString() === batchId
             && observation.Month.toString() === month && observation.StudyID.toString() === studyId
             if(found) foundIndex = index;
@@ -88,6 +91,7 @@ class InputObservation extends React.Component {
     }
 
     getTestValue = (month, protocolTest, type="Value") => {
+        if(protocolTest.Name === "Planned withdraw date") return this.getPlannedWithdrawDate(month);
         const protocolTestId = protocolTest.ProtocolTestID;
         const studyId = this.state.selectedStudy && this.state.selectedStudy.StudyID || "";
         const batchId = this.state.selectedBatch && this.state.selectedBatch.SampleBatchID || "";
@@ -102,6 +106,15 @@ class InputObservation extends React.Component {
             return foundTest && foundTest.test && foundTest.test[type] || "";
         }
 
+    }
+
+    getPlannedWithdrawDate = (month) => {
+        const selectedBatch = this.state.selectedBatch;
+        if(selectedBatch) {
+            let initiationDate = new Date(selectedBatch.InitiationDate);
+            initiationDate.setMonth(initiationDate.getMonth() + Number(month));
+            return initiationDate;
+        }
     }
 
     handleObservationInput = (month, protocolTest, value, valueType="Value") => {
@@ -197,12 +210,16 @@ class InputObservation extends React.Component {
     }
 
     render() {
-        const {tests, studies, variants, sampleId, batches} = this.state;
+        const {tests, studies, variants, sampleId, batches, counts} = this.state;
 
         const selectedStudy = this.state.selectedStudy;
         const months = selectedStudy && JSON.parse(selectedStudy.Months) || [];
 
         const selectedBatch = this.state.selectedBatch;
+        const selectedVariantId = selectedBatch && Number(selectedBatch.VariantID);
+
+        console.log({variants, tests, selectedBatch});
+
 
         return (
             <Box style={{ margin: '30px' }}>
@@ -252,6 +269,9 @@ class InputObservation extends React.Component {
                                 ))}
                             </Select>
                         </FormControl>
+
+
+
                         <span style={{cursor: 'pointer'}} onClick={this.openBatchModal} >
                             <AddOutlined fontSize="large" />
                         </span>
@@ -260,7 +280,8 @@ class InputObservation extends React.Component {
                     <button onClick={this.generateObservationReport}>Report</button>
 
                 </div>
-                <TableContainer>
+                {selectedBatch && selectedVariantId
+                ? <TableContainer>
                     <Table>
                         <TableHead>
                             <TableRow>
@@ -284,7 +305,7 @@ class InputObservation extends React.Component {
                                             {test.Name}
                                         </TableCell>
                                         <TableCell>
-                                            {test.Specifications}
+                                            {test.Specifications[selectedVariantId]}
                                         </TableCell>
                                         {months.map(month => {
                                             return (
@@ -333,6 +354,7 @@ class InputObservation extends React.Component {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                : null}
                 <div className="observationFooter">
                     <Button
                         variant="outlined"
@@ -342,7 +364,7 @@ class InputObservation extends React.Component {
                     </Button>
                 </div>
                 {this.state.batchModal
-                ? <BatchInput sampleId={sampleId} variants={variants} closeModal={this.closeBatchModal}/>
+                ? <BatchInput sampleId={sampleId} variants={variants} counts={this.state.counts} closeModal={this.closeBatchModal}/>
                 : null}
 
             </Box>

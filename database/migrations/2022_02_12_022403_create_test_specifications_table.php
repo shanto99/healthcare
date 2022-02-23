@@ -16,12 +16,11 @@ class CreateTestSpecificationsTable extends Migration
         Schema::create('TestSpecifications', function (Blueprint $table) {
             $table->id('TestSpecificationID');
             $table->unsignedBigInteger('ProtocolTestID');
-            $table->unsignedBigInteger('StudyID');
+            $table->unsignedBigInteger('VariantID');
             $table->text('Specifications');
             $table->timestamps();
 
             $table->foreign('ProtocolTestID')->references('ProtocolTestID')->on('ProtocolTests');
-            $table->foreign('StudyID')->references('StudyID')->on('ProtocolStudies');
         });
     }
 

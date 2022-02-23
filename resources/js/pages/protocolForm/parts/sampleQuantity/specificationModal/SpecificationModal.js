@@ -7,15 +7,15 @@ class SpecificationModal extends React.Component {
         super(props);
 
         this.state = {
-            studyTypes: props.studyTypes,
+            variants: props.variants,
             specifications: null,
         }
 
         this.specifications = {};
     }
 
-    handleSpecificationChange = (studyTypeId, value) => {
-        this.specifications[studyTypeId] = value;
+    handleSpecificationChange = (variantID, value) => {
+        this.specifications[variantID] = value;
     }
 
     handleFormSubmit = (e) => {
@@ -26,21 +26,21 @@ class SpecificationModal extends React.Component {
 
 
     render() {
-        const {studyTypes} = this.state;
+        const {variants} = this.state;
         return (
             <div className="modalContainer">
                 <div className="modal">
                     <h4>Specifications: </h4>
                     <form className="specification-form" onSubmit={this.handleFormSubmit}>
-                        {studyTypes.map(type => (
+                        {variants.map(variant => (
                             <TextField
                                 key={nextId("study-type-spec-")}
                                 fullWidth
                                 required
-                                label={type.studyName}
+                                label={variant.Variant}
                                 multiline
                                 rows={4}
-                                onChange={(e) => this.handleSpecificationChange(type.studyTypeId, e.target.value)}
+                                onChange={(e) => this.handleSpecificationChange(variant.VariantID, e.target.value)}
                             />
                         ))}
                         <br/>
@@ -59,7 +59,7 @@ class SpecificationModal extends React.Component {
                             >
                                 Save
                             </Button>
-                        </div>          
+                        </div>
                     </form>
                 </div>
             </div>
