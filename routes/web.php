@@ -16,7 +16,6 @@ use App\Http\Controllers\PackagingController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\ObservationController;
 use App\Http\Controllers\ReportController;
-use Illuminate\Foundation\Console\ObserverMakeCommand;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,21 +28,12 @@ use Illuminate\Foundation\Console\ObserverMakeCommand;
 |
 */
 
-<<<<<<< HEAD
 Route::get('/', function () {
     return view('app');
 });
-Route::prefix('')->group(function () {
+Route::prefix('healthcare')->group(function () {
     Route::post('/create_user', [UserController::class, 'create_user']);
     Route::post('/sign_in', [UserController::class, 'sign_in']);
-=======
-Route::group(['prefix' => 'healthcare'], function () {
-    Route::post('/create_user', [UserController::class, 'create_user']);
-    Route::post('/sign_in', [UserController::class, 'sign_in']);
-    Route::get('/', function () {
-        return view('app');
-    });
->>>>>>> cbd0e7957ba83ad53d91ed33983777cdcb9774c1
     Route::middleware('auth')->group(function () {
         Route::get('/user', [UserController::class, 'get_user']);
         Route::post('/create_product', [ProductController::class, 'save_product']);
@@ -97,19 +87,12 @@ Route::group(['prefix' => 'healthcare'], function () {
         Route::get('/generate_obervation_report/{sampleId}/{studyId}/{batchId}', [ObservationController::class, 'generateObservationReport']);
 
         Route::get('/generate_report', [ReportController::class, 'generateReport']);
-<<<<<<< HEAD
 
         Route::get('/get_counts/{sampleId}', [ObservationController::class, 'getCounts']);
-=======
->>>>>>> cbd0e7957ba83ad53d91ed33983777cdcb9774c1
     });
 });
 
 
 Route::fallback(function () {
-<<<<<<< HEAD
     return redirect("/");
-=======
-    return redirect("/healthcare/");
->>>>>>> cbd0e7957ba83ad53d91ed33983777cdcb9774c1
 });

@@ -135,7 +135,7 @@ class InputObservation extends React.Component {
                 observation[valueType] = value;
              } else {
                  let newObservation = {
-                    AR: this.state.sampleId,
+                    SampleID: this.state.sampleId,
                     ProtocolTestID: protocolTestId,
                     StudyID: studyId,
                     SampleBatchID: this.state.selectedBatch.SampleBatchID,

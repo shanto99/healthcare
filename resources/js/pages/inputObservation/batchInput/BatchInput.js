@@ -35,12 +35,12 @@ class BatchInput extends React.Component {
     }
 
     saveBatch = () => {
-        let {sampleId, batchNo, batchSize, selectedVariant, mfgDate, expDate, initiationDate} = this.state;
+        let {sampleId, batchNo, batchSize, selectedVariant, mfgDate, expDate, initiationDate, selectedCount} = this.state;
         mfgDate = formatDate(mfgDate);
         initiationDate = formatDate(initiationDate);
         selectedVariant = selectedVariant.VariantID;
 
-        saveBatch(sampleId, batchNo, batchSize, selectedVariant, mfgDate, expDate, initiationDate).then(res => {
+        saveBatch(sampleId, batchNo, batchSize, selectedVariant, mfgDate, expDate, initiationDate, selectedCount).then(res => {
             let newBatch = res.batch;
             this.props.closeModal(newBatch);
         }).catch(err => {

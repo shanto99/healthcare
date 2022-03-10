@@ -55,7 +55,7 @@ const getSampleVariants = function(sampleId)
     });
 }
 
-const saveBatch = function(sampleId, batchNo, batchSize, variantId, mfgDate, expDate, initiationDate) {
+const saveBatch = function(sampleId, batchNo, batchSize, variantId, mfgDate, expDate, initiationDate, count) {
     return new Promise(function(resolve, reject) {
         axios.post('/healthcare/save_batch', {
             VariantID: variantId,
@@ -64,7 +64,8 @@ const saveBatch = function(sampleId, batchNo, batchSize, variantId, mfgDate, exp
             MfgDate: mfgDate,
             ExpDate: expDate,
             InitiationDate: initiationDate,
-            SampleID: sampleId
+            SampleID: sampleId,
+            Count: count
         }).then(function(res) {
             resolve(res.data);
         }).catch(function(err) {
