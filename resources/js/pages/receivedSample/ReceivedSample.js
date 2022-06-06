@@ -120,7 +120,7 @@ class ReceivedSample extends React.Component {
     }
 
     getSecondaryText(sample)
-    {
+    {   
         let secondaryItems = [];
         secondaryItems.push({
             icon: <HomeWorkIcon fontSize="small"/>,
@@ -154,7 +154,7 @@ class ReceivedSample extends React.Component {
                         <List>
                             {samples.map(sample => {
                                 return (
-                                    <Link to={`/observation/${sample.SampleID}`}>
+                                    <Link to={`/observation/${sample.SampleID}`} key={sample.SampleID}>
                                         <ListItem key={sample.SampleID}>
                                             <ListItemIcon>
                                                 <GiMedicines fontSize="30px"/>

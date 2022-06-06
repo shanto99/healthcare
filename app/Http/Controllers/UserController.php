@@ -30,38 +30,6 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function sign_in(Request $request)
-    {
-        $request->validate([
-            'UserID' => 'required',
-            'Password' => 'required'
-        ]);
-
-        $user = User::find($request->UserID);
-
-        if($user) {
-            if(Hash::check($request->Password, $user->Password)) {
-                Auth::login($user, true);
-                return response()->json([
-                   'status' => 200
-                ]);
-            }
-        }
-
-        return response()->json([
-            'status' => 401
-        ], 200);
-
-    }
-
-    public function sign_out()
-    {
-        Auth::logout();
-        return response()->json([
-            'status' => 200
-        ], 200);
-    }
-
     public function get_user()
     {
         return response()->json([

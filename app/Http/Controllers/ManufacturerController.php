@@ -12,7 +12,6 @@ class ManufacturerController extends Controller
         $request->validate([
             'Name' => 'required',
             'Address' => 'required',
-            'Phone' => 'required|unique:Manufacturers',
             'Email' => 'email|unique:Manufacturers'
         ]);
 

@@ -33,7 +33,6 @@ Route::get('/', function () {
 });
 Route::prefix('healthcare')->group(function () {
     Route::post('/create_user', [UserController::class, 'create_user']);
-    Route::post('/sign_in', [UserController::class, 'sign_in']);
     Route::middleware('auth')->group(function () {
         Route::get('/user', [UserController::class, 'get_user']);
         Route::post('/create_product', [ProductController::class, 'save_product']);

@@ -145,7 +145,7 @@ class Manufacturer extends React.Component {
                                 margin="normal"
                                 value={this.state.phone}
                                 validators={['required']}
-                                required
+                                
                                 fullWidth
                                 label="Phone"
                                 autoComplete="off"

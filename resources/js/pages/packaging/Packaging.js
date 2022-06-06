@@ -69,7 +69,7 @@ class Packaging extends React.Component {
                             {packagings.map((packaging, index) => {
                                 const secondaryTexts = [];
 
-                                ['Source', 'DMP', 'Liner'].forEach(field => {
+                                ['Source', 'DMF', 'Liner'].forEach(field => {
                                     secondaryTexts.push({
                                         text: `${field}: ${packaging[field]}`
                                     });
@@ -127,7 +127,6 @@ class Packaging extends React.Component {
                                 variant="outlined"
                                 margin="normal"
                                 value={this.state.dmf}
-                                required
                                 fullWidth
                                 validators={['required']}
                                 label="DMF"
@@ -143,7 +142,6 @@ class Packaging extends React.Component {
                                 variant="outlined"
                                 margin="normal"
                                 value={this.state.resin}
-                                required
                                 fullWidth
                                 validators={['required']}
                                 label="Resin"
@@ -159,7 +157,6 @@ class Packaging extends React.Component {
                                 variant="outlined"
                                 margin="normal"
                                 value={this.state.colorant}
-                                required
                                 fullWidth
                                 validators={['required']}
                                 label="Colorant"
@@ -175,7 +172,6 @@ class Packaging extends React.Component {
                                 variant="outlined"
                                 margin="normal"
                                 value={this.state.liner}
-                                required
                                 fullWidth
                                 validators={['required']}
                                 label="Liner"

@@ -1,0 +1,13 @@
+.grow {
+    flex: 1;
+}
+.main {
+    overflow-y: auto;
+}
+.is-invalid {
+    display: block;
+    padding: 4px;
+    background: rgba(211, 0, 0, 0.95);
+    margin-top: 3px;
+    color: #fff;
+}

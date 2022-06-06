@@ -60,7 +60,6 @@ class BatchInput extends React.Component {
                             fullWidth
                             variant="outlined"
                             label="Batch No."
-                            variant="outlined"
                             value={batchNo}
                             onChange={(e) => {
                                 this.setState({
@@ -72,7 +71,6 @@ class BatchInput extends React.Component {
                     <FormControl className="formControl">
                         <TextField
                             fullWidth
-                            variant="outlined"
                             label="Batch Size"
                             variant="outlined"
                             value={batchSize}

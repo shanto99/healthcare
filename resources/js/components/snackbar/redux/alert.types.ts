@@ -1,0 +1,8 @@
+enum alertTypes {
+    ALERT_SNACK_BAR_PUSH = "ALERT_SNACK_BAR_PUSH",
+    ALERT_SNACK_BAR_POP = "ALERT_SNACK_BAR_POP",
+    SWEET_ALERT_PUSH = "SWEET_ALERT_PUSH",
+    SWEET_ALERT_POP = "ASWEET_LERT_POP",
+}
+
+export default alertTypes;
