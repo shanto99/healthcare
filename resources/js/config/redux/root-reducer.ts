@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage";
 import loginReducer from "../../auth/redux/login.reducer";
 import alertReducer from "../../components/snackbar/redux/alert.reducer";
 import ManufacturerReducer from "../../modules/manufacturer/redux/manufacturer.reducer";
+import marketReducer from "../../modules/market/redux/market.reducer";
 
 const persistConfig = {
   key: "root",
@@ -16,7 +17,8 @@ const persistConfig = {
 const appReducer = combineReducers({
    alertState: alertReducer,
    loginState: loginReducer,
-   manufacturerState: ManufacturerReducer
+   manufacturerState: ManufacturerReducer,
+   marketState: marketReducer
 });
 
 const rootReducer = (state: any, action: any) => {

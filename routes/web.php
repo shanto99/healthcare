@@ -41,9 +41,6 @@ use Illuminate\Support\Facades\Route;
 //         Route::post('/create_product', [ProductController::class, 'save_product']);
 //         Route::get('/products', [ProductController::class, 'get_products']);
         
-//         Route::post('/create_market', [MarketController::class, 'create_market']);
-//         Route::get('/markets', [MarketController::class, 'get_markets']);
-
 //         Route::post('/create_api_detail', [ApiDetailController::class, 'create_api_detail']);
 //         Route::get('/api_details', [ApiDetailController::class, 'get_api_details']);
 

@@ -48,7 +48,7 @@ const Manufacturer = () => {
                     history.push('/manufacturer');
                     Swal.fire(
                         'Deleted!',
-                        'Your file has been deleted.',
+                        'Manufacturer has been deleted.',
                         'success'
                     )
                 }

@@ -17,7 +17,7 @@ const createMarket = function(name, marketCondition, marketId)
 
 const getMarkets = function() {
     return new Promise(function(resolve, reject) {
-        axios.get('/healthcare/markets').then(function(res) {
+        axios.get('/api/markets').then(function(res) {
             resolve(res.data);
         }).catch(function(err) {
             if(reject) reject(err);

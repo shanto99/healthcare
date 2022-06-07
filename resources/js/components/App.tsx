@@ -9,6 +9,9 @@ const Footer = lazy(() => import("./layouts/Footer"));
 const Manufacturer = lazy(() => import("../modules/manufacturer/ManufacturerIndex"));
 const ManufacturerCreate = lazy(() => import("../modules/manufacturer/ManufacturerCreate"));
 const ManufacturerEdit = lazy(() => import("../modules/manufacturer/ManufacturerEdit"));
+const MarketIndex = lazy(() => import("../modules/market/MarketIndex"));
+const MarketCreate = lazy(() => import("../modules/market/MarketCreate"));
+const MarketEdit = lazy(() => import("../modules/market/MarketEdit"));
 
 const App = () => {
   return (
@@ -22,6 +25,9 @@ const App = () => {
                         <PrivateRoute exact={true} path="/manufacturer" Component={Manufacturer} />
                         <PrivateRoute exact={true} path="/manufacturers/create" Component={ManufacturerCreate} />
                         <PrivateRoute exact={true} path="/manufacturer/edit/:id" Component={ManufacturerEdit} />
+                        <PrivateRoute exact={true} path="/market" Component={MarketIndex} />
+                        <PrivateRoute exact={true} path="/market/create" Component={MarketCreate} />
+                        <PrivateRoute exact={true} path="/market/edit/:id" Component={MarketEdit} />
                     </Switch>
                 <Footer/>  
             </Router>

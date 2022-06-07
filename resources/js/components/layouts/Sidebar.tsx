@@ -25,6 +25,10 @@ function Sidebar() {
                 title: 'Manufacturer',
                 itemId: '/manufacturer',
               },
+              {
+                title: 'Market',
+                itemId: '/market',
+              },
             ]}
           />
         </div>
