@@ -17,12 +17,12 @@ class Sidebar extends React.Component {
                             <ListItemText primary="Dashboard"/>
                         </ListItem>
                     </Link>
-                    <Link to="/manufacturer" className={classes.linkStyle} >
+                    {/* <Link to="/manufacturer" className={classes.linkStyle} >
                         <ListItem button>
                             <ListItemIcon><AddBoxIcon/></ListItemIcon>
                             <ListItemText primary="Manufacturer"/>
                         </ListItem>
-                    </Link>
+                    </Link> */}
                     <Link to="/market" className={classes.linkStyle} >
                         <ListItem button>
                             <ListItemIcon><AddBoxIcon/></ListItemIcon>

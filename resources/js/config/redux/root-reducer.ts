@@ -3,6 +3,7 @@ import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import loginReducer from "../../auth/redux/login.reducer";
 import alertReducer from "../../components/snackbar/redux/alert.reducer";
+import ManufacturerReducer from "../../modules/manufacturer/redux/manufacturer.reducer";
 
 const persistConfig = {
   key: "root",
@@ -14,7 +15,8 @@ const persistConfig = {
 
 const appReducer = combineReducers({
    alertState: alertReducer,
-   loginState: loginReducer
+   loginState: loginReducer,
+   manufacturerState: ManufacturerReducer
 });
 
 const rootReducer = (state: any, action: any) => {

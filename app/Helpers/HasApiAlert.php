@@ -13,12 +13,22 @@ trait HasApiAlert
         ],$status_code);
     }
 
-    protected function success($message, $data)
+    protected function success($data_key, $data)
     {
         return response()->json([
-           'isSuccess'         => true,
-           'message'           => $message,
-           'data'              => $data
-        ], 200);
+            'isSuccess' => true,
+            'data'      => [
+                $data_key => $data
+            ]
+        ],200);
+    }
+
+    protected function notify(string $message)
+    {
+        return response()->json([
+            'isSuccess' => true,
+            'message'     => $message,
+            'data'      => ''
+        ],200);
     }
 }

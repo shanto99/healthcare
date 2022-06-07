@@ -23,14 +23,8 @@ function Sidebar() {
               },
               {
                 title: 'Manufacturer',
-                itemId: '#',
-                subNav: [
-                  {
-                    title: 'Manufacturer List',
-                    itemId: 'manufacturer',
-                  },
-                ],
-              }
+                itemId: '/manufacturer',
+              },
             ]}
           />
         </div>
